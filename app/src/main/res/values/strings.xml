@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">ToDoList</string>
+    <string name="action_settings">Settings</string>
+
+    //authentication
+    <string name="main_Activity_Auth_LogIn_Email">please enter your email</string>
+    <string name="main_Activity_Auth_LogIn_Password">please enter your password</string>
+    <string name="main_Activity_LogIn_Button">log in</string>
+    <string name="main_Activity_SignIn_Button">sign in</string>
+    <string name="main_Activity_SignInFail_Toast">Couldn\'t create account</string>
+    <string name="main_Activity_LogInFail_Toast">log in failed</string>
+
+    <string name="list_Activity_LogOut_Button">log out</string>
+
+
+    //task functions
+    <string name="task_Activity_time_field">xx:xx</string>
+    <string name="task_Activity_date_field">xx.xx.xxxx</string>
+
+    <string name="task_Activity_name_field">title</string>
+    <string name="task_Activity_Label_Button">label</string>
+    <string name="task_Activity_Label_default">task</string>
+    <string name="task_Activity_description_field">put more information here:</string>
+
+
+    //list functions
+    <string name="list_Activity_delete_button">delete</string>
+    <string name="list_Activity_add_button">add</string>
+
+
+</resources>
