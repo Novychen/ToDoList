@@ -8,7 +8,7 @@ public class Repository {
     private static Repository mInstance;
     private String mUserId;
 
-    public static Repository getInstance(){
+    protected static Repository getInstance(){
         if(mInstance == null){
             mInstance = new Repository();
         }
@@ -18,14 +18,15 @@ public class Repository {
     private Repository(){
     }
 
-    public void saveData(Object _o){
+    protected void saveData(Object _o,int _taskNumber){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference(mUserId);
+        String ref = mUserId + "/" + _taskNumber;
+        DatabaseReference reference = database.getReference(ref);
         reference.setValue(_o);
 
     }
 
-    public void getUserId(String _user){
+    protected void getUserId(String _user){
         mUserId = _user;
     }
 

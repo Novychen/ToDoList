@@ -22,6 +22,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private FirebaseAuth mAuthentication;
     private String mUserId;
 
+
     private final static String TAG = "at.fhooe.mc.toDoList";
     private EditText mEmail = null;
     private EditText mPassword = null;
@@ -37,11 +38,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mEmail = findViewById(R.id.main_Activity_Auth_LogIn_Email);
         mPassword = findViewById(R.id.main_Activity_Auth_LogIn_Password);
 
-        Button b = null;
-        b = (Button) findViewById(R.id.main_Activity_LogIn_Button);
+        Button b;
+        b = findViewById(R.id.main_Activity_LogIn_Button);
         b.setOnClickListener(this);
 
-        b = (Button) findViewById(R.id.main_Activity_SignIn_Button);
+        b = findViewById(R.id.main_Activity_SignIn_Button);
         b.setOnClickListener(this);
 
         mAuthentication = FirebaseAuth.getInstance();

@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ActivityList extends Activity implements View.OnClickListener {
 
     private final static String TAG = "at.fhooe.mc.toDoList";
+    static int mTaskNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,15 +21,15 @@ public class ActivityList extends Activity implements View.OnClickListener {
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
 
-        Button b = null;
+        Button b;
 
-        b = (Button) findViewById(R.id.list_Activity_LogOut_Button);
+        b = findViewById(R.id.list_Activity_LogOut_Button);
         b.setOnClickListener(this);
 
-        b = (Button) findViewById(R.id.list_Activity_add_button);
+        b = findViewById(R.id.list_Activity_add_button);
         b.setOnClickListener(this);
 
-        b = (Button) findViewById(R.id.list_Activity_delete_button);
+        b = findViewById(R.id.list_Activity_delete_button);
         b.setOnClickListener(this);
 
     }
@@ -45,6 +46,7 @@ public class ActivityList extends Activity implements View.OnClickListener {
             case R.id.list_Activity_add_button: {
                 Log.i(TAG, "list_Activity::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
+                mTaskNumber++;
                 startActivity(i);
             }
             break;

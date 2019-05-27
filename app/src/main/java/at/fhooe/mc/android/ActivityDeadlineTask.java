@@ -17,13 +17,12 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
     private final static String TAG = "at.fhooe.mc.toDoList";
     protected DeadlineTask mDeadlineTask;
-
+    int i = ActivityList.mTaskNumber;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mDeadlineTask = new DeadlineTask();
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -38,9 +37,9 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        int year = 0;
-        int month = 0;
-        int day = 0;
+        int year;
+        int month;
+        int day;
         switch (v.getId()) {
             case R.id.task_Activity_time_field: {
                 Log.i(TAG, "task_Activity::onClick SelectTime Button was pressed");
@@ -104,6 +103,6 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     @Override
     protected void onPause() {
         super.onPause();
-        Repository.getInstance().saveData(mDeadlineTask);
+        Repository.getInstance().saveData(mDeadlineTask,i);
     }
 }
