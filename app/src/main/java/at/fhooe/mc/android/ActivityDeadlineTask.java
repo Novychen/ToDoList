@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -17,8 +18,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
     private final static String TAG = "at.fhooe.mc.toDoList";
     protected DeadlineTask mDeadlineTask;
-    int i = ActivityList.mTaskNumber;
-
+    int mTaskNumber = ActivityList.mTaskNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,9 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
         TextView date = findViewById(R.id.task_Activity_date_field);
         date.setOnClickListener(this);
+
+        TextView title = findViewById(R.id.task_Activity_title_field);
+        title.setOnClickListener(this);
     }
 
     @Override
@@ -41,6 +44,14 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         int month;
         int day;
         switch (v.getId()) {
+
+            case R.id.task_Activity_title_field: {
+                Log.i(TAG, "task_Activity::onClick title was selected");
+                EditText  mTitleText = findViewById(R.id.task_Activity_title_field);
+                String title = mTitleText.getText().toString();
+                mDeadlineTask.setTitle(title);
+            }
+            break;
             case R.id.task_Activity_time_field: {
                 Log.i(TAG, "task_Activity::onClick SelectTime Button was pressed");
                 Calendar calendar = Calendar.getInstance();
@@ -59,15 +70,16 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                         } else {
                             dateField.setText(hourOfDay + ":" + minute);
                         }
+
+                        DeadlineTime d = new DeadlineTime();
+                        d.setHour(hourOfDay);
+                        d.setMinute(minute);
+                        d.setwDay(false);
+                        mDeadlineTask.setDeadlineTime(d);
                                           }
                 }, hourOfDay, minute, true);
 
                 selectTime.show();
-                DeadlineTime d = new DeadlineTime();
-                d.setHour(hourOfDay);
-                d.setMinute(minute);
-                d.setwDay(false);
-                mDeadlineTask.setDeadlineTime(d);
 
             }
             break;
@@ -81,16 +93,17 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         TextView dateField = findViewById(R.id.task_Activity_date_field);
+                        month = month + 1;
                         dateField.setText(dayOfMonth + "." + month + "." + year);
 
+                        DeadlineDay d2 = new DeadlineDay();
+                        d2.setDay(dayOfMonth);
+                        d2.setMonth(month);
+                        d2.setYear(year);
+                        mDeadlineTask.setDeadlineDay(d2);
                     }
                 }, year, month, day);
                 selectDate.show();
-                DeadlineDay d2 = new DeadlineDay();
-                d2.setDay(day);
-                d2.setMonth(month);
-                d2.setYear(year);
-                mDeadlineTask.setDeadlineDay(d2);
             }
             break;
 
@@ -103,6 +116,6 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     @Override
     protected void onPause() {
         super.onPause();
-        Repository.getInstance().saveData(mDeadlineTask,i);
+        Repository.getInstance().saveData(mDeadlineTask, mTaskNumber);
     }
 }

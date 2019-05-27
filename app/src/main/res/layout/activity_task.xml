@@ -26,11 +26,11 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:id="@+id/task_Activity_name_field"
+                android:id="@+id/task_Activity_title_field"
                 android:layout_width="156dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/task_Activity_name_field"
+                android:hint="@string/task_Activity_title_field"
                 android:inputType="textPersonName"
                 android:textSize="30sp" />
 
