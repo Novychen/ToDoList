@@ -34,7 +34,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         TextView date = findViewById(R.id.task_Activity_date_field);
         date.setOnClickListener(this);
 
-        TextView title = findViewById(R.id.task_Activity_title_field);
+        TextView title = findViewById(R.id.task_Activity_Check_Button);
         title.setOnClickListener(this);
     }
 
@@ -45,11 +45,13 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         int day;
         switch (v.getId()) {
 
-            case R.id.task_Activity_title_field: {
+            case R.id.task_Activity_Check_Button: {
                 Log.i(TAG, "task_Activity::onClick title was selected");
                 EditText  mTitleText = findViewById(R.id.task_Activity_title_field);
                 String title = mTitleText.getText().toString();
                 mDeadlineTask.setTitle(title);
+                Repository.getInstance().saveData(mDeadlineTask, mTaskNumber);
+                finish();
             }
             break;
             case R.id.task_Activity_time_field: {
@@ -113,9 +115,4 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Repository.getInstance().saveData(mDeadlineTask, mTaskNumber);
-    }
 }

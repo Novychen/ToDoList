@@ -95,6 +95,12 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/task_Activity_Check_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/task_Activity_Check_Button" />
+
         <EditText
             android:id="@+id/task_Activity_description_field"
             android:layout_width="match_parent"

@@ -20,7 +20,8 @@
     <string name="task_Activity_title_field">title</string>
     <string name="task_Activity_Label_Button">label</string>
     <string name="task_Activity_Label_default">task</string>
-    <string name="task_Activity_description_field">put more information here:</string>
+    <string name="task_Activity_description_field">put more information here</string>
+    <string name="task_Activity_Check_Button">ok</string>
 
 
     //list functions
