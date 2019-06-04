@@ -16,24 +16,32 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private FirebaseAuth mAuthentication;
-    private String mUserId;
-
+    static long mTaskNumber;
 
     private final static String TAG = "at.fhooe.mc.toDoList";
     private EditText mEmail = null;
     private EditText mPassword = null;
 
+
+    public static long getTaskNumber() {
+        return mTaskNumber;
+    }
+
+    public static void setTaskNumber(long _number){
+        mTaskNumber = _number;
+    }
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-
-
 
         mEmail = findViewById(R.id.main_Activity_Auth_LogIn_Email);
         mPassword = findViewById(R.id.main_Activity_Auth_LogIn_Password);
@@ -46,23 +54,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         b.setOnClickListener(this);
 
         mAuthentication = FirebaseAuth.getInstance();
-        setUserId();
-        if(mAuthentication.getCurrentUser() != null){ // is user already logged in?
+        Repository.getInstance().setUserId(mAuthentication.getUid());
+        if (Repository.getInstance().getUserId() != null) { // is user already logged in?
             logIn();
         }
-    }
-
-    public void setUserId(){
-        mUserId = mAuthentication.getUid();
-        Repository.getInstance().getUserId(mUserId);
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuthentication.getCurrentUser();
-
     }
 
     /**
@@ -70,14 +65,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
      */
     private void logIn() {
         Intent i = new Intent(this, ActivityList.class);
+        Repository.getInstance().setUserId(mAuthentication.getUid());
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getLongData(ref);
+
         startActivity(i);
         finish();
     }
 
     /**
-     * registers the user in the database
+     * starts the login process for the user
      */
-    private void signIn(){
+    private void signIn() {
         mAuthentication.signInWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -101,14 +100,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View _v) {
-        switch(_v.getId()){
-            case R.id.main_Activity_LogIn_Button:{
+        switch (_v.getId()) {
+            case R.id.main_Activity_LogIn_Button: {
                 signIn();
-            }break;
-            case R.id.main_Activity_SignIn_Button:{
+            }
+            break;
+            case R.id.main_Activity_SignIn_Button: {
                 createAccount();
-            }break;
-            default: Log.e(TAG, "main_Activity::onClick unexpected ID encountered");
+            }
+            break;
+            default:
+                Log.e(TAG, "main_Activity::onClick unexpected ID encountered");
         }
     }
 
@@ -124,19 +126,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "main_Activity::createUserWithEmail success");
                             FirebaseUser user = mAuthentication.getCurrentUser();
-                            setUserId();
+                            Repository.getInstance().setUserId(mAuthentication.getUid());
+                            mTaskNumber = 0;
+                            Repository.getInstance().saveData(mTaskNumber);
+                            Log.i(TAG, "MainActivity :: createAccount mTaskNumber is" + mTaskNumber);
+                            Toast.makeText(MainActivity.this, getText(R.string.main_Activity_SignIn_Toast), Toast.LENGTH_SHORT).show();
                             logIn();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "main_Activity::createUserWithEmail failure - could not create account", task.getException());
                             Toast.makeText(MainActivity.this, getText(R.string.main_Activity_SignInFail_Toast), Toast.LENGTH_SHORT).show();
-
-
                         }
 
                     }
                 });
     }
+
 }
 
 

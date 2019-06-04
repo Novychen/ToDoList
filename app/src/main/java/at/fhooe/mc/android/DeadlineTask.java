@@ -1,33 +1,31 @@
 package at.fhooe.mc.android;
 
-public class DeadlineTask {
+public class DeadlineTask implements Task{
 
-    private DeadlineTime mDeadlineTime;
-    private DeadlineDay mDeadLineDay;
     private String mTitle;
     private String mDescription;
     private String mLabel;
+    private String mDate;
+
 
 
     DeadlineTask(){
-        this(null,null,null,null,null);
+        this(null,null,null,null);
     }
 
-    DeadlineTask(String _title, String _label, String _description, DeadlineTime _d, DeadlineDay _dd){
+    DeadlineTask(String _title, String _label, String _description, String _dateDead){
 
-        mDeadlineTime = _d;
-        mDeadLineDay = _dd;
         mDescription = _description;
         mTitle = _title;
         mLabel = _label;
+        mDate = _dateDead;
     }
 
-    DeadlineTask(String _title, String _description, DeadlineTime _d, DeadlineDay _dd){
+    DeadlineTask(String _title, String _description, String _dateDead){
         mLabel = "task";
-        mDeadlineTime = _d;
-        mDeadLineDay = _dd;
         mDescription = _description;
         mTitle = _title;
+        mDate = _dateDead;
     }
 
 
@@ -47,7 +45,7 @@ public class DeadlineTask {
         mDescription = _description;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
@@ -55,20 +53,16 @@ public class DeadlineTask {
         mTitle = _title;
     }
 
-    public DeadlineTime getDeadlineTime() {
-        return mDeadlineTime;
+    public String getDate() {
+        return mDate;
     }
 
-    public void setDeadlineTime(DeadlineTime _deadline) {
-        mDeadlineTime = _deadline;
+    public void setDate (String _time, String _date) {
+        mDate = _date + _time;
     }
 
-    public DeadlineDay getDeadlineDay() {
-        return mDeadLineDay;
-    }
 
-    public void setDeadlineDay(DeadlineDay _deadline) {
-        mDeadLineDay = _deadline;
-    }
+
+
 
 }

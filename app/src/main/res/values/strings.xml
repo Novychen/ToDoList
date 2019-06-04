@@ -7,6 +7,9 @@
     <string name="main_Activity_Auth_LogIn_Password">please enter your password</string>
     <string name="main_Activity_LogIn_Button">log in</string>
     <string name="main_Activity_SignIn_Button">sign in</string>
+
+
+    <string name="main_Activity_SignIn_Toast">New account created</string>
     <string name="main_Activity_SignInFail_Toast">Couldn\'t create account</string>
     <string name="main_Activity_LogInFail_Toast">log in failed</string>
 
@@ -21,7 +24,7 @@
     <string name="task_Activity_Label_Button">label</string>
     <string name="task_Activity_Label_default">task</string>
     <string name="task_Activity_description_field">put more information here</string>
-    <string name="task_Activity_Check_Button">ok</string>
+    <string name="task_Activity_Check_Button">OK</string>
 
 
     //list functions

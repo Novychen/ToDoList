@@ -10,10 +10,11 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+
 public class ActivityList extends Activity implements View.OnClickListener {
 
     private final static String TAG = "at.fhooe.mc.toDoList";
-    static int mTaskNumber = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +22,7 @@ public class ActivityList extends Activity implements View.OnClickListener {
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
 
-        Button b;
-
-        b = findViewById(R.id.list_Activity_LogOut_Button);
+        Button b = findViewById(R.id.list_Activity_LogOut_Button);
         b.setOnClickListener(this);
 
         b = findViewById(R.id.list_Activity_add_button);
@@ -46,7 +45,8 @@ public class ActivityList extends Activity implements View.OnClickListener {
             case R.id.list_Activity_add_button: {
                 Log.i(TAG, "list_Activity::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
-                mTaskNumber++;
+                long taskNumber = MainActivity.getTaskNumber() + 1;
+                MainActivity.setTaskNumber(taskNumber);
                 startActivity(i);
             }
             break;

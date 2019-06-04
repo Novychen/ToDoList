@@ -12,13 +12,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+
 import java.util.Calendar;
 
-public class ActivityDeadlineTask extends Activity implements View.OnClickListener {
+/**
+ *
+ * Fehler:  Datenbank zählt falsch wenn User1 log out to User2 log in
+ *          LogIn fail wenn nicht alle Felder ausgefüllt
+ *          LogIn keine Unterscheidung was falsch ist (Passwort/Email)
+ *
+ */
+
+public class ActivityDeadlineTask extends Activity implements View.OnClickListener, Task {
 
     private final static String TAG = "at.fhooe.mc.toDoList";
     protected DeadlineTask mDeadlineTask;
-    int mTaskNumber = ActivityList.mTaskNumber;
+    String time;
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +38,16 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_task);
 
-        TextView time = findViewById(R.id.task_Activity_time_field);
-        time.setOnClickListener(this);
+        TextView timeFiled = findViewById(R.id.task_Activity_time_field);
+        timeFiled.setOnClickListener(this);
 
-        TextView date = findViewById(R.id.task_Activity_date_field);
-        date.setOnClickListener(this);
+        TextView dateFiled = findViewById(R.id.task_Activity_date_field);
+        dateFiled.setOnClickListener(this);
 
         TextView title = findViewById(R.id.task_Activity_Check_Button);
         title.setOnClickListener(this);
+
+        time  = " null : null true";
     }
 
     @Override
@@ -48,15 +60,25 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             case R.id.task_Activity_Check_Button: {
                 Log.i(TAG, "task_Activity::onClick title was selected");
                 EditText  mTitleText = findViewById(R.id.task_Activity_title_field);
+                EditText mDescription = findViewById(R.id.task_Activity_description_field);
+
                 String title = mTitleText.getText().toString();
+                String description = mDescription.getText().toString();
+
                 mDeadlineTask.setTitle(title);
-                Repository.getInstance().saveData(mDeadlineTask, mTaskNumber);
+                mDeadlineTask.setDescription(description);
+                mDeadlineTask.setDate(time,date);
+
+                long taskNumber = MainActivity.getTaskNumber();
+                Log.i(TAG, "taskNumber Value is: " + taskNumber);
+                Repository.getInstance().saveData(mDeadlineTask, taskNumber);
+                Repository.getInstance().saveData(taskNumber);
                 finish();
             }
             break;
             case R.id.task_Activity_time_field: {
                 Log.i(TAG, "task_Activity::onClick SelectTime Button was pressed");
-                Calendar calendar = Calendar.getInstance();
+                final Calendar calendar = Calendar.getInstance();
                 int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
                 int minute = calendar.get(Calendar.MINUTE);
                 TimePickerDialog selectTime = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
@@ -73,11 +95,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                             dateField.setText(hourOfDay + ":" + minute);
                         }
 
-                        DeadlineTime d = new DeadlineTime();
-                        d.setHour(hourOfDay);
-                        d.setMinute(minute);
-                        d.setwDay(false);
-                        mDeadlineTask.setDeadlineTime(d);
+                        time  = hourOfDay + ":" + minute + " false";
                                           }
                 }, hourOfDay, minute, true);
 
@@ -98,11 +116,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                         month = month + 1;
                         dateField.setText(dayOfMonth + "." + month + "." + year);
 
-                        DeadlineDay d2 = new DeadlineDay();
-                        d2.setDay(dayOfMonth);
-                        d2.setMonth(month);
-                        d2.setYear(year);
-                        mDeadlineTask.setDeadlineDay(d2);
+                        date = dayOfMonth + "." + month + "." + year + " ";
                     }
                 }, year, month, day);
                 selectDate.show();
