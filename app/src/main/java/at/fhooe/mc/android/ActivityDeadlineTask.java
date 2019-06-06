@@ -7,36 +7,41 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+
 
 /**
- *
- * Fehler:  Datenbank zählt falsch wenn User1 log out to User2 log in
- *          LogIn fail wenn nicht alle Felder ausgefüllt
- *          LogIn keine Unterscheidung was falsch ist (Passwort/Email)
- *
+ * this class implements the DeadlineTask Activity
  */
-
 public class ActivityDeadlineTask extends Activity implements View.OnClickListener, Task {
 
     private final static String TAG = "at.fhooe.mc.toDoList";
     protected DeadlineTask mDeadlineTask;
-    String time;
-    String date;
+    String mTime;
+    String mDate;
+    int mLabelCount = 0;
+    List<String> mLabelList;
+    ArrayAdapter<String> mArrayAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
+        setContentView(R.layout.activity_deadline_task);
         mDeadlineTask = new DeadlineTask();
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_task);
 
         TextView timeFiled = findViewById(R.id.task_Activity_time_field);
         timeFiled.setOnClickListener(this);
@@ -44,10 +49,19 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         TextView dateFiled = findViewById(R.id.task_Activity_date_field);
         dateFiled.setOnClickListener(this);
 
-        TextView title = findViewById(R.id.task_Activity_Check_Button);
-        title.setOnClickListener(this);
+        Button ok = findViewById(R.id.task_Activity_Check_Button);
+        ok.setOnClickListener(this);
 
-        time  = " null : null true";
+        GridView tableRow = findViewById(R.id.task_Activity_Label_layout);
+        mLabelList = new ArrayList<>();
+        mArrayAdapter = new ArrayAdapter<String>(ActivityDeadlineTask.this,android.R.layout.simple_expandable_list_item_1,mLabelList);
+        tableRow.setAdapter(mArrayAdapter);
+
+
+            Button label = findViewById(R.id.task_Activity_Label_Button);
+            label.setOnClickListener(this);
+
+        mTime  = " null : null true";
     }
 
     @Override
@@ -56,6 +70,22 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         int month;
         int day;
         switch (v.getId()) {
+
+            case R.id.task_Activity_Label_Button:{
+                mLabelCount++;
+                if(mLabelCount <= 3) {
+                EditText txt = findViewById(R.id.task_Activity_setLabel_field);
+                String getLabel = txt.getText().toString();
+                mLabelList.add(mLabelList.size(),getLabel);
+                mArrayAdapter.notifyDataSetChanged();
+                mDeadlineTask.setLabel(mLabelList);
+                Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelSuccess_Toast, Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelFail_Toast, Toast.LENGTH_SHORT).show();
+                }
+
+
+            }break;
 
             case R.id.task_Activity_Check_Button: {
                 Log.i(TAG, "task_Activity::onClick title was selected");
@@ -67,7 +97,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
                 mDeadlineTask.setTitle(title);
                 mDeadlineTask.setDescription(description);
-                mDeadlineTask.setDate(time,date);
+                mDeadlineTask.setDate(mTime, mDate);
 
                 long taskNumber = MainActivity.getTaskNumber();
                 Log.i(TAG, "taskNumber Value is: " + taskNumber);
@@ -95,7 +125,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                             dateField.setText(hourOfDay + ":" + minute);
                         }
 
-                        time  = hourOfDay + ":" + minute + " false";
+                        mTime  = hourOfDay + ":" + minute + " false";
                                           }
                 }, hourOfDay, minute, true);
 
@@ -116,7 +146,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                         month = month + 1;
                         dateField.setText(dayOfMonth + "." + month + "." + year);
 
-                        date = dayOfMonth + "." + month + "." + year + " ";
+                        mDate = dayOfMonth + "." + month + "." + year + " ";
                     }
                 }, year, month, day);
                 selectDate.show();

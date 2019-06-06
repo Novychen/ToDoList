@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * This class implements the MainActivity as well as the login/Signin Process from the user
+ */
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private FirebaseAuth mAuthentication;
@@ -29,14 +32,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private EditText mPassword = null;
 
 
+    /**
+     * getter for the variable {@link MainActivity#mTaskNumber}, which displays the current Tasknumber
+     * @return the variable {@link MainActivity#mTaskNumber}
+     */
     public static long getTaskNumber() {
         return mTaskNumber;
     }
 
+    /**
+     * setter for the variable the variable {@link MainActivity#mTaskNumber}, which displays the current Tasknumber
+     * @param _number the current Tasknumber
+     */
     public static void setTaskNumber(long _number){
         mTaskNumber = _number;
     }
 
+    /**
+     * listens to the Buttons and checks if the user is already logged in if so it changes to {@link ActivityList}
+     */
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
@@ -75,6 +89,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     /**
      * starts the login process for the user
+     * if the data is correct the user is logged in, if not a error message is displayed
      */
     private void signIn() {
         mAuthentication.signInWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())

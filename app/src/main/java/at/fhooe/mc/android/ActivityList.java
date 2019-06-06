@@ -10,15 +10,17 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-
+/**
+ * this class displays the toDoList and implements action that can manipulate the list
+ */
 public class ActivityList extends Activity implements View.OnClickListener {
 
-    private final static String TAG = "at.fhooe.mc.toDoList";
+    private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
 
@@ -60,6 +62,9 @@ public class ActivityList extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * logs the User out
+     */
     private void logOut() {
         FirebaseAuth.getInstance().signOut();
         Intent i = new Intent(this, MainActivity.class);

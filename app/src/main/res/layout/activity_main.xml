@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <Space
@@ -24,7 +24,8 @@
             android:ems="10"
             android:fontFamily="sans-serif"
             android:hint="@string/main_Activity_Auth_LogIn_Email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:autofillHints="AUTOFILL_HINT_EMAIL_ADDRESS" />
 
         <Space
             android:layout_width="match_parent"
@@ -37,7 +38,8 @@
             android:ems="10"
             android:fontFamily="sans-serif"
             android:hint="@string/main_Activity_Auth_LogIn_Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:autofillHints="AUTOFILL_HINT_PASSWORD" />
 
         <Button
             android:id="@+id/main_Activity_LogIn_Button"
@@ -52,4 +54,4 @@
             android:text="@string/main_Activity_SignIn_Button" />
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>
