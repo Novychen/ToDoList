@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.pm.ActivityInfo;
+import android.media.Image;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,6 +14,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -49,7 +53,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         TextView dateFiled = findViewById(R.id.task_Activity_date_field);
         dateFiled.setOnClickListener(this);
 
-        Button ok = findViewById(R.id.task_Activity_Check_Button);
+        ImageView ok = findViewById(R.id.task_Activity_Check_Button);
         ok.setOnClickListener(this);
 
         GridView tableRow = findViewById(R.id.task_Activity_Label_layout);
@@ -58,8 +62,8 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         tableRow.setAdapter(mArrayAdapter);
 
 
-            Button label = findViewById(R.id.task_Activity_Label_Button);
-            label.setOnClickListener(this);
+        ImageView label = findViewById(R.id.task_Activity_Label_Button);
+        label.setOnClickListener(this);
 
         mTime  = " null : null true";
     }
@@ -80,6 +84,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mArrayAdapter.notifyDataSetChanged();
                 mDeadlineTask.setLabel(mLabelList);
                 Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelSuccess_Toast, Toast.LENGTH_SHORT).show();
+                txt.setText("");
                 }else{
                     Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelFail_Toast, Toast.LENGTH_SHORT).show();
                 }
@@ -125,7 +130,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                             dateField.setText(hourOfDay + ":" + minute);
                         }
 
-                        mTime  = hourOfDay + ":" + minute + " false";
+                        mTime  = " " + hourOfDay + ":" + minute + " false";
                                           }
                 }, hourOfDay, minute, true);
 
@@ -144,9 +149,9 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         TextView dateField = findViewById(R.id.task_Activity_date_field);
                         month = month + 1;
-                        dateField.setText(dayOfMonth + "." + month + "." + year);
+                        dateField.setText(dayOfMonth + "." + month + "." + year + " ");
 
-                        mDate = dayOfMonth + "." + month + "." + year + " ";
+                        mDate = dayOfMonth + "." + month + "." + year;
                     }
                 }, year, month, day);
                 selectDate.show();
