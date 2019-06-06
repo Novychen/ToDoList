@@ -47,8 +47,7 @@ public class ActivityList extends Activity implements View.OnClickListener {
             case R.id.list_Activity_add_button: {
                 Log.i(TAG, "list_Activity::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
-                long taskNumber = MainActivity.getTaskNumber() + 1;
-                MainActivity.setTaskNumber(taskNumber);
+
                 startActivity(i);
             }
             break;

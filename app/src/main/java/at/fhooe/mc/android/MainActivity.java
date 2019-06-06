@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Repository.getInstance().setUserId(mAuthentication.getUid());
         if (Repository.getInstance().getUserId() != null) { // is user already logged in?
             logIn();
-        }
+        } 
     }
 
     /**

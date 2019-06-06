@@ -58,7 +58,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
         GridView tableRow = findViewById(R.id.task_Activity_Label_layout);
         mLabelList = new ArrayList<>();
-        mArrayAdapter = new ArrayAdapter<String>(ActivityDeadlineTask.this,android.R.layout.simple_expandable_list_item_1,mLabelList);
+        mArrayAdapter = new ArrayAdapter<>(ActivityDeadlineTask.this,android.R.layout.simple_expandable_list_item_1,mLabelList);
         tableRow.setAdapter(mArrayAdapter);
 
 
@@ -104,7 +104,9 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mDeadlineTask.setDescription(description);
                 mDeadlineTask.setDate(mTime, mDate);
 
-                long taskNumber = MainActivity.getTaskNumber();
+                long taskNumber = MainActivity.getTaskNumber() + 1;
+                MainActivity.setTaskNumber(taskNumber);
+
                 Log.i(TAG, "taskNumber Value is: " + taskNumber);
                 Repository.getInstance().saveData(mDeadlineTask, taskNumber);
                 Repository.getInstance().saveData(taskNumber);
