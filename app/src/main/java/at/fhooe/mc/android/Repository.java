@@ -81,12 +81,12 @@ public class Repository {
      */
     protected void saveData(long _currTaskNumber){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-         String ref = mUserId + "CurrentTask";
+         String ref = mUserId + "/CurrentTask";
         if (mUserId == null){
             return;
         }
         DatabaseReference reference = database.getReference(ref);
-        reference.push().setValue(_currTaskNumber);
+        reference.setValue(_currTaskNumber);
     }
 
     /**

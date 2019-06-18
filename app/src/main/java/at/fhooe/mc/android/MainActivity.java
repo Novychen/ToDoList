@@ -19,38 +19,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * This class implements the MainActivity as well as the login/Signin Process from the user
  */
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private FirebaseAuth mAuthentication;
-    static long mTaskNumber;
-
     public final static String TAG = "at.fhooe.mc.toDoList";
     private EditText mEmail = null;
     private EditText mPassword = null;
-
-
-    /**
-     * getter for the variable {@link MainActivity#mTaskNumber}, which displays the current Tasknumber
-     * @return the variable {@link MainActivity#mTaskNumber}
-     */
-    public static long getTaskNumber() {
-        return mTaskNumber;
-    }
-
-    /**
-     * setter for the variable the variable {@link MainActivity#mTaskNumber}, which displays the current Tasknumber
-     * @param _number the current Tasknumber
-     */
-    public static void setTaskNumber(long _number){
-        mTaskNumber = _number;
-    }
-
 
 
     /**
@@ -146,9 +123,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             Log.d(TAG, "main_Activity::createUserWithEmail success");
                             FirebaseUser user = mAuthentication.getCurrentUser();
                             Repository.getInstance().setUserId(mAuthentication.getUid());
-                            mTaskNumber = 0;
-                            Repository.getInstance().saveData(mTaskNumber);
-                            Log.i(TAG, "MainActivity :: createAccount mTaskNumber is" + mTaskNumber);
+                            Repository.getInstance().saveData(0);
+                            Log.i(TAG, "MainActivity :: createAccount mTaskNumber is" + 0);
                             Toast.makeText(MainActivity.this, getText(R.string.main_Activity_SignIn_Toast), Toast.LENGTH_SHORT).show();
                             logIn();
                         } else {
