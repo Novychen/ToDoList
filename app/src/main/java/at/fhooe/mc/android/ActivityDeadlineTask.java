@@ -98,8 +98,6 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 } else {
                     Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelFail_Toast, Toast.LENGTH_SHORT).show();
                 }
-
-
             }
             break;
 
@@ -123,18 +121,18 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mDeadlineTask.setDescription(description);
                 mDeadlineTask.setDate(mTime, mDate);
 
+
+                ActivityList.mTasks.add(mDeadlineTask);
+
                 AlarmManager m = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Intent i = new Intent(this, NotificationAlarm.class);
                 PendingIntent pi = PendingIntent.getBroadcast(this, 666, i, 0);
 
                 m.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);
 
-                long taskNumber = MainActivity.getTaskNumber() + 1;
-                MainActivity.setTaskNumber(taskNumber);
-
-                Log.i(TAG, "taskNumber Value is: " + taskNumber);
-                Repository.getInstance().saveData(mDeadlineTask, taskNumber);
-                Repository.getInstance().saveData(taskNumber);
+                Log.i(TAG, "taskNumber Value is: " + ActivityList.mTasks.size());
+                Repository.getInstance().saveData(ActivityList.mTasks);
+                Repository.getInstance().saveData(ActivityList.mTasks.size());
                 finish();
             }
             break;

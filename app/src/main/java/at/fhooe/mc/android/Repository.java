@@ -8,8 +8,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 /**
- * This class (Singelton Pattern) implements all methods that are connected to the database such as {@link Repository#getData(DatabaseReference)} or {@link Repository#saveData(Task, long)}.
+ * This class (Singelton Pattern) implements all methods that are connected to the database such as {@link Repository#getData(DatabaseReference)} or {@link Repository#saveData(List)})}.
  */
 public class Repository {
 
@@ -32,64 +34,6 @@ public class Repository {
     private Repository(){
     }
 
-    /**
-     * gets long values from the database. Is meant to get the highest Tasknumber (or the Number of Task the user currently has) as it saves the long value into the
-     * {@link MainActivity#mTaskNumber} variable
-     * @param _myRef the reference (path) of the long-value (in the database) that want to be fetched
-     */
-    protected void getLongData(DatabaseReference _myRef){
-        _myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                try {
-                    MainActivity.setTaskNumber(dataSnapshot.getValue(Long.class));
-                }catch(NullPointerException e){
-                    return;
-                }catch(ClassCastException e){
-                    return;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.i(MainActivity.TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-    /**
-     * gets String values from the database
-     * @param _myRef the reference (path) of the String-value (in the database) that want to be fetched
-     * @return the fetched String from the database
-     */
-    protected String getStringData(DatabaseReference _myRef){
-        try {
-            getLongData(_myRef);
-            return String.valueOf(mValue);
-        }catch(NullPointerException e){
-            return null;
-        }catch(ClassCastException e){
-            return null;
-        }
-    }
-
-    /**
-     * gets Task-Objects from the database
-     * @param _myRef the reference (path) of the Task object (in the database) that want to be fetched
-     * @return the fetched Task object from the database
-     */
-    protected Task getTaskData(DatabaseReference _myRef){
-        try {
-        return (Task) mValue;
-        }catch(NullPointerException e){
-            return null;
-        }catch(ClassCastException e){
-            return null;
-        }
-    }
 
     /**
      * gets data from the database
@@ -120,11 +64,10 @@ public class Repository {
     /**
      * saves a Task along with its tasknumber into the database
      * @param _t the task, that is saved
-     * @param _taskNumber the number of the task, that is saved
      */
-    protected void saveData(Task _t,long _taskNumber){
+    protected void saveData(List<Task> _t){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        String ref = mUserId + "/" + "Task " + _taskNumber;
+        String ref = mUserId;
         if (mUserId == null){
             return;
         }
@@ -138,12 +81,12 @@ public class Repository {
      */
     protected void saveData(long _currTaskNumber){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-         String ref = mUserId + "/CurrentTask";
+         String ref = mUserId + "CurrentTask";
         if (mUserId == null){
             return;
         }
         DatabaseReference reference = database.getReference(ref);
-        reference.setValue(_currTaskNumber);
+        reference.push().setValue(_currTaskNumber);
     }
 
     /**

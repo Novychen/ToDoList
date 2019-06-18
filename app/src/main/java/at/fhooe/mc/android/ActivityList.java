@@ -27,9 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 
 /**
@@ -39,6 +41,7 @@ public class ActivityList extends ListActivity{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
     private static List<String> mDate = new LinkedList<String>();
+    static  List <Task> mTasks = new LinkedList<>();
     public Object t;
 
     public static List<String> getDate(){
@@ -72,13 +75,13 @@ public class ActivityList extends ListActivity{
             String taskS = task.toString();
             DatabaseReference ref = userRef.child(taskS);
 
-            Task t = Repository.getInstance().getTaskData(ref);
+            //Task t = Repository.getInstance().getData(ref);
             StringBuilder s = new StringBuilder();
             s.append(t);
             s.append(": " + taskS);
             String p = s.toString();
 
-            _adapter.add(new ListData(p, l+date));
+            _adapter.add(new ListData(p, l + date));
             l++;
         }
     }
@@ -93,9 +96,9 @@ public class ActivityList extends ListActivity{
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_list);
 
-        for (int i = 1; i <= 6; i++) {
-            DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("Task " + i).child("date");
+            DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
             Repository.getInstance().getData(ref2);
+
             final ActionBar ab = getActionBar();
             ab.setHomeButtonEnabled(true);
             //DataAdapter adapter = new DataAdapter(this);
@@ -105,12 +108,11 @@ public class ActivityList extends ListActivity{
 
             // adapter.add(new ListData(Repository.getInstance().getStringData(ref)));
             //setListAdapter(adapter);
-        }
+
 
     }
     protected static void setValue(Object o) {
-        mDate.add(o.toString());
-        Log.i(MainActivity.TAG, "setValue --> Object Value is: " + mDate);
+        Log.i(MainActivity.TAG, "setValue --> Object Value is: " + o);
 
     }
 

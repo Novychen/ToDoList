@@ -85,8 +85,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void logIn() {
         Intent i = new Intent(this, ActivityList.class);
         Repository.getInstance().setUserId(mAuthentication.getUid());
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
-        Repository.getInstance().getLongData(ref);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getData(ref);
         startActivity(i);
         finish();
     }
