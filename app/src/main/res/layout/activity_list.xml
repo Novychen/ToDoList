@@ -10,31 +10,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="383dp" />
-
-        <Button
-            android:id="@+id/list_Activity_LogOut_Button"
+        <TextView
+            android:id="@+id/activity_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/list_Activity_LogOut_Button" />
+            android:text="Titel"
+            android:textSize="30sp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="62dp" />
-
-        <Button
-            android:id="@+id/list_Activity_add_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/list_Activity_add_button" />
-
-        <Button
-            android:id="@+id/list_Activity_delete_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/list_Activity_delete_button" />
 
     </LinearLayout>
 </ScrollView>

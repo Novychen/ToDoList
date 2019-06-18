@@ -16,7 +16,7 @@ public class Repository {
     private static final String TAG = "Repository";
     private static Repository mInstance;
     private static String mUserId;
-    private Object mValue;
+    private static Object mValue;
 
     /**
      * Constructor for Repository
@@ -50,14 +50,12 @@ public class Repository {
                 }catch(ClassCastException e){
                     return;
                 }
-                Log.i(TAG, "Value is: " + mValue);
-
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.i(TAG, "Failed to read value.", error.toException());
+                Log.i(MainActivity.TAG, "Failed to read value.", error.toException());
             }
         });
     }
@@ -69,7 +67,8 @@ public class Repository {
      */
     protected String getStringData(DatabaseReference _myRef){
         try {
-        return (String) getData(_myRef);
+            getLongData(_myRef);
+            return String.valueOf(mValue);
         }catch(NullPointerException e){
             return null;
         }catch(ClassCastException e){
@@ -84,7 +83,7 @@ public class Repository {
      */
     protected Task getTaskData(DatabaseReference _myRef){
         try {
-        return (Task) getData(_myRef);
+        return (Task) mValue;
         }catch(NullPointerException e){
             return null;
         }catch(ClassCastException e){
@@ -97,23 +96,25 @@ public class Repository {
      * @param _myRef the reference (path) of the object (in the database) that want to be fetched
      * @return the object that is fetched from the database
      */
-   protected Object getData(DatabaseReference _myRef){
+   protected void getData(DatabaseReference _myRef){
        _myRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
                // This method is called once with the initial value and again
                // whenever data at this location is updated.
                mValue = dataSnapshot.getValue(Object.class);
-               Log.i(TAG, "Value is: " + mValue);
+               Log.d(TAG, "Value is: " + mValue);
+               if(mValue != null){
+                   ActivityList.setValue(mValue);
+               }
            }
 
            @Override
            public void onCancelled(DatabaseError error) {
                // Failed to read value
-               Log.i(TAG, "Failed to read value.", error.toException());
+               Log.w(TAG, "Failed to read value.", error.toException());
            }
        });
-       return mValue;
    }
 
     /**

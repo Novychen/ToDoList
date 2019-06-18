@@ -38,6 +38,11 @@
     <string name="list_Activity_delete_button">delete</string>
     <string name="list_Activity_add_button">add</string>
 
+    //alarm
+    <string name="Receiver_Notification_Activity">Test!</string>
+
+    <string name="Receiver_Notification_title">Test!</string>
+    <string name="Receiver_Notification_dialog">Das ist ein Test</string>
 
 
 </resources>

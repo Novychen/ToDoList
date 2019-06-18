@@ -1,27 +1,30 @@
 package at.fhooe.mc.android;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.media.Image;
+
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,6 +35,14 @@ import java.util.List;
 public class ActivityDeadlineTask extends Activity implements View.OnClickListener, Task {
 
     private final static String TAG = "at.fhooe.mc.toDoList";
+
+    protected Calendar mCalendar;
+    private int mDay;
+    private int mMonth;
+    private int mYear;
+    private int mHour;
+    private int mMinute;
+
     protected DeadlineTask mDeadlineTask;
     String mTime;
     String mDate;
@@ -61,7 +72,6 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         mArrayAdapter = new ArrayAdapter<>(ActivityDeadlineTask.this,android.R.layout.simple_expandable_list_item_1,mLabelList);
         tableRow.setAdapter(mArrayAdapter);
 
-
         ImageView label = findViewById(R.id.task_Activity_Label_Button);
         label.setOnClickListener(this);
 
@@ -72,37 +82,52 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     public void onClick(View v) {
         int year;
         int month;
-        int day;
+        final int day;
         switch (v.getId()) {
 
-            case R.id.task_Activity_Label_Button:{
+            case R.id.task_Activity_Label_Button: {
                 mLabelCount++;
-                if(mLabelCount <= 3) {
-                EditText txt = findViewById(R.id.task_Activity_setLabel_field);
-                String getLabel = txt.getText().toString();
-                mLabelList.add(mLabelList.size(),getLabel);
-                mArrayAdapter.notifyDataSetChanged();
-                mDeadlineTask.setLabel(mLabelList);
-                Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelSuccess_Toast, Toast.LENGTH_SHORT).show();
-                txt.setText("");
-                }else{
+                if (mLabelCount <= 3) {
+                    EditText txt = findViewById(R.id.task_Activity_setLabel_field);
+                    String getLabel = txt.getText().toString();
+                    mLabelList.add(mLabelList.size(), getLabel);
+                    mArrayAdapter.notifyDataSetChanged();
+                    mDeadlineTask.setLabel(mLabelList);
+                    Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelSuccess_Toast, Toast.LENGTH_SHORT).show();
+                    txt.setText("");
+                } else {
                     Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelFail_Toast, Toast.LENGTH_SHORT).show();
                 }
 
 
-            }break;
+            }
+            break;
 
             case R.id.task_Activity_Check_Button: {
                 Log.i(TAG, "task_Activity::onClick title was selected");
-                EditText  mTitleText = findViewById(R.id.task_Activity_title_field);
+                EditText mTitleText = findViewById(R.id.task_Activity_title_field);
                 EditText mDescription = findViewById(R.id.task_Activity_description_field);
 
                 String title = mTitleText.getText().toString();
                 String description = mDescription.getText().toString();
 
+                mCalendar = Calendar.getInstance();
+                mCalendar.set(mYear, mMonth, mDay, mHour, mMinute);
+
+                if (mTime.contains("false")) {
+                    mCalendar.set(mYear, (mMonth - 1), mDay, mHour, mMinute);
+                } else {
+                    mCalendar.set(mYear, mMonth, mDay);
+                }
                 mDeadlineTask.setTitle(title);
                 mDeadlineTask.setDescription(description);
                 mDeadlineTask.setDate(mTime, mDate);
+
+                AlarmManager m = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Intent i = new Intent(this, NotificationAlarm.class);
+                PendingIntent pi = PendingIntent.getBroadcast(this, 666, i, 0);
+
+                m.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);
 
                 long taskNumber = MainActivity.getTaskNumber() + 1;
                 MainActivity.setTaskNumber(taskNumber);
@@ -123,17 +148,20 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         TextView dateField = findViewById(R.id.task_Activity_time_field);
                         if (hourOfDay < 10 && minute < 10) {
-                            dateField.setText("0" + String.valueOf(hourOfDay) + ":" + "0" + minute);
+                            dateField.setText("0" + hourOfDay + ":" + "0" + minute);
                         } else if (hourOfDay >= 10 && minute < 10) {
-                            dateField.setText(hourOfDay + ":"  + "0" + minute);
+                            dateField.setText(hourOfDay + ":" + "0" + minute);
                         } else if (hourOfDay < 10 && minute >= 10) {
-                            dateField.setText("0" + String.valueOf(hourOfDay) +":" + minute);
+                            dateField.setText("0" + String.valueOf(hourOfDay) + ":" + minute);
                         } else {
                             dateField.setText(hourOfDay + ":" + minute);
                         }
 
-                        mTime  = " " + hourOfDay + ":" + minute + " false";
-                                          }
+                        mTime = " " + hourOfDay + ":" + minute + " false";
+                        mMinute = minute;
+                        mHour = hourOfDay;
+
+                    }
                 }, hourOfDay, minute, true);
 
                 selectTime.show();
@@ -152,8 +180,10 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                         TextView dateField = findViewById(R.id.task_Activity_date_field);
                         month = month + 1;
                         dateField.setText(dayOfMonth + "." + month + "." + year + " ");
-
                         mDate = dayOfMonth + "." + month + "." + year;
+                        mMonth = month;
+                        mDay = dayOfMonth;
+                        mYear = year;
                     }
                 }, year, month, day);
                 selectDate.show();

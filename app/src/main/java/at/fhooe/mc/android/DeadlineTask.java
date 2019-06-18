@@ -1,5 +1,6 @@
 package at.fhooe.mc.android;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -11,10 +12,8 @@ public class DeadlineTask implements Task{
     private String mDescription;
     private List<String> mLabel;
     private String mDate;
-
-
     /**
-     * Consturctor for the Class {@link DeadlineTask} everthing is null
+     * Consturctor for the Class {@link DeadlineTask} everything is null
      */
     DeadlineTask(){
         this(null,null,null,null);
@@ -100,9 +99,6 @@ public class DeadlineTask implements Task{
     public void setDate (String _time, String _date) {
         mDate = _date + _time;
     }
-
-
-
 
 
 }
