@@ -37,6 +37,9 @@
     //list functions
     <string name="list_Activity_delete_button">delete</string>
     <string name="list_Activity_add_button">add</string>
+    <string name="list_Activity_logout_button">log out</string>
+    <string name="list_Activity_title_listItem">title</string>
+    <string name="list_Activity_date_listItem">date</string>
 
 
 

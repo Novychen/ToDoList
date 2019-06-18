@@ -2,6 +2,7 @@ package at.fhooe.mc.android;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,14 +10,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * this class displays the toDoList and implements action that can manipulate the list
  */
-public class ActivityList extends Activity  {
+public class ActivityList extends ListActivity{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
 
@@ -25,17 +32,46 @@ public class ActivityList extends Activity  {
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_list);
+       /* setContentView(R.layout.activity_list);*/
+
+        DataAdapter adapter = new DataAdapter(this);
+        addData(adapter);
+       setListAdapter(adapter);
 
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
-        //DataAdapter adapter = new DataAdapter(this);
+    }
+
+    private void addData(DataAdapter _adapter) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().
+               child(Repository.getInstance().getUserId());
+        long l = 01;
+        String date = ".07.2019";
+        long flow= 12;
+        for (int i = 1; i <= flow; i++) {
+            StringBuilder task = new StringBuilder("Task ");
+            task.append(i);
+            String taskS = task.toString();
+            DatabaseReference ref = userRef.child(taskS);
+
+            Task t = Repository.getInstance().getTaskData(ref);
+            StringBuilder s = new StringBuilder();
+            s.append(t);
+            s.append(": " + taskS);
+            String p = s.toString();
+
+            _adapter.add(new ListData(p, l+date));
+            l++;
+        }
+    }
 
 
-        //for(long i = 1; 1<MainActivity.mTaskNumber;i++){}
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        ListAdapter list = getListAdapter();
+        ListData       item = (ListData) list.getItem(position);
+        Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
 
-        // adapter.add(new ListData(Repository.getInstance().getStringData(ref)));
-        //setListAdapter(adapter);
     }
 
 

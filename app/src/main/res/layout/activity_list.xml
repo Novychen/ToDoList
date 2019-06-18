@@ -14,14 +14,15 @@
             android:id="@+id/activity_list_titel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Titel"
+            android:text="@string/list_Activity_title_listItem"
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/activity_list_titel"
+            android:id="@+id/activity_list_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date"
+            android:text="@string/list_Activity_date_listItem"
             android:textSize="24sp" />
+
     </LinearLayout>
 </ScrollView>

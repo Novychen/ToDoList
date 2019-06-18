@@ -5,16 +5,16 @@
     <item
         android:id="@+id/menu_arlog_add"
         android:icon="@drawable/ic_add"
-        android:title="add"
+        android:title="@string/list_Activity_add_button"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_arlog_remove"
         android:icon="@drawable/ic_remove"
-        android:title="remove"
+        android:title="@string/list_Activity_delete_button"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_arlog_logout"
         android:icon="@drawable/ic_logout"
-        android:title="log out"
+        android:title="@string/list_Activity_logout_button"
         app:showAsAction="ifRoom" />
 </menu>
