@@ -3,14 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="at.fhooe.mc.android">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ActivityList">
-        </activity>
+        <receiver
+            android:name=".NotificationAlarm"
+            android:enabled="true"
+            android:exported="false"></receiver>
+
+        <activity android:name=".TaskDue" />
+        <activity android:name=".ActivityList" />
         <activity android:name=".ActivityDeadlineTask" />
         <activity
             android:name=".MainActivity"

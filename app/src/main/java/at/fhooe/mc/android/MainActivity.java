@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * This class implements the MainActivity as well as the login/Signin Process from the user
  */
@@ -27,7 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private FirebaseAuth mAuthentication;
     static long mTaskNumber;
 
-    private final static String TAG = "at.fhooe.mc.toDoList";
+    public final static String TAG = "at.fhooe.mc.toDoList";
     private EditText mEmail = null;
     private EditText mPassword = null;
 
@@ -47,6 +50,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public static void setTaskNumber(long _number){
         mTaskNumber = _number;
     }
+
+
 
     /**
      * listens to the Buttons and checks if the user is already logged in if so it changes to {@link ActivityList}
@@ -71,7 +76,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Repository.getInstance().setUserId(mAuthentication.getUid());
         if (Repository.getInstance().getUserId() != null) { // is user already logged in?
             logIn();
-        }
+        } 
     }
 
     /**
@@ -82,7 +87,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Repository.getInstance().setUserId(mAuthentication.getUid());
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
         Repository.getInstance().getLongData(ref);
-
         startActivity(i);
         finish();
     }

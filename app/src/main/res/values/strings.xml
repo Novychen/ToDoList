@@ -41,6 +41,11 @@
     <string name="list_Activity_title_listItem">title</string>
     <string name="list_Activity_date_listItem">date</string>
 
+    //alarm
+    <string name="Receiver_Notification_Activity">Test!</string>
+
+    <string name="Receiver_Notification_title">Test!</string>
+    <string name="Receiver_Notification_dialog">Das ist ein Test</string>
 
 
 </resources>

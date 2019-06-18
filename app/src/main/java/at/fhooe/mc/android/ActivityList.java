@@ -17,8 +17,20 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 
 /**
  * this class displays the toDoList and implements action that can manipulate the list
@@ -26,11 +38,17 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ActivityList extends ListActivity{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
+    private static List<String> mDate = new LinkedList<String>();
+    public Object t;
 
+    public static List<String> getDate(){
+        return mDate;
+    }
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
@@ -72,6 +90,28 @@ public class ActivityList extends ListActivity{
         ListData       item = (ListData) list.getItem(position);
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.activity_list);
+
+        for (int i = 1; i <= 6; i++) {
+            DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("Task " + i).child("date");
+            Repository.getInstance().getData(ref2);
+            final ActionBar ab = getActionBar();
+            ab.setHomeButtonEnabled(true);
+            //DataAdapter adapter = new DataAdapter(this);
+
+
+            //for(long i = 1; 1<MainActivity.mTaskNumber;i++){}
+
+            // adapter.add(new ListData(Repository.getInstance().getStringData(ref)));
+            //setListAdapter(adapter);
+        }
+
+    }
+    protected static void setValue(Object o) {
+        mDate.add(o.toString());
+        Log.i(MainActivity.TAG, "setValue --> Object Value is: " + mDate);
+
     }
 
 
@@ -91,8 +131,7 @@ public class ActivityList extends ListActivity{
             case R.id.menu_arlog_add: {
                 Log.i(TAG, "list_Activity::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
-                long taskNumber = MainActivity.getTaskNumber() + 1;
-                MainActivity.setTaskNumber(taskNumber);
+
                 startActivity(i);
             }break;
             case R.id.menu_arlog_remove: {

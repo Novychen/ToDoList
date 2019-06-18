@@ -20,7 +20,7 @@ class DataAdapter extends ArrayAdapter<ListData> {
         }
         ListData data = getItem(_position);
         TextView tv = null;
-        tv = (TextView) _convertView.findViewById(R.id.activity_list_titel);
+        tv = (TextView) _convertView.findViewById(R.id.activity_list_title);
         tv.setText(data.getmTitle());
 
         tv = (TextView) _convertView.findViewById(R.id.activity_list_date);
