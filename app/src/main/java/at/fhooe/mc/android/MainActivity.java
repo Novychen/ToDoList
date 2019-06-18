@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * This class implements the MainActivity as well as the login/Signin Process from the user
  */
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener, IFirebaseCallback {
 
     private FirebaseAuth mAuthentication;
     public final static String TAG = "at.fhooe.mc.toDoList";
@@ -63,7 +63,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Intent i = new Intent(this, ActivityList.class);
         Repository.getInstance().setUserId(mAuthentication.getUid());
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
-        Repository.getInstance().getData(ref);
+        Repository.getInstance().getData(ref, this);
         startActivity(i);
         finish();
     }
@@ -137,6 +137,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 });
     }
 
+    @Override
+    public void setData(Object _o) {
+        Log.i(MainActivity.TAG, "setValue --> Object Value is: " + _o);
+    }
 }
 
 

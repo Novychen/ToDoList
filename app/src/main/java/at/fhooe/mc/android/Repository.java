@@ -40,7 +40,7 @@ public class Repository {
      * @param _myRef the reference (path) of the object (in the database) that want to be fetched
      * @return the object that is fetched from the database
      */
-   protected void getData(DatabaseReference _myRef){
+   protected void getData(DatabaseReference _myRef, final IFirebaseCallback _callback){
        _myRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -49,7 +49,7 @@ public class Repository {
                mValue = dataSnapshot.getValue(Object.class);
                Log.d(TAG, "Value is: " + mValue);
                if(mValue != null){
-                   ActivityList.setValue(mValue);
+                   _callback.setData(mValue);
                }
            }
 
