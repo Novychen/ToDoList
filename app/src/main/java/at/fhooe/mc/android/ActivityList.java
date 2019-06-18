@@ -37,12 +37,13 @@ import java.util.Stack;
 /**
  * this class displays the toDoList and implements action that can manipulate the list
  */
-public class ActivityList extends ListActivity{
+public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
     private static List<String> mDate = new LinkedList<String>();
     static  List <Task> mTasks = new LinkedList<>();
     public Object t;
+    static DataAdapter adapter;
 
     public static List<String> getDate(){
         return mDate;
@@ -55,9 +56,9 @@ public class ActivityList extends ListActivity{
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
-        DataAdapter adapter = new DataAdapter(this);
-        addData(adapter);
-       setListAdapter(adapter);
+         adapter = new DataAdapter(this);
+            addData(adapter);
+        setListAdapter(adapter);
 
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
@@ -65,10 +66,12 @@ public class ActivityList extends ListActivity{
 
     private void addData(DataAdapter _adapter) {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().
-               child(Repository.getInstance().getUserId());
+                child(Repository.getInstance().getUserId());
         long l = 01;
         String date = ".07.2019";
         long flow= 12;
+
+
         for (int i = 1; i <= flow; i++) {
             StringBuilder task = new StringBuilder("Task ");
             task.append(i);
@@ -77,11 +80,10 @@ public class ActivityList extends ListActivity{
 
             //Task t = Repository.getInstance().getData(ref);
             StringBuilder s = new StringBuilder();
-            s.append(t);
-            s.append(": " + taskS);
+            s.append( taskS);
             String p = s.toString();
 
-            _adapter.add(new ListData(p, l + date));
+            adapter.add(new ListData(p, l + date));
             l++;
         }
     }
@@ -93,28 +95,11 @@ public class ActivityList extends ListActivity{
         ListData       item = (ListData) list.getItem(position);
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_list);
 
             DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
-            Repository.getInstance().getData(ref2);
+            Repository.getInstance().getData(ref2, this);
 
-            final ActionBar ab = getActionBar();
-            ab.setHomeButtonEnabled(true);
-            //DataAdapter adapter = new DataAdapter(this);
-
-
-            //for(long i = 1; 1<MainActivity.mTaskNumber;i++){}
-
-            // adapter.add(new ListData(Repository.getInstance().getStringData(ref)));
-            //setListAdapter(adapter);
-
-
-    }
-    protected static void setValue(Object o) {
-        Log.i(MainActivity.TAG, "setValue --> Object Value is: " + o);
-
-    }
+     }
 
 
     @Override
@@ -155,5 +140,14 @@ public class ActivityList extends ListActivity{
         FirebaseAuth.getInstance().signOut();
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void setData(Object _o) {
+        Log.i(MainActivity.TAG, "ActivityList::setData() --> Object Value is: " + _o);
+        /*ab hier wirds geschossen
+        LinkedList<Object> result = (LinkedList<Object>)_o;
+        if (result.get(0) instanceof Task) Toast.makeText(this, "HURRA", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(this,"Mist", Toast.LENGTH_SHORT).show();*/
     }
 }
