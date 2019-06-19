@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class ActivityDeadlineTask extends Activity implements View.OnClickListener, Task {
 
-    private final static String TAG = "at.fhooe.mc.toDoList";
+    private final static String TAG = "at.fhooe.mc.toDoList :: ActivityDeadlineTask";
 
     protected Calendar mCalendar;
     private int mDay;
@@ -122,18 +122,16 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mDeadlineTask.setDescription(description);
                 mDeadlineTask.setDate(mTime, mDate);
 
-
-                ActivityList.mTasks.add(mDeadlineTask);
-
                 AlarmManager m = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Intent i = new Intent(this, NotificationAlarm.class);
                 PendingIntent pi = PendingIntent.getBroadcast(this, 666, i, 0);
 
                 m.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);
-                int size = ActivityList.mTasks.size();
-                Log.i(TAG, "taskNumber Value is: " + ActivityList.mTasks.size());
-                Repository.getInstance().saveData(ActivityList.mTasks);
-                Repository.getInstance().saveData(size);
+                long taskNumber = MainActivity.getTaskNumber() +1;
+
+                Log.i(TAG, "taskNumber Value is: " + taskNumber);
+                Repository.getInstance().saveData(mDeadlineTask);
+                Repository.getInstance().saveData(taskNumber);
                 finish();
             }
             break;

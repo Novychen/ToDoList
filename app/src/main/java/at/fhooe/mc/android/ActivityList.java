@@ -41,7 +41,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
     private static List<String> mDate = new LinkedList<String>();
-    static  List <Task> mTasks = new LinkedList<>();
     public Object t;
     static DataAdapter adapter;
 
@@ -99,6 +98,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
             Repository.getInstance().getData(ref2, this);
 
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getData(ref, this);
+
      }
 
 
@@ -112,11 +114,11 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     public boolean onOptionsItemSelected(MenuItem _item) {
         switch (_item.getItemId()){
             case R.id.menu_arlog_logout:{
-                Log.i(TAG, "list_Activity::onClick logOut Button was pressed");
+                Log.i(TAG, "::onClick logOut Button was pressed");
                 logOut();
                 finish();}break;
             case R.id.menu_arlog_add: {
-                Log.i(TAG, "list_Activity::onClick add Button was pressed");
+                Log.i(TAG, "::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
 
                 startActivity(i);
@@ -124,11 +126,11 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             case R.id.menu_arlog_remove: {
                 // long taskNumber = MainActivity.getTaskNumber() - 1;
                 //MainActivity.setTaskNumber(taskNumber);
-                Log.e(TAG, "list_Activity::onClick delete Button was pressed");
+                Log.e(TAG, "::onClick delete Button was pressed");
             }
             break;
             default:
-                Log.e(TAG, "list_Activity::onClick unexpected ID encountered");
+                Log.e(TAG, "::onClick unexpected ID encountered");
         }return true;
     }
 
@@ -144,10 +146,12 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     public void setData(Object _o) {
-        Log.i(MainActivity.TAG, "ActivityList::setData() --> Object Value is: " + _o);
-        /*ab hier wirds geschossen
-        LinkedList<Object> result = (LinkedList<Object>)_o;
-        if (result.get(0) instanceof Task) Toast.makeText(this, "HURRA", Toast.LENGTH_SHORT).show();
-        else Toast.makeText(this,"Mist", Toast.LENGTH_SHORT).show();*/
+        List <Object> test = (List<Object>) _o;
+        Object one = test.get(0);
+        Object two = test.get(1);
+        Object three = test.get(2);
+        Log.i(MainActivity.TAG, "::setData() --> First Value is: " + one);
+        Log.i(MainActivity.TAG, "::setData() --> Second Value is: " + two);
+        Log.i(MainActivity.TAG, "::setData() --> Third Value is: " + three);
     }
 }

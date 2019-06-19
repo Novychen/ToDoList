@@ -19,15 +19,26 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.List;
+
 /**
  * This class implements the MainActivity as well as the login/Signin Process from the user
  */
 public class MainActivity extends Activity implements View.OnClickListener, IFirebaseCallback {
 
     private FirebaseAuth mAuthentication;
-    public final static String TAG = "at.fhooe.mc.toDoList";
+    public final static String TAG = "at.fhooe.mc.toDoList :: MainActivity";
     private EditText mEmail = null;
     private EditText mPassword = null;
+    static long mTaskNumber;
+
+    public static long getTaskNumber(){
+        return mTaskNumber;
+    }
+
+    public static void setTaskNumber(long _number){
+        mTaskNumber = _number;
+    }
 
 
     /**
@@ -64,6 +75,9 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
         Repository.getInstance().setUserId(mAuthentication.getUid());
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref, this);
+
+        DatabaseReference refTask = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getLongData(refTask);
         startActivity(i);
         finish();
     }
@@ -123,8 +137,9 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                             Log.d(TAG, "main_Activity::createUserWithEmail success");
                             FirebaseUser user = mAuthentication.getCurrentUser();
                             Repository.getInstance().setUserId(mAuthentication.getUid());
-                            Repository.getInstance().saveData(0);
-                            Log.i(TAG, "MainActivity :: createAccount mTaskNumber is" + 0);
+                            mTaskNumber = 0;
+                            Repository.getInstance().saveData(mTaskNumber);
+                            Log.i(TAG, "MainActivity :: createAccount mTaskNumber is" + mTaskNumber);
                             Toast.makeText(MainActivity.this, getText(R.string.main_Activity_SignIn_Toast), Toast.LENGTH_SHORT).show();
                             logIn();
                         } else {
@@ -139,7 +154,25 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
 
     @Override
     public void setData(Object _o) {
-        Log.i(MainActivity.TAG, "setValue --> Object Value is: " + _o);
+        try {
+            List<Object> test = (List<Object>) _o;
+
+            Object one = test.get(0);
+            Object two = test.get(1);
+            Object three = test.get(2);
+
+            Log.i(MainActivity.TAG, "::setData() --> First Value is: " + one);
+            Log.i(MainActivity.TAG, "::setData() --> Second Value is: " + two);
+            Log.i(MainActivity.TAG, "::setData() --> Third Value is: " + three);
+        }catch (ClassCastException e) {
+
+        }catch(NullPointerException e){
+
+        }
+    }
+
+    public void setAlarm(List <Object> _dates){
+
     }
 }
 
