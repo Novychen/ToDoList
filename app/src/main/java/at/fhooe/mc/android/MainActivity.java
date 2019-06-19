@@ -94,7 +94,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "main_Activity::signInWithEmail:success");
-                            FirebaseUser user = mAuthentication.getCurrentUser();
                             logIn();
 
                         } else {
@@ -135,7 +134,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "main_Activity::createUserWithEmail success");
-                            FirebaseUser user = mAuthentication.getCurrentUser();
                             Repository.getInstance().setUserId(mAuthentication.getUid());
                             mTaskNumber = 0;
                             Repository.getInstance().saveData(mTaskNumber);
@@ -155,25 +153,71 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     @Override
     public void setData(Object _o) {
         try {
-            List<Object> test = (List<Object>) _o;
-
-            Object one = test.get(0);
-            Object two = test.get(1);
-            Object three = test.get(2);
-
-            Log.i(MainActivity.TAG, "::setData() --> First Value is: " + one);
-            Log.i(MainActivity.TAG, "::setData() --> Second Value is: " + two);
-            Log.i(MainActivity.TAG, "::setData() --> Third Value is: " + three);
-        }catch (ClassCastException e) {
-
-        }catch(NullPointerException e){
-
+            List<Object> data = (List<Object>) _o;
+            //setAlarm(data);
+        }catch(IndexOutOfBoundsException e){
+            return;
         }
     }
+   /* public void setAlarm(List <Object> _data){
 
-    public void setAlarm(List <Object> _dates){
+        int[] alarm = new int[_data.size() * 5];
 
+        String month;
+        String day;
+        String hour;
+        String minute;
+
+        for (int i = 0; i < alarm.length; i  = i + 5){
+            String s = _data.get(i).toString();
+            int d = s.indexOf("day=") + 4;
+            int m = s.indexOf("month=") + 6;
+
+            int y = s.indexOf("year=") + 5;
+            int h = s.indexOf("hour=") + 4;
+            int min = s.indexOf("minute=") + 6;
+
+            if(s.substring(++d) == ",") {
+                day = s.substring(--d);
+            }else {
+                day = s.substring(d, ++d);
+            }
+
+            if(s.substring(++m) == ","){
+                month = s.substring(m);
+            }else {
+                month = s.substring(m, --m);
+            }
+            String year = s.substring(y, y + 4);
+
+            if(s.substring(++h) == ",") {
+                hour = s.substring(--h);
+            }else{
+                hour = s.substring(h, ++h);
+            }
+            if(s.substring(++min) == ",") {
+                minute = s.substring(--min);
+            }else{
+                minute = s.substring(min, ++min);
+            }
+
+            alarm [i] = Integer.parseInt(day);
+            alarm [++i] = Integer.parseInt(month);
+            alarm [++i] = Integer.parseInt(year);
+            alarm [++i] = Integer.parseInt(hour);
+            alarm [++i] = Integer.parseInt(minute);
+        }
+
+        for(int i = 0; i <alarm.length; i = i +5) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(alarm[i], alarm[++i],  alarm[++i],  alarm[++i],  alarm[++i]);
+            AlarmManager m = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, NotificationAlarm.class);
+            PendingIntent pi = PendingIntent.getBroadcast(this, 666, intent, 0);
+            m.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+        }
     }
+**/
 }
 
 

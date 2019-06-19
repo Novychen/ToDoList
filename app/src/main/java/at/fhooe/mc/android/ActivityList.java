@@ -1,7 +1,6 @@
 package at.fhooe.mc.android;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -10,8 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,17 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Stack;
 
 
 /**
@@ -40,13 +27,8 @@ import java.util.Stack;
 public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
-    private static List<String> mDate = new LinkedList<String>();
-    public Object t;
     static DataAdapter adapter;
 
-    public static List<String> getDate(){
-        return mDate;
-    }
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -55,7 +37,10 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
-         adapter = new DataAdapter(this);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getData(ref, this);
+
+        adapter = new DataAdapter(this);
             addData(adapter);
         setListAdapter(adapter);
 
@@ -146,12 +131,21 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     public void setData(Object _o) {
-        List <Object> test = (List<Object>) _o;
-        Object one = test.get(0);
-        Object two = test.get(1);
-        Object three = test.get(2);
-        Log.i(MainActivity.TAG, "::setData() --> First Value is: " + one);
-        Log.i(MainActivity.TAG, "::setData() --> Second Value is: " + two);
-        Log.i(MainActivity.TAG, "::setData() --> Third Value is: " + three);
+        try {
+        List <Object> data = (List<Object>) _o;
+
+        Object one = data.get(0);
+        Object two = data.get(1);
+        Object three = data.get(2);
+
+        }catch (ClassCastException e) {
+
+        }catch(NullPointerException e){
+
+        }catch(IndexOutOfBoundsException e){
+            return;
+        }
     }
+
+
 }
