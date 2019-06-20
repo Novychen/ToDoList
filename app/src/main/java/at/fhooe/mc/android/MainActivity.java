@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,29 +27,18 @@ import java.util.List;
 public class MainActivity extends Activity implements View.OnClickListener, IFirebaseCallback {
 
     private FirebaseAuth mAuthentication;
-    static long mTaskNumber;
-
-    public final static String TAG = "at.fhooe.mc.toDoList";
+    public final static String TAG = "at.fhooe.mc.toDoList :: MainActivity";
     private EditText mEmail = null;
     private EditText mPassword = null;
+    static long mTaskNumber;
 
-
-    /**
-     * getter for the variable {@link MainActivity#mTaskNumber}, which displays the current Tasknumber
-     * @return the variable {@link MainActivity#mTaskNumber}
-     */
-    public static long getTaskNumber() {
+    public static long getTaskNumber(){
         return mTaskNumber;
     }
 
-    /**
-     * setter for the variable the variable {@link MainActivity#mTaskNumber}, which displays the current Tasknumber
-     * @param _number the current Tasknumber
-     */
     public static void setTaskNumber(long _number){
         mTaskNumber = _number;
     }
-
 
 
     /**
@@ -87,6 +75,9 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
         Repository.getInstance().setUserId(mAuthentication.getUid());
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref, this);
+
+        DatabaseReference refTask = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getLongData(refTask);
         startActivity(i);
         finish();
     }
@@ -103,7 +94,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "main_Activity::signInWithEmail:success");
-                            FirebaseUser user = mAuthentication.getCurrentUser();
                             logIn();
 
                         } else {
@@ -144,7 +134,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "main_Activity::createUserWithEmail success");
-                            FirebaseUser user = mAuthentication.getCurrentUser();
                             Repository.getInstance().setUserId(mAuthentication.getUid());
                             mTaskNumber = 0;
                             Repository.getInstance().saveData(mTaskNumber);
@@ -163,8 +152,72 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
 
     @Override
     public void setData(Object _o) {
-        Log.i(MainActivity.TAG, "setValue --> Object Value is: " + _o);
+        try {
+            List<Object> data = (List<Object>) _o;
+            //setAlarm(data);
+        }catch(IndexOutOfBoundsException e){
+            return;
+        }
     }
+   /* public void setAlarm(List <Object> _data){
+
+        int[] alarm = new int[_data.size() * 5];
+
+        String month;
+        String day;
+        String hour;
+        String minute;
+
+        for (int i = 0; i < alarm.length; i  = i + 5){
+            String s = _data.get(i).toString();
+            int d = s.indexOf("day=") + 4;
+            int m = s.indexOf("month=") + 6;
+
+            int y = s.indexOf("year=") + 5;
+            int h = s.indexOf("hour=") + 4;
+            int min = s.indexOf("minute=") + 6;
+
+            if(s.substring(++d) == ",") {
+                day = s.substring(--d);
+            }else {
+                day = s.substring(d, ++d);
+            }
+
+            if(s.substring(++m) == ","){
+                month = s.substring(m);
+            }else {
+                month = s.substring(m, --m);
+            }
+            String year = s.substring(y, y + 4);
+
+            if(s.substring(++h) == ",") {
+                hour = s.substring(--h);
+            }else{
+                hour = s.substring(h, ++h);
+            }
+            if(s.substring(++min) == ",") {
+                minute = s.substring(--min);
+            }else{
+                minute = s.substring(min, ++min);
+            }
+
+            alarm [i] = Integer.parseInt(day);
+            alarm [++i] = Integer.parseInt(month);
+            alarm [++i] = Integer.parseInt(year);
+            alarm [++i] = Integer.parseInt(hour);
+            alarm [++i] = Integer.parseInt(minute);
+        }
+
+        for(int i = 0; i <alarm.length; i = i +5) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(alarm[i], alarm[++i],  alarm[++i],  alarm[++i],  alarm[++i]);
+            AlarmManager m = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, NotificationAlarm.class);
+            PendingIntent pi = PendingIntent.getBroadcast(this, 666, intent, 0);
+            m.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+        }
+    }
+**/
 }
 
 

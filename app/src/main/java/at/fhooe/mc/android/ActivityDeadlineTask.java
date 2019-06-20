@@ -1,12 +1,9 @@
 package at.fhooe.mc.android;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 
 import android.os.Bundle;
@@ -34,7 +31,7 @@ import java.util.List;
  */
 public class ActivityDeadlineTask extends Activity implements View.OnClickListener, Task {
 
-    private final static String TAG = "at.fhooe.mc.toDoList";
+    private final static String TAG = "at.fhooe.mc.toDoList :: ActivityDeadlineTask";
 
     protected Calendar mCalendar;
     private int mDay;
@@ -44,8 +41,6 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     private int mMinute;
 
     protected DeadlineTask mDeadlineTask;
-    String mTime;
-    String mDate;
     int mLabelCount = 0;
     List<String> mLabelList;
     ArrayAdapter<String> mArrayAdapter;
@@ -75,7 +70,6 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         ImageView label = findViewById(R.id.task_Activity_Label_Button);
         label.setOnClickListener(this);
 
-        mTime  = " null : null true";
     }
 
     @Override
@@ -112,27 +106,30 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mCalendar = Calendar.getInstance();
                 mCalendar.set(mYear, mMonth, mDay, mHour, mMinute);
 
-                if (mTime.contains("false")) {
+                if (mHour == 0) {
                     mCalendar.set(mYear, (mMonth - 1), mDay, mHour, mMinute);
                 } else {
                     mCalendar.set(mYear, mMonth, mDay);
                 }
                 mDeadlineTask.setTitle(title);
                 mDeadlineTask.setDescription(description);
-                mDeadlineTask.setDate(mTime, mDate);
+                mDeadlineTask.setDay(mDay);
+                mDeadlineTask.setMonth(mMonth);
+                mDeadlineTask.setYear(mYear);
 
+                mDeadlineTask.setHour(mHour);
+                mDeadlineTask.setMinute(mMinute);
 
-                ActivityList.mTasks.add(mDeadlineTask);
-
-                AlarmManager m = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                /*AlarmManager m = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Intent i = new Intent(this, NotificationAlarm.class);
                 PendingIntent pi = PendingIntent.getBroadcast(this, 666, i, 0);
 
-                m.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);
+                m.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pi);**/
+                long taskNumber = MainActivity.getTaskNumber() +1;
 
-                Log.i(TAG, "taskNumber Value is: " + ActivityList.mTasks.size());
-                Repository.getInstance().saveData(ActivityList.mTasks);
-                Repository.getInstance().saveData(ActivityList.mTasks.size());
+                Log.i(TAG, "taskNumber Value is: " + taskNumber);
+                Repository.getInstance().saveData(mDeadlineTask);
+                Repository.getInstance().saveData(taskNumber);
                 finish();
             }
             break;
@@ -149,15 +146,20 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                             dateField.setText("0" + hourOfDay + ":" + "0" + minute);
                         } else if (hourOfDay >= 10 && minute < 10) {
                             dateField.setText(hourOfDay + ":" + "0" + minute);
-                        } else if (hourOfDay < 10 && minute >= 10) {
-                            dateField.setText("0" + String.valueOf(hourOfDay) + ":" + minute);
+                        } else if (hourOfDay < 10) {
+                            dateField.setText("0" + hourOfDay + ":" + minute);
                         } else {
                             dateField.setText(hourOfDay + ":" + minute);
                         }
 
-                        mTime = " " + hourOfDay + ":" + minute + " false";
-                        mMinute = minute;
-                        mHour = hourOfDay;
+                        if(hourOfDay+minute <= Calendar.getInstance().get(Calendar.HOUR_OF_DAY) +  Calendar.getInstance().get(Calendar.MINUTE)){
+                            mMinute = 0;
+                            mHour = 0;
+                        }else{
+                            mMinute = minute;
+                            mHour = hourOfDay;
+                        }
+
 
                     }
                 }, hourOfDay, minute, true);
@@ -173,12 +175,13 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 month = calendar.get(Calendar.MONTH);
                 day = calendar.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog selectDate = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         TextView dateField = findViewById(R.id.task_Activity_date_field);
                         month = month + 1;
                         dateField.setText(dayOfMonth + "." + month + "." + year + " ");
-                        mDate = dayOfMonth + "." + month + "." + year;
+
                         mMonth = month;
                         mDay = dayOfMonth;
                         mYear = year;

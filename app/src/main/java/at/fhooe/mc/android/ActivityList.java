@@ -1,7 +1,6 @@
 package at.fhooe.mc.android;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -10,8 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,17 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Stack;
 
 
 /**
@@ -40,14 +27,8 @@ import java.util.Stack;
 public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
-    private static List<String> mDate = new LinkedList<String>();
-    static  List <Task> mTasks = new LinkedList<>();
-    public Object t;
     static DataAdapter adapter;
 
-    public static List<String> getDate(){
-        return mDate;
-    }
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -56,7 +37,10 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
-         adapter = new DataAdapter(this);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getData(ref, this);
+
+        adapter = new DataAdapter(this);
             addData(adapter);
         setListAdapter(adapter);
 
@@ -99,6 +83,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
             Repository.getInstance().getData(ref2, this);
 
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getData(ref, this);
+
      }
 
 
@@ -112,11 +99,11 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     public boolean onOptionsItemSelected(MenuItem _item) {
         switch (_item.getItemId()){
             case R.id.menu_arlog_logout:{
-                Log.i(TAG, "list_Activity::onClick logOut Button was pressed");
+                Log.i(TAG, "::onClick logOut Button was pressed");
                 logOut();
                 finish();}break;
             case R.id.menu_arlog_add: {
-                Log.i(TAG, "list_Activity::onClick add Button was pressed");
+                Log.i(TAG, "::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
 
                 startActivity(i);
@@ -124,11 +111,11 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             case R.id.menu_arlog_remove: {
                 // long taskNumber = MainActivity.getTaskNumber() - 1;
                 //MainActivity.setTaskNumber(taskNumber);
-                Log.e(TAG, "list_Activity::onClick delete Button was pressed");
+                Log.e(TAG, "::onClick delete Button was pressed");
             }
             break;
             default:
-                Log.e(TAG, "list_Activity::onClick unexpected ID encountered");
+                Log.e(TAG, "::onClick unexpected ID encountered");
         }return true;
     }
 
@@ -144,10 +131,21 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     public void setData(Object _o) {
-        Log.i(MainActivity.TAG, "ActivityList::setData() --> Object Value is: " + _o);
-        /*ab hier wirds geschossen
-        LinkedList<Object> result = (LinkedList<Object>)_o;
-        if (result.get(0) instanceof Task) Toast.makeText(this, "HURRA", Toast.LENGTH_SHORT).show();
-        else Toast.makeText(this,"Mist", Toast.LENGTH_SHORT).show();*/
+        try {
+        List <Object> data = (List<Object>) _o;
+
+        Object one = data.get(0);
+        Object two = data.get(1);
+        Object three = data.get(2);
+
+        }catch (ClassCastException e) {
+
+        }catch(NullPointerException e){
+
+        }catch(IndexOutOfBoundsException e){
+            return;
+        }
     }
+
+
 }
