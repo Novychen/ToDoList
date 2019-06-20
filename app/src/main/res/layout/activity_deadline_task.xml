@@ -27,12 +27,12 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:id="@+id/task_Activity_title_field"
+                android:id="@+id/DeadlineTask_Activity_title_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="@string/task_Activity_title_field"
+                android:hint="@string/DeadlineTask_Activity_title_field"
                 android:inputType="textPersonName"
                 android:textSize="30sp"
                 android:autofillHints="AUTOFILL_TYPE_TEXT" />
@@ -59,13 +59,13 @@
             android:layout_weight="1" />
 
         <EditText
-            android:id="@+id/task_Activity_setLabel_field"
+            android:id="@+id/DeadlineTask_Activity_setLabel_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:autofillHints="AUTOFILL_TYPE_TEXT"
             android:ems="10"
-            android:hint="@string/task_Activity_setLabel_field"
+            android:hint="@string/DeadlineTask_Activity_setLabel_field"
             android:inputType="textPersonName" />
 
         <Space
@@ -74,11 +74,11 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:id="@+id/task_Activity_Label_Button"
+            android:id="@+id/DeadlineTask_Activity_Label_Button"
             android:layout_width="53dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_add_label"
+            android:src="@drawable/ic_add_label_light_green"
             android:visibility="visible" />
 
         <Space
@@ -120,24 +120,24 @@
         android:orientation="horizontal">
 
         <Space
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="54dp"
+            android:layout_height="10dp"
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/task_Activity_date_display"
+            android:id="@+id/DeadlineTask_Activity_date_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/task_Activity_date_display"
+            android:text="@string/DeadlineTask_Activity_date_display"
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/task_Activity_date_field"
+            android:id="@+id/DeadlineTask_Activity_date_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/task_Activity_date_field"
+            android:text="@string/DeadlineTask_Activity_date_field"
             android:textSize="30sp" />
 
         <Space
@@ -158,19 +158,19 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/task_Activity_time_display"
+                android:id="@+id/DeadlineTask_Activity_time_display"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/task_Activity_time_display"
+                android:text="@string/DeadlineTask_Activity_time_display"
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/task_Activity_time_field"
+                android:id="@+id/DeadlineTask_Activity_time_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/task_Activity_time_field"
+                android:text="@string/DeadlineTask_Activity_time_field"
                 android:textSize="30sp" />
 
             <Space
@@ -186,13 +186,12 @@
             android:layout_weight="1" />
 
     <EditText
-        android:id="@+id/task_Activity_description_field"
+        android:id="@+id/DeadlineTask_Activity_description_field"
         android:layout_width="match_parent"
         android:layout_height="122dp"
         android:layout_weight="1"
-        android:autofillHints="AUTOFILL_TYPE_TEXT"
         android:ems="10"
-        android:hint="@string/task_Activity_description_field"
+        android:hint="@string/DeadlineTask_Activity_description_field"
         android:inputType="textPersonName" />
 
         <Space
@@ -210,11 +209,11 @@
                 android:layout_weight="1" />
 
             <ImageView
-                android:id="@+id/task_Activity_Check_Button"
+                android:id="@+id/DeadlineTask_Activity_Check_Button"
                 android:layout_width="53dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_check"
+                android:src="@drawable/ic_check_light_green"
                 android:visibility="visible" />
 
             <Space

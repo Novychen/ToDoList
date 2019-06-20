@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,6 +29,8 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     public final static String TAG = "at.fhooe.mc.toDoList :: MainActivity";
     private EditText mEmail = null;
     private EditText mPassword = null;
+    String mPass;
+    String mMail;
     static long mTaskNumber;
 
     public static long getTaskNumber(){
@@ -87,35 +88,70 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
      * if the data is correct the user is logged in, if not a error message is displayed
      */
     private void signIn() {
-        mAuthentication.signInWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "main_Activity::signInWithEmail:success");
-                            logIn();
+            mAuthentication.signInWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "main_Activity::signInWithEmail:success");
+                                logIn();
 
-                        } else {
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "main_Activity::signInWithEmail:failure", task.getException());
+                                Toast.makeText(MainActivity.this, getText(R.string.main_Activity_LogInFail_Toast), Toast.LENGTH_SHORT).show();
+                            }
 
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "main_Activity::signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, getText(R.string.main_Activity_LogInFail_Toast), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+
     }
 
+    private boolean check(){
+
+        mMail = mEmail.getText().toString();
+        mPass = mPassword.getText().toString();
+
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if(mMail.isEmpty() && mPass.isEmpty()){
+            Toast.makeText(MainActivity.this, getText(R.string.main_Activity_EmailPassEmpty_Toast), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(mPass.length() < 7 && !mMail.trim().matches(emailPattern)){
+            Toast.makeText(MainActivity.this, getText(R.string.main_Activity_EmailPasswordInvalid_Toast), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(mPass.length() < 7){
+            Toast.makeText(MainActivity.this, getText(R.string.main_Activity_PasswordInvalid_Toast), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(!mMail.trim().matches(emailPattern)){
+            Toast.makeText(MainActivity.this, getText(R.string.main_Activity_EmailInvalid_Toast), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(mPass.isEmpty()) {
+            Toast.makeText(MainActivity.this, getText(R.string.main_Activity_PasswordEmpty_Toast), Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(mMail.isEmpty()){
+            Toast.makeText(MainActivity.this, getText(R.string.main_Activity_EmailEmpty_Toast), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
 
     @Override
     public void onClick(View _v) {
         switch (_v.getId()) {
             case R.id.main_Activity_LogIn_Button: {
-                signIn();
+
+                if(check()) {
+                    signIn();
+                }
             }
             break;
             case R.id.main_Activity_SignIn_Button: {
-                createAccount();
+                if(check()) {
+                    createAccount();
+                }
             }
             break;
             default:
@@ -159,65 +195,18 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
             return;
         }
     }
-   /* public void setAlarm(List <Object> _data){
 
-        int[] alarm = new int[_data.size() * 5];
+    @Override
+    public void setStringData(List<String> s) {
 
-        String month;
-        String day;
-        String hour;
-        String minute;
-
-        for (int i = 0; i < alarm.length; i  = i + 5){
-            String s = _data.get(i).toString();
-            int d = s.indexOf("day=") + 4;
-            int m = s.indexOf("month=") + 6;
-
-            int y = s.indexOf("year=") + 5;
-            int h = s.indexOf("hour=") + 4;
-            int min = s.indexOf("minute=") + 6;
-
-            if(s.substring(++d) == ",") {
-                day = s.substring(--d);
-            }else {
-                day = s.substring(d, ++d);
-            }
-
-            if(s.substring(++m) == ","){
-                month = s.substring(m);
-            }else {
-                month = s.substring(m, --m);
-            }
-            String year = s.substring(y, y + 4);
-
-            if(s.substring(++h) == ",") {
-                hour = s.substring(--h);
-            }else{
-                hour = s.substring(h, ++h);
-            }
-            if(s.substring(++min) == ",") {
-                minute = s.substring(--min);
-            }else{
-                minute = s.substring(min, ++min);
-            }
-
-            alarm [i] = Integer.parseInt(day);
-            alarm [++i] = Integer.parseInt(month);
-            alarm [++i] = Integer.parseInt(year);
-            alarm [++i] = Integer.parseInt(hour);
-            alarm [++i] = Integer.parseInt(minute);
-        }
-
-        for(int i = 0; i <alarm.length; i = i +5) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(alarm[i], alarm[++i],  alarm[++i],  alarm[++i],  alarm[++i]);
-            AlarmManager m = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(this, NotificationAlarm.class);
-            PendingIntent pi = PendingIntent.getBroadcast(this, 666, intent, 0);
-            m.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
-        }
     }
-**/
+
+    @Override
+    public void setTimeData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task) {
+
+    }
+
+
 }
 
 

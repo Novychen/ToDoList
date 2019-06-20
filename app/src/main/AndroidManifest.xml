@@ -11,17 +11,29 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".ActivityRepeatTask"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+        </activity>
+
         <receiver
             android:name=".NotificationAlarm"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false" />
 
-        <activity android:name=".TaskDue" />
-        <activity android:name=".ActivityList" />
-        <activity android:name=".ActivityDeadlineTask" />
+        <activity
+            android:name=".TaskDue"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
+        <activity
+            android:name=".ActivityList"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity
+            android:name=".ActivityDeadlineTask"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
