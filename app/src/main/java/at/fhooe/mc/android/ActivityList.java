@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +41,10 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref, this);
+
+
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getData(ref2, this);
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
@@ -84,9 +87,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         ListAdapter list = getListAdapter();
         ListData       item = (ListData) list.getItem(position);
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
-        Repository.getInstance().getData(ref, this);
      }
 
 
@@ -174,7 +174,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         for(int i = 0; i <d.size(); i++) {
 
-            if(task.get(i) == 0) {
+            if(task.get(i) != null && task.get(i) == 0) {
                 Calendar calendar = Calendar.getInstance();
                 if (d.get(i) == null) {
                     d.set(i, 0);
@@ -197,15 +197,15 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 int hour = h.get(i);
                 int minute = min.get(i);
                 calendar.set(year, month, day, hour, minute);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                Log.i(TAG, "Time:      -----> " + calendar.getTime());
+
                 NotificationAlarm a = new NotificationAlarm();
-                a.setCheckTime(year + "." + month + "." + day + "   " + hour + ":" + minute);
-                Log.i(TAG, "Message:   -----> " + a.getCheckTime());
+                String dueDate = year + "." + month + "." + day + "   " + hour + ":" + minute;
+                a.setNotificationText(dueDate);
                 Intent intent = new Intent(this, NotificationAlarm.class);
+                a.onReceive(this, intent);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
-                piList.add(pi);
             }
        }
     }
