@@ -5,46 +5,49 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class TaskDue extends Activity implements IFirebaseCallback{
+public class TaskDue extends Activity {
     private static final String TAG = "at.fhooe.mc.toDoList :: TaskDue";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_due);
+        Intent i = getIntent();
 
+        String title = i.getStringExtra("title");
+        int day = i.getIntExtra("day",0);
+        int month = i.getIntExtra("month",0);
+        int year = i.getIntExtra("year",0);
+        int hour = i.getIntExtra("hour",0);
+        int min = i.getIntExtra("min",0);
+        String des = i.getStringExtra("des");
 
-    }
+        StringBuilder s = new StringBuilder();
+        s.append(day + "." + month +"." + year  + ",   " + hour +":"+ min);
 
-
-
-    @Override
-    public void setData(Object _o) {
-
-    }
-
-    @Override
-    public void setStringData(List<String> s) {
-
-    }
-
-    @Override
-    public void setTimeData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task) {
-
-    }
-
-    @Override
-    public void setTitle(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y) {
-
-    }
-
-    @Override
-    public void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task) {
         TextView tv = null;
-        tv.findViewById(R.id.activity_task_due_title);
+        tv = (TextView) findViewById(R.id.activity_task_due_title);
+        tv.setText(title);
+
+        tv = (TextView) findViewById(R.id.activity_task_due_date);
+        tv.setText(s.toString());
+
+
+        tv = (TextView) findViewById(R.id.activity_task_due_Note);
+        tv.setText(des);
+
+
+
+
+        Log.i(TAG, "data ---->" + title +","+ day +","+ month +","+ year +","
+                + hour+","+ min +"," + des);
+
     }
+
+
+
 }

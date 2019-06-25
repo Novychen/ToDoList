@@ -36,6 +36,14 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
     static DataAdapter adapter;
+    List<String> title = null;
+    List<Integer> day = null;
+    List<Integer> month = null;
+    List<Integer> year = null;
+    List<Integer> hour = null;
+    List<Integer> min = null ;
+    List<Integer> task = null;
+    List<String> des = null;
 
 
     @Override
@@ -76,6 +84,14 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         Log.i(TAG, "Position ------> " +s.toString() );
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, TaskDue.class);
+        i.putExtra("title", title.get(position));
+        i.putExtra("day",day.get(position));
+        i.putExtra("month", month.get(position));
+        i.putExtra("year",year.get(position));
+        i.putExtra("hour", hour.get(position));
+        i.putExtra("min",min.get(position));
+        i.putExtra("des",des.get(position));
+
         startActivity(i);
 
 
@@ -212,8 +228,15 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task) {
-
+    public void setAll(List<String> _s, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<String> _des) {
+        title = _s;
+        day = _d;
+        month = _mo;
+        year = _y;
+        hour = _h;
+        min =_mi;
+        task = _t;
+        des = _des;
     }
 
 
