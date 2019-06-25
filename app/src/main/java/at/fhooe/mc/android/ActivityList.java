@@ -71,7 +71,14 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     protected void onListItemClick(ListView l, View v, int position, long id) {
         ListAdapter list = getListAdapter();
         ListData       item = (ListData) list.getItem(position);
+       StringBuilder s = new StringBuilder();
+       s.append(position);
+        Log.i(TAG, "Position ------> " +s.toString() );
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, TaskDue.class);
+        startActivity(i);
+
+
      }
 
 
@@ -117,23 +124,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     public void setData(Object _o) {
-  /*      try {
-        List <Object> data = (List<Object>) _o;
-        for(int i = 0; data.get(i) != null; i++) {
-            Object s = data.get(i);
-                if(s.toString().contains("title")) {
-                    adapter.add(new ListData(data.get(i)));
-                    Log.i(TAG, data.get(i).toString());
-                }
-        }setListAdapter(adapter);
 
-        }catch (ClassCastException e) {
-
-        }catch(NullPointerException e){
-
-        }catch(IndexOutOfBoundsException e){
-            return;
-        }*/
     }
 
     @Override
@@ -220,7 +211,10 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         }
     }
 
+    @Override
+    public void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task) {
 
+    }
 
 
 }

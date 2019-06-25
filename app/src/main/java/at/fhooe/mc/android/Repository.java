@@ -29,6 +29,7 @@ class Repository {
     private static List<Integer> mTasks = new LinkedList<>();
     private static List<String> mTitle = new LinkedList<>();
 
+
     /**
      * Constructor for Repository
      * @return Repository Object
@@ -127,6 +128,8 @@ class Repository {
                    _callback.setTimeData(mDay, mMonth, mYear, mHour, mMinute,mTasks);
                    _callback.setStringData(mDescription);
                    _callback.setTitle(mTitle,mDay, mMonth, mYear);
+                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks);
+
            }
 
            @Override
