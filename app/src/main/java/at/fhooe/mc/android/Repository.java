@@ -20,6 +20,14 @@ class Repository {
     private static Repository mInstance;
     private static String mUserId;
     private static List<Object> mValue = new LinkedList<>();
+    private static List<Integer> mDay = new LinkedList<>();
+    private static List<Integer> mMonth = new LinkedList<>();
+    private static List<Integer> mYear = new LinkedList<>();
+    private static List<Integer> mHour = new LinkedList<>();
+    private static List<Integer> mMinute = new LinkedList<>();
+    private static List<String> mDescription = new LinkedList<>();
+    private static List<Integer> mTasks = new LinkedList<>();
+    private static List<String> mTitle = new LinkedList<>();
 
     /**
      * Constructor for Repository
@@ -74,16 +82,51 @@ class Repository {
        _myRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
+               mValue.clear();
+               mDay.clear();
+               mMonth.clear();
+               mYear.clear();
+               mHour.clear();
+               mMinute.clear();
+               mTasks.clear();
                // This method is called once with the initial value and again
                // whenever data at this location is updated.
                mValue.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
-                   mValue.add(listSnapshot.getValue(Object.class));
+                   Object value = listSnapshot.getValue(Object.class);
+                   mValue.add(value);
+
+                   Integer day = listSnapshot.child("day").getValue(Integer.class);
+                   mDay.add(day);
+
+                   Integer month = listSnapshot.child("month").getValue(Integer.class);
+                   mMonth.add(month);
+
+                   Integer year = listSnapshot.child("year").getValue(Integer.class);
+                   mYear.add(year);
+
+                   Integer hour = listSnapshot.child("hour").getValue(Integer.class);
+                   mHour.add(hour);
+
+                   Integer minute = listSnapshot.child("minute").getValue(Integer.class);
+                   mMinute.add(minute);
+
+                   String description = listSnapshot.child("description").getValue(String.class);
+                   mDescription.add(description);
+
+                   String title = listSnapshot.child("title").getValue(String.class);
+                   mTitle.add(title);
+
+                  Integer task = listSnapshot.child("task").getValue(Integer.class);
+                  mTasks.add(task);
                }
                Log.d(TAG, "Value is: " + mValue);
-               if(mValue != null){
+
                    _callback.setData(mValue);
-               }
+                   _callback.setTimeData(mDay, mMonth, mYear, mHour, mMinute,mTasks);
+                   _callback.setStringData(mDescription);
+                   _callback.setTitle(mTitle,mDay, mMonth, mYear);
+
            }
 
            @Override

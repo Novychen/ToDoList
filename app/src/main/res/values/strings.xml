@@ -12,26 +12,59 @@
     <string name="main_Activity_SignIn_Toast">New account created</string>
     <string name="main_Activity_SignInFail_Toast">Couldn\'t create account</string>
     <string name="main_Activity_LogInFail_Toast">log in failed</string>
+    <string name="main_Activity_PasswordEmpty_Toast">Please enter a password</string>
+    <string name="main_Activity_EmailEmpty_Toast">Please enter a email address</string>
+    <string name="main_Activity_EmailPassEmpty_Toast">Please enter a email address and a password</string>
+    <string name="main_Activity_PasswordFalse_Toast">password is incorrect</string>
+    <string name="main_Activity_PasswordInvalid_Toast">invalid password</string>
+    <string name="main_Activity_EmailInvalid_Toast">invalid email</string>
+    <string name="main_Activity_EmailPasswordInvalid_Toast">invalid email and invalid password</string>
 
     <string name="list_Activity_LogOut_Button">log out</string>
 
 
     //task functions
-    <string name="task_Activity_time_field">xx:xx</string>
-    <string name="task_Activity_date_field">xx.xx.xxxx</string>
-    <string name="task_Activity_time_display">time: </string>
-    <string name="task_Activity_date_display">date: </string>
-
-    <string name="task_Activity_title_field">title</string>
-    <string name="task_Activity_Label_Button">OK</string>
-    <string name="task_Activity_setLabel_field">set label</string>
     <string name="task_Activity_LabelSuccess_Toast">label added successFully</string>
     <string name="task_Activity_LabelFail_Toast">too many labels</string>
     <string name="task_Activity_Label_layout">layout</string>
 
+    //repeat task
+    <string name="RepeatTask_Activity_RepeatTask">New RepeatTask at your service</string>
 
-    <string name="task_Activity_description_field">put more information here</string>
-    <string name="task_Activity_Check_Button">OK</string>
+    <string name="RepeatTask_Activity_title_field">title</string>
+    <string name="RepeatTask_Activity_Label_Button">OK</string>
+    <string name="RepeatTask_Activity_setLabel_field">set label</string>
+
+    <string name="RepeatTask_Activity_Repeat">Repeat</string>
+    <string name="RepeatTask_Activity_HowOftRepeat_Field">x</string>
+    <string name="RepeatTask_Activity_RepeatTimes">times per</string>
+    <string name="RepeatTask_Activity_RepeatCircles">x</string>
+
+    <string name="RepeatTask_Activity_RepeatCircleDialog_ok">OK</string>
+    <string name="RepeatTask_Activity_RepeatCircleDialog_cancel">Cancel</string>
+    <string name="RepeatTask_Activity_RepeatCircleDialog_title">Repeat per</string>
+
+    <string name="RepeatTask_Activity_description">description: </string>
+    <string name="RepeatTask_Activity_description_field">put more information here</string>
+    <string name="RepeatTask_Activity_Check_Button">OK</string>
+
+    //deadline task
+    <string name="DeadlineTask_Activity_DeadlineTask">New DeadlineTask at your service</string>
+
+    <string name="DeadlineTask_Activity_title_field">title</string>
+    <string name="DeadlineTask_Activity_Label_Button">OK</string>
+    <string name="DeadlineTask_Activity_setLabel_field">set label</string>
+
+    <string name="DeadlineTask_Activity_time_field">xx:xx</string>
+    <string name="DeadlineTask_Activity_date_field">xx.xx.xxxx</string>
+    <string name="DeadlineTask_Activity_time_display">time: </string>
+    <string name="DeadlineTask_Activity_date_display">date: </string>
+
+    <string name="DeadlineTask_Activity_description">description: </string>
+    <string name="DeadlineTask_Activity_description_field">put more information here</string>
+    <string name="DeadlineTask_Activity_Check_Button">OK</string>
+
+
 
 
     //list functions

@@ -22,7 +22,7 @@
                 android:layout_width="296dp"
                 android:layout_height="wrap_content"
                 android:text="@string/list_Activity_title_listItem"
-                android:textColor="#FFFFFF"
+                android:textColor="#49608D"
                 android:textSize="30sp" />
 
             <TextView
@@ -30,7 +30,7 @@
                 android:layout_width="296dp"
                 android:layout_height="wrap_content"
                 android:text="@string/list_Activity_date_listItem"
-                android:textColor="#FFFFFF"
+                android:textColor="#9B3D3D"
                 android:textSize="24sp" />
         </LinearLayout>
 

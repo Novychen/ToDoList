@@ -5,16 +5,16 @@ import android.util.Log;
 class ListData {
     String mTitle;
     String mdate;
-    Object data;
     private final static String TAG = "at.fhooe.mc.toDoList :: ListData";
 
-    public ListData(Object _o){
-        data = _o;
-    }
-    public ListData(String _titel, String _date) {
+    public ListData(String _titel, int _d, int _m, int _y) {
         mTitle = _titel;
-        mdate = _date;
-        Object data;
+        StringBuilder s = new StringBuilder();
+        s.append(_d + ".");
+        s.append(_m+ ".");
+        s.append(_y);
+        mdate = s.toString();
+
     }
 
     public String getmTitle() {
@@ -24,11 +24,5 @@ class ListData {
     public String getMdate() {
         return mdate ;
     }
-    public String getTitle(){
-        StringBuilder s  = new StringBuilder("Task:");
-        if(data.toString().contains("title=")){
-            Log.i(TAG, "found");
-        }
-        return data.toString();
-    }
+
 }

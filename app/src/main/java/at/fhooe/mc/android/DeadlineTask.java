@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class DeadlineTask implements Task{
 
+    private int mTask;
     private String mTitle;
     private String mDescription;
     private List<String> mLabel;
@@ -17,10 +18,10 @@ public class DeadlineTask implements Task{
     private int mMinute;
 
     /**
-     * Consturctor for the Class {@link DeadlineTask} everything is null
+     * Consturctor for the Class {@link DeadlineTask} everything is the default value (null,0,false, ...)
      */
     DeadlineTask(){
-        this(null,null,null,0,0,0,0,0);
+        this(null,null,null,0,0,0,0,0,0);
     }
 
     /**
@@ -34,7 +35,7 @@ public class DeadlineTask implements Task{
      * @param _hour hour of the deadline of the task
      * @param _minute minute of the deadline of the task
      */
-    private DeadlineTask(String _title, List<String> _label, String _description, int _day, int _month, int _year, int _hour, int _minute){
+    private DeadlineTask(String _title, List<String> _label, String _description, int _day, int _month, int _year, int _hour, int _minute, int _task){
 
         mDescription = _description;
         mTitle = _title;
@@ -44,7 +45,7 @@ public class DeadlineTask implements Task{
         mYear = _year;
         mHour = _hour;
         mMinute = _minute;
-
+        mTask = _task;
     }
 
 
@@ -135,5 +136,13 @@ public class DeadlineTask implements Task{
 
      void setMinute(int _minute) {
         mMinute = _minute;
+    }
+
+    public int getTask() {
+        return mTask;
+    }
+
+    public void setTask(int _task) {
+        mTask = _task;
     }
 }
