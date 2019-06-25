@@ -92,6 +92,7 @@ class Repository {
                // This method is called once with the initial value and again
                // whenever data at this location is updated.
                mValue.clear();
+               mTitle.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
@@ -126,7 +127,6 @@ class Repository {
                    _callback.setTimeData(mDay, mMonth, mYear, mHour, mMinute,mTasks);
                    _callback.setStringData(mDescription);
                    _callback.setTitle(mTitle,mDay, mMonth, mYear);
-
            }
 
            @Override

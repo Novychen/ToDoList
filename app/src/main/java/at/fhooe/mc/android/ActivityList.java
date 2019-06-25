@@ -64,29 +64,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     }
 
-    private void addData(DataAdapter _adapter) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().
-                child(Repository.getInstance().getUserId());
-        long l = 01;
-        String date = ".07.2019";
-        long flow= 12;
 
-
-        for (int i = 1; i <= flow; i++) {
-            StringBuilder task = new StringBuilder("Task ");
-            task.append(i);
-            String taskS = task.toString();
-            DatabaseReference ref = userRef.child(taskS);
-
-            //Task t = Repository.getInstance().getData(ref);
-            StringBuilder s = new StringBuilder();
-            s.append( taskS);
-            String p = s.toString();
-
-            //adapter.add(new ListData(p, l + date));
-            l++;
-        }
-    }
 
 
     @Override
@@ -94,12 +72,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         ListAdapter list = getListAdapter();
         ListData       item = (ListData) list.getItem(position);
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(this, TaskDue.class);
-        startActivity(i);
-        finish();
-
-
-
      }
 
 
@@ -230,12 +202,14 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     @Override
     public void setTitle(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y) {
         try {
-
-            for(int i = 0; s.get(i) != null; i++){
+            Log.i(TAG, "LIST size --> " + s.size());
+            adapter.clear();
+            for(int i = 0; i < s.size(); i++){
+                Log.i(TAG, adapter.getCount() + " --> " + s.get(i));
                 adapter.add(new ListData(s.get(i),d.get(i),m.get(i),y.get(i)));
-                Log.i(TAG, s.get(i));
-
-            }setListAdapter(adapter);
+            }
+            adapter.notifyDataSetChanged();
+//            setListAdapter(adapter);
 
         }catch (ClassCastException e) {
 
