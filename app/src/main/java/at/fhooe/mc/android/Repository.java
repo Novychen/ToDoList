@@ -76,6 +76,7 @@ class Repository {
            public void onDataChange(DataSnapshot dataSnapshot) {
                // This method is called once with the initial value and again
                // whenever data at this location is updated.
+               mValue.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
                    mValue.add(listSnapshot.getValue(Object.class));
                }

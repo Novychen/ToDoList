@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -41,12 +43,18 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         Repository.getInstance().getData(ref, this);
 
         adapter = new DataAdapter(this);
-            addData(adapter);
+        //    addData(adapter);
         setListAdapter(adapter);
 
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
+
+        CheckBox check = (CheckBox) findViewById(R.id.activity_list_checkbox);
+
     }
+
+
+
 
     private void addData(DataAdapter _adapter) {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().
@@ -78,7 +86,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         ListAdapter list = getListAdapter();
         ListData       item = (ListData) list.getItem(position);
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
-
+        Intent i = new Intent(this, TaskDue.class);
+        startActivity(i);
+        finish();
 
             DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
             Repository.getInstance().getData(ref2, this);
@@ -133,10 +143,13 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     public void setData(Object _o) {
         try {
         List <Object> data = (List<Object>) _o;
+        for(int i = 0; data.get(i) != null; i++) {
+            Object s = data.get(i);
 
-        Object one = data.get(0);
-        Object two = data.get(1);
-        Object three = data.get(2);
+                adapter.add(new ListData(data.get(i)));
+                Log.i(TAG, data.get(i).toString());
+
+        }setListAdapter(adapter);
 
         }catch (ClassCastException e) {
 
