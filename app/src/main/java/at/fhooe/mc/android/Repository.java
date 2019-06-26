@@ -2,6 +2,7 @@ package at.fhooe.mc.android;
 
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +20,7 @@ class Repository {
     private static final String TAG = "at.fhooe.mc.toDoList :: Repository";
     private static Repository mInstance;
     private static String mUserId;
+
     private static List<Object> mValue = new LinkedList<>();
     private static List<Integer> mDay = new LinkedList<>();
     private static List<Integer> mMonth = new LinkedList<>();
@@ -29,6 +31,11 @@ class Repository {
     private static List<Integer> mTasks = new LinkedList<>();
     private static List<String> mTitle = new LinkedList<>();
     private static List<String> mReference = new LinkedList<>();
+
+    private  List<Integer> mRepeats = new LinkedList<>();
+    private  List<String> mRepeatRotation = new LinkedList<>();
+    private  List<List<String>> mLabel = new LinkedList<>();
+
 
 
     /**
@@ -91,10 +98,14 @@ class Repository {
                mHour.clear();
                mMinute.clear();
                mTasks.clear();
+               mTitle.clear();
+               mRepeatRotation.clear();
+               mRepeats.clear();
                // This method is called once with the initial value and again
                // whenever data at this location is updated.
                mValue.clear();
                mTitle.clear();
+               mLabel.clear();
                mDescription.clear();
                mReference.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
@@ -103,38 +114,62 @@ class Repository {
 
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
+                   Integer task = listSnapshot.child("task").getValue(Integer.class);
 
-                   Integer day = listSnapshot.child("day").getValue(Integer.class);
-                   mDay.add(day);
+                       Integer day = listSnapshot.child("day").getValue(Integer.class);
+                       mDay.add(day);
 
-                   Integer month = listSnapshot.child("month").getValue(Integer.class);
-                   mMonth.add(month);
+                       Integer month = listSnapshot.child("month").getValue(Integer.class);
+                       mMonth.add(month);
 
-                   Integer year = listSnapshot.child("year").getValue(Integer.class);
-                   mYear.add(year);
+                       Integer year = listSnapshot.child("year").getValue(Integer.class);
+                       mYear.add(year);
 
-                   Integer hour = listSnapshot.child("hour").getValue(Integer.class);
-                   mHour.add(hour);
+                       Integer hour = listSnapshot.child("hour").getValue(Integer.class);
+                       mHour.add(hour);
 
-                   Integer minute = listSnapshot.child("minute").getValue(Integer.class);
-                   mMinute.add(minute);
+                       Integer minute = listSnapshot.child("minute").getValue(Integer.class);
+                       mMinute.add(minute);
 
-                   String description = listSnapshot.child("description").getValue(String.class);
-                   mDescription.add(description);
+                       String description = listSnapshot.child("description").getValue(String.class);
+                       mDescription.add(description);
 
-                   String title = listSnapshot.child("title").getValue(String.class);
-                   mTitle.add(title);
+                       String title = listSnapshot.child("title").getValue(String.class);
+                       mTitle.add(title);
 
-                  Integer task = listSnapshot.child("task").getValue(Integer.class);
-                  mTasks.add(task);
+                       String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
+                       String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
+                       String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
+                       LinkedList <String> s = new LinkedList<>();
+                       s.add(firstLabel);
+                       s.add(secondLabel);
+                       s.add(thirdLabel);
+                       mLabel.add(s);
+
+/*                   } else if (task != null && task == 1){
+                        String repeatRotation  = listSnapshot.child("repeatRotation").getValue(String.class);
+                        mRepeatRotation.add(repeatRotation);
+
+                        Integer repeat  = listSnapshot.child("repeats").getValue(Integer.class);
+                        mRepeats.add(repeat);
+
+                        String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
+                        String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
+                        String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
+                        LinkedList <String> s = new LinkedList<>();
+                        s.add(firstLabel);
+                        s.add(secondLabel);
+                        s.add(thirdLabel);
+                        mLabel.add(s);
+
+                    }*/
+
                }
                Log.d(TAG, "Value is: " + mValue);
 
-                   _callback.setData(mValue);
-                   _callback.setTimeData(mDay, mMonth, mYear, mHour, mMinute,mTasks);
-                   _callback.setStringData(mDescription);
+                   _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute,mTitle);
                    _callback.setTitle(mTitle,mDay, mMonth, mYear);
-                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks,mDescription,mReference);
+                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks,mDescription,mReference,mLabel);
 
            }
 
@@ -145,6 +180,42 @@ class Repository {
            }
        });
    }
+
+    /*private void addChildEventListener() {
+        ChildEventListener childListener = new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                int index = mRepeatRotation.indexOf(key);
+
+                if (index != -1) {
+                    listItems.remove(index);
+                    listKeys.remove(index);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        dbRef.addChildEventListener(childListener);
+    }*/
 
 
     /**

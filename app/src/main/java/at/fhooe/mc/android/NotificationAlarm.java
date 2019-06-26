@@ -1,6 +1,4 @@
 package at.fhooe.mc.android;
-
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,26 +8,14 @@ import android.content.Intent;
 import android.util.Log;
 
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class NotificationAlarm extends BroadcastReceiver {
 
 
     public static final String TAG = "at.fhooe.mc.toDoList :: NotificationAlarm";
-   private static final  String GROUP_KEY = "at.fhooe.mc.toDoList.GROUP_KEY";
-    private final static int NotificationID = 666;
+    private static final  String GROUP_KEY = "at.fhooe.mc.toDoList.GROUP_KEY";
     Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+    static private int mGroupCount;
 
-    public String  checkTime;
-
-    public void setCheckTime(String _s){
-        checkTime = _s;
-    }
-
-    public String getCheckTime(){
-        return checkTime;
-    }
-    @Override
     public void onReceive(Context _context, Intent _intent) {
 
         Intent i = new Intent(_context,TaskDue.class);
@@ -38,31 +24,35 @@ public class NotificationAlarm extends BroadcastReceiver {
 
         inboxStyle.setBigContentTitle("ToDoList");
 
-
-        Notification.Builder groupBuilder = new Notification.Builder(_context)
-                .setContentTitle("toDoList")
-                .setSmallIcon(R.drawable.ic_notification_active)
-                .setGroup(NotificationAlarm.GROUP_KEY)
-                .setContentText("This is a activity_deadline_task_test")
-                .setGroupSummary(true)
-                .setContentIntent(pi);
-        Notification group = groupBuilder.build();
-        NotificationManager nMgr = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nMgr.notify(NotificationAlarm.NotificationID, group);
-
+        if(mGroupCount == 0) {
+            Notification.Builder groupBuilder = new Notification.Builder(_context)
+                    .setContentTitle("Test")
+                    .setSmallIcon(R.drawable.ic_notification_active)
+                    .setGroup(NotificationAlarm.GROUP_KEY)
+                    .setContentText("This is a test")
+                    .setGroupSummary(true)
+                    .setContentIntent(pi);
+            Notification group = groupBuilder.build();
+            NotificationManager nMgr = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
+            nMgr.notify(r.nextInt(10000), group);
+            mGroupCount++;
+        }
 
         Notification.Builder bob = new Notification.Builder(_context)
                 .setSmallIcon(R.drawable.ic_notification_active)
-                .setContentText("Your task is due!")
-                .setContentTitle("ToDoList")
+                .setContentText(_intent.getStringExtra("text"))
+                .setContentTitle(_intent.getStringExtra("title"))
                 .setGroup(GROUP_KEY)
                 .setContentIntent(pi); //what happens when you press the notification
 
 
         Notification n = bob.build();
-        nMgr = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nMgr.notify(NotificationID, n);
+        NotificationManager nMgr = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nMgr.notify(r.nextInt(10000), n);
+
+
 
         Log.i(TAG,"notification");
-    }
+        }
+
 }

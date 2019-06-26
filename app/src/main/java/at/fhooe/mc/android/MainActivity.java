@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +31,7 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     private EditText mEmail = null;
     private EditText mPassword = null;
     String mPass;
+    int mClickedHelp;
     String mMail;
     static long mTaskNumber;
 
@@ -51,12 +53,20 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
+       // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         mEmail = findViewById(R.id.main_Activity_Auth_LogIn_Email);
         mPassword = findViewById(R.id.main_Activity_Auth_LogIn_Password);
 
         Button b;
         b = findViewById(R.id.main_Activity_LogIn_Button);
         b.setOnClickListener(this);
+
+        b = findViewById(R.id.main_Activity_help_dialog);
+        b.setVisibility(View.INVISIBLE);
+
+        ImageView v = findViewById(R.id.main_Activity_help_button);
+        v.setOnClickListener(this);
 
         b = findViewById(R.id.main_Activity_SignIn_Button);
         b.setOnClickListener(this);
@@ -141,19 +151,28 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     @Override
     public void onClick(View _v) {
         switch (_v.getId()) {
-            case R.id.main_Activity_LogIn_Button: {
 
+            case R.id.main_Activity_help_button:{
+                Button b = findViewById(R.id.main_Activity_help_dialog);
+                if(mClickedHelp % 2 == 0) {
+                    b.setVisibility(View.VISIBLE);
+                } else{
+                    b.setVisibility(View.INVISIBLE);
+                }
+                mClickedHelp++;
+
+            }break;
+
+            case R.id.main_Activity_LogIn_Button: {
                 if(check()) {
                     signIn();
                 }
-            }
-            break;
+            }break;
             case R.id.main_Activity_SignIn_Button: {
                 if(check()) {
                     createAccount();
                 }
-            }
-            break;
+            }break;
             default:
                 Log.e(TAG, "main_Activity::onClick unexpected ID encountered");
         }
@@ -186,37 +205,23 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                 });
     }
 
+
     @Override
-    public void setData(Object _o) {
-        try {
-            List<Object> data = (List<Object>) _o;
-            //setAlarm(data);
-        }catch(IndexOutOfBoundsException e){
-            return;
-        }
+    public void setNotificationDeadlineData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<String> t) {
     }
 
     @Override
-    public void setStringData(List<String> s) {
-
-    }
-
-    @Override
-    public void setTimeData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task) {
-
+    public void setNotificationRepeatData(List<Integer> r, List<String> c, List<String> t) {
     }
 
     @Override
     public void setTitle(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y) {
-
     }
 
     @Override
-    public void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task, List<String> _des,List<String> ref) {
 
+    public void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task, List<String> _des,List<String> ref, List<List<String>> label) {
     }
-
-
 }
 
 

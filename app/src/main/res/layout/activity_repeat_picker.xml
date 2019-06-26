@@ -23,20 +23,6 @@
 
     <Button
 
-        android:id="@+id/RepeatTask_Activity_RepeatDialog_cancel"
-        style="android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:background="@drawable/ic_button_round_blue"
-        android:text="@string/RepeatTask_Activity_RepeatCircleDialog_cancel"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/RepeatTask_Activity_Picker"
-        app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_Picker" />
-
-    <Button
-
         android:id="@+id/RepeatTask_Activity_RepeatDialog_ok"
         style="android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
@@ -46,6 +32,7 @@
         android:background="@drawable/ic_button_round_blue"
         android:text="@string/RepeatTask_Activity_RepeatCircleDialog_ok"
         android:textColor="#FDFDFE"
+        app:layout_constraintEnd_toEndOf="@+id/RepeatTask_Activity_Picker"
         app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_Picker"
         app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_Picker" />
 
