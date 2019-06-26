@@ -70,9 +70,15 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
-        getRef();
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getData(ref2, this);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getData(ref, this);
+
         adapter = new DataAdapter(this);
         setListAdapter(adapter);
+
 
         mFunnyMotivation.add("People often say that motivation doesn’t last. Well, neither does bathing — that’s why we recommend it daily");
         mSnarkyMotivation.add("Anything's possible if you've got enough nerve.");
@@ -113,14 +119,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
 
     }
-   public void getRef(){
-       DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
-       Repository.getInstance().getData(ref2, this);
 
-       DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
-       Repository.getInstance().getData(ref, this);
-
-   }
 
 
 
@@ -132,7 +131,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         StringBuilder s = new StringBuilder();
         s.append(position);
         Log.i(TAG, "Position ------> " +s.toString() );
-        Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "clicked item " + item);
         Intent i = new Intent(this, TaskDue.class);
         i.putExtra("title", title.get(position));
         i.putExtra("day",day.get(position));
@@ -144,6 +143,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         i.putExtra("ref",ref.get(position));
 
         startActivity(i);
+
      }
 
 
@@ -160,12 +160,17 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 Log.i(TAG, "::onClick logOut Button was pressed");
                 logOut();
                 finish();}break;
-            case R.id.menu_arlog_add: {
+            case R.id.menu_arlog_add_dead: {
                 Log.i(TAG, "::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
                 startActivity(i);
             }break;
 
+            case R.id.menu_arlog_add_rep: {
+                Log.i(TAG, "::onClick add Button was pressed");
+                Intent i = new Intent(this, ActivityRepeatTask.class);
+                startActivity(i);
+            }break;
 
             default:
                 Log.e(TAG, "::onClick unexpected ID encountered");
@@ -308,28 +313,38 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     public void setTitle(List<String> _s, List<Integer> _d, List<Integer> _m, List<Integer> _y) {
-        try {adapter.clear();
+
+
             Log.i(TAG, "LIST size --> " + _s.size());
+            try {adapter.clear();
 
-            Log.i(TAG, "LIST 4 --> " + _s.get(4));
+                Log.i(TAG, "LIST size --> " + _s.size());
 
+                Log.i(TAG, "LIST  1 --> " + _s.get(0));
+                Log.i(TAG, "LIST  2 --> " + _s.get(1));
+                Log.i(TAG, "LIST  3 --> " + _s.get(2));
+                Log.i(TAG, "LIST  4 --> " + _s.get(3));
+                for (int i = 0; i < _s.size(); i++) {
 
-            for(int i = 0; i < _s.size(); i++){
+                    adapter.add(new ListData(_s.get(i), _d.get(i), _m.get(i), _y.get(i)));
+                    Log.i(TAG, adapter.getCount() + " --> " + _s.get(i));
 
-                adapter.add(new ListData(_s.get(i),_d.get(i),_m.get(i),_y.get(i)));
-                Log.i(TAG, adapter.getCount() + " --> " + _s.get(i));
+                }
 
+                adapter.notifyDataSetChanged();
+
+                //          setListAdapter(adapter);
+
+            } catch (ClassCastException e) {
+                Log.e(TAG, e.getMessage());
+            } catch (NullPointerException e) {
+                Log.e(TAG, e.getMessage());
+            } catch (IndexOutOfBoundsException e) {
+                Log.e(TAG, e.getMessage());
             }
-            adapter.notifyDataSetChanged();
- //          setListAdapter(adapter);
 
-        }catch (ClassCastException e) {
-            Log.e(TAG, e.getMessage());
-        }catch(NullPointerException e){
-            Log.e(TAG, e.getMessage());
-        }catch(IndexOutOfBoundsException e){
-            Log.e(TAG, e.getMessage());
-        }
+
+
     }
 
     @Override
@@ -348,5 +363,20 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         Log.i(TAG,"Label: " + _label);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
 }

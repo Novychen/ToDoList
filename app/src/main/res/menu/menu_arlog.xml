@@ -3,12 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_arlog_add"
+        android:id="@+id/menu_arlog_add_dead"
         android:enabled="true"
         android:icon="@drawable/ic_add"
-        android:title="@string/list_Activity_add_button"
+        android:title="addDeadline"
         android:visible="true"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_arlog_add_rep"
+        android:enabled="true"
+        android:icon="@drawable/ic_add"
+        android:title="addRepeat"
+        android:visible="true"
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_arlog_logout"
         android:enabled="true"

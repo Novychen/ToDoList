@@ -61,8 +61,6 @@ public class TaskDue extends Activity implements  View.OnClickListener{
         b = findViewById(R.id.activity_task_due_remove);
         b.setOnClickListener(this);
 
-
-
         Log.i(TAG, "data ---->" + title +","+ day +","+ month +","+ year +","
                 + hour+","+ min +"," + des);
         Log.i(TAG, "Reference ---->"+key);
@@ -76,7 +74,11 @@ public class TaskDue extends Activity implements  View.OnClickListener{
         switch (_v.getId()) {
             case R.id.activity_task_due_remove: {
                 Repository.getInstance().removeDate(key);
+                long taskNumber = MainActivity.getTaskNumber() -1;
+                Log.i(TAG, "taskNumber Value is: " + taskNumber);
+                Repository.getInstance().saveData(taskNumber);
                 finish();
+
 
             }
         }
