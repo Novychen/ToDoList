@@ -20,15 +20,18 @@ class Repository {
     private static final String TAG = "at.fhooe.mc.toDoList :: Repository";
     private static Repository mInstance;
     private static String mUserId;
-    private  List<Object> mValue = new LinkedList<>();
-    private  List<Integer> mDay = new LinkedList<>();
-    private  List<Integer> mMonth = new LinkedList<>();
-    private  List<Integer> mYear = new LinkedList<>();
-    private  List<Integer> mHour = new LinkedList<>();
-    private  List<Integer> mMinute = new LinkedList<>();
-    private  List<String> mDescription = new LinkedList<>();
-    private  List<Integer> mTasks = new LinkedList<>();
-    private  List<String> mTitle = new LinkedList<>();
+
+    private static List<Object> mValue = new LinkedList<>();
+    private static List<Integer> mDay = new LinkedList<>();
+    private static List<Integer> mMonth = new LinkedList<>();
+    private static List<Integer> mYear = new LinkedList<>();
+    private static List<Integer> mHour = new LinkedList<>();
+    private static List<Integer> mMinute = new LinkedList<>();
+    private static List<String> mDescription = new LinkedList<>();
+    private static List<Integer> mTasks = new LinkedList<>();
+    private static List<String> mTitle = new LinkedList<>();
+    private static List<String> mReference = new LinkedList<>();
+
     private  List<Integer> mRepeats = new LinkedList<>();
     private  List<String> mRepeatRotation = new LinkedList<>();
     private  List<List<String>> mLabel = new LinkedList<>();
@@ -103,11 +106,15 @@ class Repository {
                mTitle.clear();
                mLabel.clear();
                mDescription.clear();
+               mReference.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
+                   String refence = listSnapshot.getKey();
+                   mReference.add(refence);
+
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
                    Integer task = listSnapshot.child("task").getValue(Integer.class);
-                    //if(task != null && task == 0){
+
                        Integer day = listSnapshot.child("day").getValue(Integer.class);
                        mDay.add(day);
 
@@ -138,7 +145,7 @@ class Repository {
                        s.add(thirdLabel);
                        mLabel.add(s);
 
-               /*} else if (task != null && task == 1){
+/*                   } else if (task != null && task == 1){
                         String repeatRotation  = listSnapshot.child("repeatRotation").getValue(String.class);
                         mRepeatRotation.add(repeatRotation);
 
@@ -161,7 +168,8 @@ class Repository {
 
                    _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute,mTitle);
                    _callback.setTitle(mTitle,mDay, mMonth, mYear);
-                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks,mDescription,mLabel);
+                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks,mDescription,mReference,mLabel);
+
            }
 
            @Override

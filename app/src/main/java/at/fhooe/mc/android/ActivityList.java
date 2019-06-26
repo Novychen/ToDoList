@@ -59,6 +59,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List<Integer> min = null ;
     List<Integer> task = null;
     List<String> des = null;
+    List<String> ref = null;
     List<List<String>> label = null;
 
 
@@ -73,6 +74,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
+
+        adapter = new DataAdapter(this);
+        setListAdapter(adapter);
 
         mFunnyMotivation.add("People often say that motivation doesn’t last. Well, neither does bathing — that’s why we recommend it daily");
         mSnarkyMotivation.add("Anything's possible if you've got enough nerve.");
@@ -106,8 +110,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         mCuteMotivation.add("After the rain comes the rainbow");
         mCuteMotivation.add("You are doing great! Keep pushing!");
 
-        adapter = new DataAdapter(this);
-        setListAdapter(adapter);
+
 
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
@@ -132,6 +135,8 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         i.putExtra("hour", hour.get(position));
         i.putExtra("min",min.get(position));
         i.putExtra("des",des.get(position));
+        i.putExtra("ref",ref.get(position));
+
         startActivity(i);
      }
 
@@ -300,15 +305,20 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     public void setTitle(List<String> _s, List<Integer> _d, List<Integer> _m, List<Integer> _y) {
-        try {
+        try {adapter.clear();
             Log.i(TAG, "LIST size --> " + _s.size());
-            adapter.clear();
+
+            Log.i(TAG, "LIST 4 --> " + _s.get(4));
+
+
             for(int i = 0; i < _s.size(); i++){
-                Log.i(TAG, adapter.getCount() + " --> " + _s.get(i));
+
                 adapter.add(new ListData(_s.get(i),_d.get(i),_m.get(i),_y.get(i)));
+                Log.i(TAG, adapter.getCount() + " --> " + _s.get(i));
+
             }
             adapter.notifyDataSetChanged();
-//            setListAdapter(adapter);
+ //          setListAdapter(adapter);
 
         }catch (ClassCastException e) {
             Log.e(TAG, e.getMessage());
@@ -320,7 +330,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setAll(List<String> _s, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<String> _des, List<List<String>> _label) {
+    public void setAll(List<String> _s, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<String> _des,List<String> _ref, List<List<String>> _label) {
         title = _s;
         day = _d;
         month = _mo;
@@ -329,6 +339,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         min =_mi;
         task = _t;
         des = _des;
+        ref = _ref;
         label = _label;
 
         Log.i(TAG,"Label: " + _label);
