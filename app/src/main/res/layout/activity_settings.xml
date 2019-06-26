@@ -43,4 +43,5 @@
         android:text="@string/Settings_Activity_Switch_normalMoti"
         app:layout_constraintStart_toStartOf="@+id/Settings_Activity_Switch_brutalMoti"
         app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

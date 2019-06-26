@@ -107,7 +107,7 @@ class Repository {
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
                    Integer task = listSnapshot.child("task").getValue(Integer.class);
-                    if(task != null && task == 0){
+                    //if(task != null && task == 0){
                        Integer day = listSnapshot.child("day").getValue(Integer.class);
                        mDay.add(day);
 
@@ -138,7 +138,7 @@ class Repository {
                        s.add(thirdLabel);
                        mLabel.add(s);
 
-                   } else if (task != null && task == 1){
+               /*} else if (task != null && task == 1){
                         String repeatRotation  = listSnapshot.child("repeatRotation").getValue(String.class);
                         mRepeatRotation.add(repeatRotation);
 
@@ -154,7 +154,7 @@ class Repository {
                         s.add(thirdLabel);
                         mLabel.add(s);
 
-                    }
+                    }*/
 
                }
                Log.d(TAG, "Value is: " + mValue);

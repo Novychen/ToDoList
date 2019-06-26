@@ -151,7 +151,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 finish();}break;
             case R.id.menu_arlog_add: {
                 Log.i(TAG, "::onClick add Button was pressed");
-                Intent i = new Intent(this, ActivityRepeatTask.class);
+                Intent i = new Intent(this, ActivityDeadlineTask.class);
                 startActivity(i);
             }break;
             case R.id.menu_arlog_remove: {
