@@ -2,6 +2,7 @@ package at.fhooe.mc.android;
 
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,8 @@ class Repository {
     private  List<String> mTitle = new LinkedList<>();
     private  List<Integer> mRepeats = new LinkedList<>();
     private  List<String> mRepeatRotation = new LinkedList<>();
+    private  List<List<String>> mLabel = new LinkedList<>();
+
 
     /**
      * Constructor for Repository
@@ -97,6 +100,9 @@ class Repository {
                // This method is called once with the initial value and again
                // whenever data at this location is updated.
                mValue.clear();
+               mTitle.clear();
+               mLabel.clear();
+               mDescription.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
@@ -122,6 +128,16 @@ class Repository {
 
                        String title = listSnapshot.child("title").getValue(String.class);
                        mTitle.add(title);
+
+                       String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
+                       String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
+                       String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
+                       LinkedList <String> s = new LinkedList<>();
+                       s.add(firstLabel);
+                       s.add(secondLabel);
+                       s.add(thirdLabel);
+                       mLabel.add(s);
+
                    } else if (task != null && task == 1){
                         String repeatRotation  = listSnapshot.child("repeatRotation").getValue(String.class);
                         mRepeatRotation.add(repeatRotation);
@@ -129,17 +145,23 @@ class Repository {
                         Integer repeat  = listSnapshot.child("repeats").getValue(Integer.class);
                         mRepeats.add(repeat);
 
+                        String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
+                        String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
+                        String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
+                        LinkedList <String> s = new LinkedList<>();
+                        s.add(firstLabel);
+                        s.add(secondLabel);
+                        s.add(thirdLabel);
+                        mLabel.add(s);
+
                     }
 
                }
                Log.d(TAG, "Value is: " + mValue);
 
-                   _callback.setData(mValue);
                    _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute,mTitle);
-
-                   _callback.setStringData(mDescription);
                    _callback.setTitle(mTitle,mDay, mMonth, mYear);
-
+                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks,mDescription,mLabel);
            }
 
            @Override
@@ -149,6 +171,42 @@ class Repository {
            }
        });
    }
+
+    /*private void addChildEventListener() {
+        ChildEventListener childListener = new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                int index = mRepeatRotation.indexOf(key);
+
+                if (index != -1) {
+                    listItems.remove(index);
+                    listKeys.remove(index);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        dbRef.addChildEventListener(childListener);
+    }*/
 
 
     /**

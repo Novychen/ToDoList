@@ -205,38 +205,22 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                 });
     }
 
-    @Override
-    public void setData(Object _o) {
-        try {
-            List<Object> data = (List<Object>) _o;
-            //setAlarm(data);
-        }catch(IndexOutOfBoundsException e){
-            return;
-        }
-    }
-
-    @Override
-    public void setStringData(List<String> s) {
-
-    }
 
     @Override
     public void setNotificationDeadlineData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<String> t) {
-
     }
 
     @Override
     public void setNotificationRepeatData(List<Integer> r, List<String> c, List<String> t) {
-
     }
-
 
     @Override
     public void setTitle(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y) {
-
     }
 
-
+    @Override
+    public void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task, List<String> des, List<List<String>> label) {
+    }
 }
 
 

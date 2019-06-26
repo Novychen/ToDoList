@@ -123,6 +123,10 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mDeadlineTask.setHour(mHour);
                 mDeadlineTask.setMinute(mMinute);
                 mDeadlineTask.setTask(0);
+                 if(mLabelList != null){
+                     mLabelList.add("");
+                 }
+                mDeadlineTask.setLabel(mLabelList);
 
                 long taskNumber = MainActivity.getTaskNumber() +1;
 

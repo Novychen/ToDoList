@@ -51,6 +51,15 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List <String> mBrutalMotivation = new LinkedList<>();
     int mGotIntoData;
 
+    List<String> title = null;
+    List<Integer> day = null;
+    List<Integer> month = null;
+    List<Integer> year = null;
+    List<Integer> hour = null;
+    List<Integer> min = null ;
+    List<Integer> task = null;
+    List<String> des = null;
+    List<List<String>> label = null;
 
 
     @Override
@@ -97,40 +106,13 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         mCuteMotivation.add("After the rain comes the rainbow");
         mCuteMotivation.add("You are doing great! Keep pushing!");
 
-
         adapter = new DataAdapter(this);
-        //    addData(adapter);
         setListAdapter(adapter);
 
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
 
         CheckBox check = (CheckBox) findViewById(R.id.activity_list_checkbox);
-
-    }
-
-    private void addData(DataAdapter _adapter) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().
-                child(Repository.getInstance().getUserId());
-        long l = 01;
-        String date = ".07.2019";
-        long flow= 12;
-
-
-        for (int i = 1; i <= flow; i++) {
-            StringBuilder task = new StringBuilder("Task ");
-            task.append(i);
-            String taskS = task.toString();
-            DatabaseReference ref = userRef.child(taskS);
-
-            //Task t = Repository.getInstance().getData(ref);
-            StringBuilder s = new StringBuilder();
-            s.append( taskS);
-            String p = s.toString();
-
-            //apter.add(new ListData(p, l + date));
-            l++;
-        }
     }
 
 
@@ -138,17 +120,25 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     protected void onListItemClick(ListView l, View v, int position, long id) {
         ListAdapter list = getListAdapter();
         ListData       item = (ListData) list.getItem(position);
+        StringBuilder s = new StringBuilder();
+        s.append(position);
+        Log.i(TAG, "Position ------> " +s.toString() );
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, TaskDue.class);
+        i.putExtra("title", title.get(position));
+        i.putExtra("day",day.get(position));
+        i.putExtra("month", month.get(position));
+        i.putExtra("year",year.get(position));
+        i.putExtra("hour", hour.get(position));
+        i.putExtra("min",min.get(position));
+        i.putExtra("des",des.get(position));
         startActivity(i);
-        finish();
      }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
         getMenuInflater().inflate(R.menu.menu_arlog, _menu);
-
         return true;
     }
 
@@ -165,8 +155,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 startActivity(i);
             }break;
             case R.id.menu_arlog_remove: {
-                // long taskNumber = MainActivity.getTaskNumber() - 1;
-                //MainActivity.setTaskNumber(taskNumber);
+                //dbRef.child(listKeys.get(selectedPosition)).removeValue();
                 Log.e(TAG, "::onClick delete Button was pressed");
             }
             break;
@@ -185,75 +174,47 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         startActivity(i);
     }
 
-
     @Override
-    public void setData(Object _o) {
-  /*      try {
-        List <Object> data = (List<Object>) _o;
-        for(int i = 0; data.get(i) != null; i++) {
-            Object s = data.get(i);
-                if(s.toString().contains("title")) {
-                    adapter.add(new ListData(data.get(i)));
-                    Log.i(TAG, data.get(i).toString());
-                }
-        }setListAdapter(adapter);
-
-        }catch (ClassCastException e) {
-
-        }catch(NullPointerException e){
-
-        }catch(IndexOutOfBoundsException e){
-            return;
-        }*/
-    }
-
-    @Override
-    public void setStringData(List<String> s) {
-
-    }
-
-    @Override
-    public void setNotificationDeadlineData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<String> t) {
-        if(d.size() != 0) {
-            d.remove(d.size() - 1);
-            m.remove(m.size() - 1);
-            y.remove(y.size() - 1);
-            h.remove(h.size() - 1);
-            min.remove(min.size() - 1);
+    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t) {
+        if(_d.size() != 0) {
+            _d.remove(_d.size() - 1);
+            _m.remove(_m.size() - 1);
+            _y.remove(_y.size() - 1);
+            _h.remove(_h.size() - 1);
+            _min.remove(_min.size() - 1);
         }
 
         List<PendingIntent> piList = new LinkedList<>();
 
-        for(int i = 0; i <d.size(); i++) {
-
+        for(int i = 0; i <_d.size(); i++) {
 
                 Calendar calendar = Calendar.getInstance();
-                if (d.get(i) == null) {
-                    d.set(i, 0);
+                if (_d.get(i) == null) {
+                    _d.set(i, 0);
                 }
-                if (m.get(i) == null) {
-                    m.set(i, 0);
+                if (_m.get(i) == null) {
+                    _m.set(i, 0);
                 }
-                if (y.get(i) == null) {
-                    y.set(i, 0);
+                if (_y.get(i) == null) {
+                    _y.set(i, 0);
                 }
-                if (h.get(i) == null) {
-                    h.set(i, 0);
+                if (_h.get(i) == null) {
+                    _h.set(i, 0);
                 }
-                if (min.get(i) == null) {
-                    min.set(i, 0);
+                if (_min.get(i) == null) {
+                    _min.set(i, 0);
                 }
-                int year = y.get(i);
-                int month = m.get(i) - 1;
-                int day = d.get(i);
-                int hour = h.get(i);
-                int minute = min.get(i);
+                int year = _y.get(i);
+                int month = _m.get(i) - 1;
+                int day = _d.get(i);
+                int hour = _h.get(i);
+                int minute = _min.get(i);
 
                 calendar.set(year, month, day, hour, minute);
 
                 Random r = new Random();
                 Intent intent = new Intent(this, NotificationAlarm.class);
-                intent.putExtra("title", "The time for your task: " + t.get(i) + " is up!");
+                intent.putExtra("title", "The time for your task: " + _t.get(i) + " is up!");
                 intent.putExtra("text","You better have your things done");
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
@@ -286,30 +247,29 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationRepeatData(List<Integer> r, List<String> c, List<String> t) {
+    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t) {
 
         try {
-            if (t.size() != 0) {
-                c.remove(c.size() - 1);
-                r.remove(r.size() - 1);
+            if (_t.size() != 0) {
+                _c.remove(_c.size() - 1);
+                _r.remove(_r.size() - 1);
             }
 
-            for (int i = 0; i < r.size(); i++) {
+            for (int i = 0; i < _r.size(); i++) {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(new Date());
-                if (r.get(i) == null) {
-                    r.set(i, 0);
+                if (_r.get(i) == null) {
+                    _r.set(i, 0);
                 }
-                if(c.get(i) == "year") {
+                if(_c.get(i).equals("year")) {
 
                 }
-                if(c.get(i) == "month") {
+                if(_c.get(i).equals("month")) {
 
                 }
-                if(c.get(i) == "week") {
+                if(_c.get(i).equals("week")) {
                     calendar.add(Calendar.DAY_OF_MONTH,2);
-
                 }
 
                 int year = 0;
@@ -322,7 +282,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
                 Random rand = new Random();
                 Intent intent = new Intent(this, NotificationAlarm.class);
-                intent.putExtra("title", "The time for your task: " + t.get(i) + " is up!");
+                intent.putExtra("title", "The time for your task: " + _t.get(i) + " is up!");
                 intent.putExtra("text", "You better have your things done");
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 PendingIntent pi = PendingIntent.getBroadcast(this, rand.nextInt(1000), intent, 0);
@@ -339,12 +299,16 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setTitle(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y) {
+    public void setTitle(List<String> _s, List<Integer> _d, List<Integer> _m, List<Integer> _y) {
         try {
-            for(int i = 0; s.get(i) != null; i++){
-                adapter.add(new ListData(s.get(i),d.get(i),m.get(i),y.get(i)));
-                Log.i(TAG, s.get(i));
-            }setListAdapter(adapter);
+            Log.i(TAG, "LIST size --> " + _s.size());
+            adapter.clear();
+            for(int i = 0; i < _s.size(); i++){
+                Log.i(TAG, adapter.getCount() + " --> " + _s.get(i));
+                adapter.add(new ListData(_s.get(i),_d.get(i),_m.get(i),_y.get(i)));
+            }
+            adapter.notifyDataSetChanged();
+//            setListAdapter(adapter);
 
         }catch (ClassCastException e) {
             Log.e(TAG, e.getMessage());
@@ -355,7 +319,20 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         }
     }
 
+    @Override
+    public void setAll(List<String> _s, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<String> _des, List<List<String>> _label) {
+        title = _s;
+        day = _d;
+        month = _mo;
+        year = _y;
+        hour = _h;
+        min =_mi;
+        task = _t;
+        des = _des;
+        label = _label;
 
+        Log.i(TAG,"Label: " + _label);
+    }
 
 
 }

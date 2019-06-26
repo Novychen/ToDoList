@@ -3,7 +3,6 @@
     <string name="action_settings">Settings</string>
 
     //authentication
-
     <string name="main_Activity_Motivation">Just do it</string>
 
     <string name="main_Activity_Auth_LogIn_Email">email</string>
@@ -74,10 +73,18 @@
     <string name="list_Activity_title_listItem">title</string>
     <string name="list_Activity_date_listItem">date</string>
 
-    //alarm
-    <string name="Receiver_Notification_Activity">Test!</string>
-    <string name="Receiver_Notification_title">Test!</string>
-    <string name="Receiver_Notification_dialog">Das ist ein Test</string>
+    //settings
+    <string name="Settings_Activity_Switch_brutalMoti">brutal Motivation</string>
+    <string name="Settings_Activity_Switch_cuteMoti">cute Motivation</string>
+    <string name="Settings_Activity_Switch_normalMoti">just Motivation</string>
+    <string name="Settings_Activity_Switch_snarkyMoti">snarky Motivation</string>
+
+    <string name="Settings_Activity_text_brutalMoti">got the guts?</string>
+    <string name="Settings_Activity_text_cuteMoti">if you need some rainbows in your life</string>
+    <string name="Settings_Activity_text_normalMoti">good old motivation quotes</string>
+    <string name="Settings_Activity_text_snarkyMoti">need a little sass?</string>
+
+
 
 
 </resources>
