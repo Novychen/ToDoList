@@ -17,25 +17,29 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#8BC34A" />
+
+            <TextView
                 android:id="@+id/activity_task_due_title"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:text="Titel"
+                android:layout_height="wrap_content"
+                android:background="#8BC34A"
                 android:textAlignment="center"
-                android:textSize="30sp" />
+                android:textSize="50sp" />
 
             <TextView
                 android:id="@+id/activity_task_due_tags"
                 android:layout_width="match_parent"
-                android:layout_height="74dp"
-                android:text="Tags"
-                android:textSize="20sp" />
+                android:layout_height="wrap_content"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/activity_task_due_date"
                 android:layout_width="match_parent"
-                android:layout_height="91dp"
-                android:text="Date"
+                android:layout_height="64dp"
                 android:textAlignment="center"
                 android:textSize="30sp"
                 android:textStyle="bold" />
@@ -44,8 +48,7 @@
                 android:id="@+id/activity_task_due_Note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Desciption"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:textStyle="italic" />
 
         </LinearLayout>

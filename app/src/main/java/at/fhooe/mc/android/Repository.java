@@ -28,6 +28,7 @@ class Repository {
     private static List<String> mDescription = new LinkedList<>();
     private static List<Integer> mTasks = new LinkedList<>();
     private static List<String> mTitle = new LinkedList<>();
+    private static List<String> mReference = new LinkedList<>();
 
 
     /**
@@ -95,7 +96,11 @@ class Repository {
                mValue.clear();
                mTitle.clear();
                mDescription.clear();
+               mReference.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
+                   String refence = listSnapshot.getKey();
+                   mReference.add(refence);
+
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
 
@@ -129,7 +134,7 @@ class Repository {
                    _callback.setTimeData(mDay, mMonth, mYear, mHour, mMinute,mTasks);
                    _callback.setStringData(mDescription);
                    _callback.setTitle(mTitle,mDay, mMonth, mYear);
-                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks,mDescription);
+                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks,mDescription,mReference);
 
            }
 

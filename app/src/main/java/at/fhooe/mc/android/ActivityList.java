@@ -44,6 +44,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List<Integer> min = null ;
     List<Integer> task = null;
     List<String> des = null;
+    List<String> ref = null;
 
 
     @Override
@@ -91,6 +92,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         i.putExtra("hour", hour.get(position));
         i.putExtra("min",min.get(position));
         i.putExtra("des",des.get(position));
+        i.putExtra("ref",ref.get(position));
 
         startActivity(i);
 
@@ -114,7 +116,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             case R.id.menu_arlog_add: {
                 Log.i(TAG, "::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
-
                 startActivity(i);
             }break;
             case R.id.menu_arlog_remove: {
@@ -228,7 +229,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setAll(List<String> _s, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<String> _des) {
+    public void setAll(List<String> _s, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<String> _des,List<String> _ref) {
         title = _s;
         day = _d;
         month = _mo;
@@ -237,6 +238,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         min =_mi;
         task = _t;
         des = _des;
+        ref = _ref;
     }
 
 

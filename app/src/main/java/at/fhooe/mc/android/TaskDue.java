@@ -1,10 +1,14 @@
 package at.fhooe.mc.android;
 
+
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,6 +29,7 @@ public class TaskDue extends Activity {
         int hour = i.getIntExtra("hour",0);
         int min = i.getIntExtra("min",0);
         String des = i.getStringExtra("des");
+        String ref = i.getStringExtra("ref");
 
         StringBuilder s = new StringBuilder();
         s.append(day + "." + month +"." + year  + ",   " + hour +":"+ min);
@@ -45,9 +50,10 @@ public class TaskDue extends Activity {
 
         Log.i(TAG, "data ---->" + title +","+ day +","+ month +","+ year +","
                 + hour+","+ min +"," + des);
+        Log.i(TAG, "Reference ---->"+ref);
+
 
     }
-
 
 
 }

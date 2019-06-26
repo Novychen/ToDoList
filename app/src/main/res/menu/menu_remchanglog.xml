@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_remchanglog_remove"
+        android:icon="@drawable/ic_remove"
+        android:title="remove"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_remchanglog_change"
+        android:icon="@drawable/ic_change"
+        android:title="change"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_remchanglog_log_out"
+        android:icon="@drawable/ic_logout"
+        android:title="log out"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
+</menu>

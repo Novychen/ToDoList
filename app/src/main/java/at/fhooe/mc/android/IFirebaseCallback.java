@@ -7,5 +7,5 @@ public interface IFirebaseCallback {
     void setStringData(List<String> s);
     void setTimeData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h ,List<Integer> min, List<Integer> task);
     void setTitle(List<String> s,List<Integer> d, List<Integer> m, List<Integer> y);
-    void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h ,List<Integer> min, List<Integer> task, List<String> des);
+    void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h ,List<Integer> min, List<Integer> task, List<String> des, List<String> ref);
 }
