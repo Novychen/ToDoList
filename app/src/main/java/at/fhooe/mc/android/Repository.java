@@ -1,5 +1,6 @@
 package at.fhooe.mc.android;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -109,8 +110,8 @@ class Repository {
                mDescription.clear();
                mReference.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
-                   String refence = listSnapshot.getKey();
-                   mReference.add(refence);
+                   String reference = listSnapshot.getKey();
+                   mReference.add(reference);
 
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
@@ -180,6 +181,7 @@ class Repository {
            }
        });
    }
+
 
     /*private void addChildEventListener() {
         ChildEventListener childListener = new ChildEventListener() {
@@ -262,4 +264,12 @@ class Repository {
         return mUserId;
     }
 
+    public void removeDate(String key) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child(key);
+        ref.removeValue();
+
+
+
+
+    }
 }

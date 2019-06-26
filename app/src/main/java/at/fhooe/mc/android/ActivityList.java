@@ -66,15 +66,11 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
-        Repository.getInstance().getData(ref2, this);
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
-        Repository.getInstance().getData(ref, this);
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
+        getRef();
         adapter = new DataAdapter(this);
         setListAdapter(adapter);
 
@@ -115,8 +111,18 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
 
-        CheckBox check = (CheckBox) findViewById(R.id.activity_list_checkbox);
+
     }
+   public void getRef(){
+       DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+       Repository.getInstance().getData(ref2, this);
+
+       DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+       Repository.getInstance().getData(ref, this);
+
+   }
+
+
 
 
     @Override
@@ -159,11 +165,8 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
                 startActivity(i);
             }break;
-            case R.id.menu_arlog_remove: {
-                //dbRef.child(listKeys.get(selectedPosition)).removeValue();
-                Log.e(TAG, "::onClick delete Button was pressed");
-            }
-            break;
+
+
             default:
                 Log.e(TAG, "::onClick unexpected ID encountered");
         }return true;

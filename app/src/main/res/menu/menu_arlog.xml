@@ -4,17 +4,16 @@
 
     <item
         android:id="@+id/menu_arlog_add"
+        android:enabled="true"
         android:icon="@drawable/ic_add"
         android:title="@string/list_Activity_add_button"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_arlog_remove"
-        android:icon="@drawable/ic_remove"
-        android:title="@string/list_Activity_delete_button"
+        android:visible="true"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_arlog_logout"
+        android:enabled="true"
         android:icon="@drawable/ic_logout"
         android:title="@string/list_Activity_logout_button"
-        app:showAsAction="ifRoom" />
+        android:visible="true"
+        app:showAsAction="always|ifRoom" />
 </menu>
