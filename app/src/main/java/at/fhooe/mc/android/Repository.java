@@ -19,15 +19,17 @@ class Repository {
     private static final String TAG = "at.fhooe.mc.toDoList :: Repository";
     private static Repository mInstance;
     private static String mUserId;
-    private static List<Object> mValue = new LinkedList<>();
-    private static List<Integer> mDay = new LinkedList<>();
-    private static List<Integer> mMonth = new LinkedList<>();
-    private static List<Integer> mYear = new LinkedList<>();
-    private static List<Integer> mHour = new LinkedList<>();
-    private static List<Integer> mMinute = new LinkedList<>();
-    private static List<String> mDescription = new LinkedList<>();
-    private static List<Integer> mTasks = new LinkedList<>();
-    private static List<String> mTitle = new LinkedList<>();
+    private  List<Object> mValue = new LinkedList<>();
+    private  List<Integer> mDay = new LinkedList<>();
+    private  List<Integer> mMonth = new LinkedList<>();
+    private  List<Integer> mYear = new LinkedList<>();
+    private  List<Integer> mHour = new LinkedList<>();
+    private  List<Integer> mMinute = new LinkedList<>();
+    private  List<String> mDescription = new LinkedList<>();
+    private  List<Integer> mTasks = new LinkedList<>();
+    private  List<String> mTitle = new LinkedList<>();
+    private  List<Integer> mRepeats = new LinkedList<>();
+    private  List<String> mRepeatRotation = new LinkedList<>();
 
     /**
      * Constructor for Repository
@@ -89,42 +91,54 @@ class Repository {
                mHour.clear();
                mMinute.clear();
                mTasks.clear();
+               mTitle.clear();
+               mRepeatRotation.clear();
+               mRepeats.clear();
                // This method is called once with the initial value and again
                // whenever data at this location is updated.
+               mValue.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
+                   Integer task = listSnapshot.child("task").getValue(Integer.class);
+                    if(task != null && task == 0){
+                       Integer day = listSnapshot.child("day").getValue(Integer.class);
+                       mDay.add(day);
 
-                   Integer day = listSnapshot.child("day").getValue(Integer.class);
-                   mDay.add(day);
+                       Integer month = listSnapshot.child("month").getValue(Integer.class);
+                       mMonth.add(month);
 
-                   Integer month = listSnapshot.child("month").getValue(Integer.class);
-                   mMonth.add(month);
+                       Integer year = listSnapshot.child("year").getValue(Integer.class);
+                       mYear.add(year);
 
-                   Integer year = listSnapshot.child("year").getValue(Integer.class);
-                   mYear.add(year);
+                       Integer hour = listSnapshot.child("hour").getValue(Integer.class);
+                       mHour.add(hour);
 
-                   Integer hour = listSnapshot.child("hour").getValue(Integer.class);
-                   mHour.add(hour);
+                       Integer minute = listSnapshot.child("minute").getValue(Integer.class);
+                       mMinute.add(minute);
 
-                   Integer minute = listSnapshot.child("minute").getValue(Integer.class);
-                   mMinute.add(minute);
+                       String description = listSnapshot.child("description").getValue(String.class);
+                       mDescription.add(description);
 
-                   String description = listSnapshot.child("description").getValue(String.class);
-                   mDescription.add(description);
+                       String title = listSnapshot.child("title").getValue(String.class);
+                       mTitle.add(title);
+                   } else if (task != null && task == 1){
+                        String repeatRotation  = listSnapshot.child("repeatRotation").getValue(String.class);
+                        mRepeatRotation.add(repeatRotation);
 
-                   String title = listSnapshot.child("title").getValue(String.class);
-                   mTitle.add(title);
+                        Integer repeat  = listSnapshot.child("repeats").getValue(Integer.class);
+                        mRepeats.add(repeat);
 
-                  Integer task = listSnapshot.child("task").getValue(Integer.class);
-                  mTasks.add(task);
+                    }
+
                }
                Log.d(TAG, "Value is: " + mValue);
 
                    _callback.setData(mValue);
-                   _callback.setTimeData(mDay, mMonth, mYear, mHour, mMinute,mTasks);
+                   _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute,mTitle);
+
                    _callback.setStringData(mDescription);
-                   _callback.setStringData(mTitle);
+                   _callback.setTitle(mTitle,mDay, mMonth, mYear);
 
            }
 

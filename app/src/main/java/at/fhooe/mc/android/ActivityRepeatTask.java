@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,8 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     private String[] s;
     int mLabelCount = 0;
     List<String> mLabelList;
-    ArrayAdapter<String> mArrayAdapter;
+    ArrayAdapter<String> mLabelAdapter;
+    GridView mLabelView;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -48,11 +50,20 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         ImageView ok = findViewById(R.id.RepeatTask_Activity_Check_Button);
         ok.setOnClickListener(this);
 
-        GridView tableRow = findViewById(R.id.task_Activity_Label_layout);
+        mLabelView = findViewById(R.id.task_Activity_Label_layout);
         mLabelList = new ArrayList<>();
-        mArrayAdapter = new ArrayAdapter<>(ActivityRepeatTask.this, android.R.layout.simple_expandable_list_item_1, mLabelList);
-        tableRow.setAdapter(mArrayAdapter);
+        mLabelAdapter = new ArrayAdapter<>(ActivityRepeatTask.this, android.R.layout.simple_expandable_list_item_1, mLabelList);
+        mLabelView.setAdapter(mLabelAdapter);
 
+        mLabelView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
+
+                mLabelAdapter.remove(mLabelList.get(_position));
+                Toast.makeText(ActivityRepeatTask.this, R.string.task_Activity_LabelDelete_Toast, Toast.LENGTH_SHORT).show();
+                mLabelCount--;
+            }
+        });
         ImageView label = findViewById(R.id.RepeatTask_Activity_Label_Button);
         label.setOnClickListener(this);
     }
@@ -66,8 +77,6 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         d.setContentView(R.layout.activity_repeat_picker);
         Button set = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
         set.setOnClickListener(this);
-        Button cancel = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_cancel);
-        cancel.setOnClickListener(this);
         mPicker = d.findViewById(R.id.RepeatTask_Activity_Picker);
         s = new String[] {"year","month","week"};
         mPicker.setDisplayedValues(s);
@@ -77,24 +86,27 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         d.show();
     }
 
+    public void showRepeatDialog(){
+
+        d = new Dialog(ActivityRepeatTask.this);
+        d.setTitle("Repeat");
+        d.setContentView(R.layout.activity_repeat_picker);
+        Button set = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
+        set.setOnClickListener(this);
+        mTimesPicker = d.findViewById(R.id.RepeatTask_Activity_Picker);
+        mTimesPicker.setValue(0);
+        mTimesPicker.setMaxValue(20);
+        mTimesPicker.setMinValue(0);
+        mTimesPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        d.show();
+    }
+
     @Override
     public void onClick(View _v) {
         switch (_v.getId()) {
 
             case R.id.RepeatTask_Activity_HowOftRepeat:{
-                d = new Dialog(ActivityRepeatTask.this);
-                d.setTitle("Repeat");
-                d.setContentView(R.layout.activity_repeat_picker);
-                Button set = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
-                set.setOnClickListener(this);
-                Button cancel = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_cancel);
-                cancel.setOnClickListener(this);
-                mTimesPicker = d.findViewById(R.id.RepeatTask_Activity_Picker);
-                mTimesPicker.setValue(0);
-                mTimesPicker.setMaxValue(20);
-                mTimesPicker.setMinValue(0);
-                mTimesPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-                d.show();
+               showRepeatDialog();
 
             }break;
             case R.id.RepeatTask_Activity_RepeatDialog_ok:{
@@ -113,10 +125,6 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
 
             }break;
 
-            case R.id.RepeatTask_Activity_RepeatDialog_cancel:{
-                d.dismiss();
-            }
-
             case R.id.RepeatTask_Activity_Check_Button: {
 
                 Log.i(TAG, "::onClick check Button was pressed");
@@ -129,6 +137,19 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 mRepeatTask.setTitle(title);
                 mRepeatTask.setDescription(description);
                 mRepeatTask.setTask(1);
+
+                if(mTimesPicker != null){
+                    mRepeatTask.setRepeats(mTimesPicker.getValue());
+                }else{
+                    mRepeatTask.setRepeats(0);
+                }
+
+                if(mPicker != null){
+                    int choice = mPicker.getValue();
+                    mRepeatTask.setRepeatRotation(s[choice]);
+                }else{
+                    mRepeatTask.setRepeatRotation("");
+                }
 
                 long taskNumber = MainActivity.getTaskNumber() +1;
 
@@ -144,7 +165,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                     EditText txt = findViewById(R.id.RepeatTask_Activity_setLabel_field);
                     String getLabel = txt.getText().toString();
                     mLabelList.add(mLabelList.size(), getLabel);
-                    mArrayAdapter.notifyDataSetChanged();
+                    mLabelAdapter.notifyDataSetChanged();
                     mRepeatTask.setLabel(mLabelList);
                     Toast.makeText(ActivityRepeatTask.this, R.string.task_Activity_LabelSuccess_Toast, Toast.LENGTH_SHORT).show();
                     txt.setText("");

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,39 +23,90 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
  * this class displays the toDoList and implements action that can manipulate the list
+ *
+ *
+ * Repeat task algorithmus überlegen für Notifications
+ * remove
+ * offline Daten
+ * Wechseln zwischen tasks
+ * Settings wo Notificationart eingestellt werden kann
+ *
  */
 public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
     static DataAdapter adapter;
+    List <String> mSnarkyMotivation = new LinkedList<>();
+    List <String> mFunnyMotivation = new LinkedList<>();
+    List <String> mCuteMotivation = new LinkedList<>();
+    List <String> mMotivation = new LinkedList<>();
+    List <String> mBrutalMotivation = new LinkedList<>();
+    int mGotIntoData;
+
 
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
-        Repository.getInstance().getData(ref, this);
-
-
-        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref2, this);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getData(ref, this);
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
+        mFunnyMotivation.add("People often say that motivation doesn’t last. Well, neither does bathing — that’s why we recommend it daily");
+        mSnarkyMotivation.add("Anything's possible if you've got enough nerve.");
+        mSnarkyMotivation.add("If you're waiting for a SIGN ... THIS IS IT");
+        mSnarkyMotivation.add("It's never too late to get your shit together");
+
+        mBrutalMotivation.add("Get your shit together!");
+        mBrutalMotivation.add("Just do it!");
+        mBrutalMotivation.add("You have time to think up excuses? Get to work!");
+        mBrutalMotivation.add("You don't want to? so what?");
+        mBrutalMotivation.add("Get your ass up");
+        mBrutalMotivation.add("Don't find excuses and keep moving forward!");
+
+        mMotivation.add("The expert in anything was once a beginner");
+        mMotivation.add("Tough times don't last; Tough people do.");
+        mMotivation.add("Worrying will never change the outcome");
+        mMotivation.add("You can and you will");
+        mMotivation.add("If not you, who? If not now. when?");
+        mMotivation.add("you have to go through the worst, to get to the best");
+        mMotivation.add("the struggle you're in today is developing the strength you need for tomorrow");
+        mMotivation.add("To be the best, you must be able to handle the worst.");
+        mMotivation.add("The best way out is always through.");
+
+        mCuteMotivation.add("Believe you can and you’re halfway there.");
+        mCuteMotivation.add("You can totally do it!");
+        mCuteMotivation.add("Life is not a problem to be solved but a gift to be enjoyed. Make the best of this day!");
+        mCuteMotivation.add("There's hope for tomorrow, cheer up :D !");
+        mCuteMotivation.add("Just a little bit longer - you can do it!");
+        mCuteMotivation.add("Don't worry - be happy");
+        mCuteMotivation.add("you are so much stronger than you think");
+        mCuteMotivation.add("After the rain comes the rainbow");
+        mCuteMotivation.add("You are doing great! Keep pushing!");
+
+
         adapter = new DataAdapter(this);
-            addData(adapter);
+        //    addData(adapter);
         setListAdapter(adapter);
 
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
+
+        CheckBox check = (CheckBox) findViewById(R.id.activity_list_checkbox);
+
     }
 
     private void addData(DataAdapter _adapter) {
@@ -76,7 +128,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             s.append( taskS);
             String p = s.toString();
 
-            adapter.add(new ListData(p, l + date));
+            //apter.add(new ListData(p, l + date));
             l++;
         }
     }
@@ -87,6 +139,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         ListAdapter list = getListAdapter();
         ListData       item = (ListData) list.getItem(position);
         Toast.makeText(this, "clicked item " + item, Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, TaskDue.class);
+        startActivity(i);
+        finish();
      }
 
 
@@ -106,7 +161,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 finish();}break;
             case R.id.menu_arlog_add: {
                 Log.i(TAG, "::onClick add Button was pressed");
-                Intent i = new Intent(this, ActivityDeadlineTask.class);
+                Intent i = new Intent(this, ActivityRepeatTask.class);
                 startActivity(i);
             }break;
             case R.id.menu_arlog_remove: {
@@ -130,14 +185,18 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         startActivity(i);
     }
 
+
     @Override
     public void setData(Object _o) {
-        try {
+  /*      try {
         List <Object> data = (List<Object>) _o;
-
-        Object one = data.get(0);
-        Object two = data.get(1);
-        Object three = data.get(2);
+        for(int i = 0; data.get(i) != null; i++) {
+            Object s = data.get(i);
+                if(s.toString().contains("title")) {
+                    adapter.add(new ListData(data.get(i)));
+                    Log.i(TAG, data.get(i).toString());
+                }
+        }setListAdapter(adapter);
 
         }catch (ClassCastException e) {
 
@@ -145,7 +204,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         }catch(IndexOutOfBoundsException e){
             return;
-        }
+        }*/
     }
 
     @Override
@@ -154,8 +213,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setTimeData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task) {
-
+    public void setNotificationDeadlineData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<String> t) {
         if(d.size() != 0) {
             d.remove(d.size() - 1);
             m.remove(m.size() - 1);
@@ -164,17 +222,11 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             min.remove(min.size() - 1);
         }
 
-        Log.i(TAG, ":: setTimeData - day List -----> " + d.toString());
-        Log.i(TAG, ":: setTimeData - month List -----> " + m.toString());
-        Log.i(TAG, ":: setTimeData - year List -----> " + y.toString());
-        Log.i(TAG, ":: setTimeData - hour List -----> " + h.toString());
-        Log.i(TAG, ":: setTimeData - minute List -----> " + min.toString());
-
         List<PendingIntent> piList = new LinkedList<>();
 
         for(int i = 0; i <d.size(); i++) {
 
-            if(task.get(i) != null && task.get(i) == 0) {
+
                 Calendar calendar = Calendar.getInstance();
                 if (d.get(i) == null) {
                     d.set(i, 0);
@@ -196,19 +248,114 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 int day = d.get(i);
                 int hour = h.get(i);
                 int minute = min.get(i);
+
                 calendar.set(year, month, day, hour, minute);
 
-                NotificationAlarm a = new NotificationAlarm();
-                String dueDate = year + "." + month + "." + day + "   " + hour + ":" + minute;
-                a.setNotificationText(dueDate);
+                Random r = new Random();
                 Intent intent = new Intent(this, NotificationAlarm.class);
-                a.onReceive(this, intent);
+                intent.putExtra("title", "The time for your task: " + t.get(i) + " is up!");
+                intent.putExtra("text","You better have your things done");
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
+                PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
             }
-       }
+
+
+            Random r = new Random();
+            Calendar calendar = Calendar.getInstance();
+            int brutal = mBrutalMotivation.size();
+            int cute = mCuteMotivation.size();
+            int funny = mFunnyMotivation.size();
+            int motivation = mMotivation.size();
+            int snarky = mSnarkyMotivation.size();
+
+            if(mGotIntoData != 1) {
+                for (int i = 0; i < 4; i++) {
+                    calendar.setTime(new Date());
+                    calendar.add(Calendar.HOUR_OF_DAY, r.nextInt(12));
+                    calendar.add(Calendar.MINUTE, r.nextInt(60));
+                    Intent intent = new Intent(this, NotificationAlarm.class);
+                    intent.putExtra("title","Motivation coming through");
+                    intent.putExtra("text",mMotivation.get(r.nextInt(motivation)));
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+                }
+            }
+        mGotIntoData++;
     }
+
+    @Override
+    public void setNotificationRepeatData(List<Integer> r, List<String> c, List<String> t) {
+
+        try {
+            if (t.size() != 0) {
+                c.remove(c.size() - 1);
+                r.remove(r.size() - 1);
+            }
+
+            for (int i = 0; i < r.size(); i++) {
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date());
+                if (r.get(i) == null) {
+                    r.set(i, 0);
+                }
+                if(c.get(i) == "year") {
+
+                }
+                if(c.get(i) == "month") {
+
+                }
+                if(c.get(i) == "week") {
+                    calendar.add(Calendar.DAY_OF_MONTH,2);
+
+                }
+
+                int year = 0;
+                int month = 0;
+                int day = 0;
+                int hour = 0;
+                int minute = 0;
+
+                calendar.set(year, month, day, hour, minute);
+
+                Random rand = new Random();
+                Intent intent = new Intent(this, NotificationAlarm.class);
+                intent.putExtra("title", "The time for your task: " + t.get(i) + " is up!");
+                intent.putExtra("text", "You better have your things done");
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pi = PendingIntent.getBroadcast(this, rand.nextInt(1000), intent, 0);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+            }
+        }catch (ClassCastException e) {
+            Log.e(TAG, e.getMessage());
+        }catch(NullPointerException e){
+            Log.e(TAG, e.getMessage());
+        }catch(IndexOutOfBoundsException e){
+            Log.e(TAG, e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void setTitle(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y) {
+        try {
+            for(int i = 0; s.get(i) != null; i++){
+                adapter.add(new ListData(s.get(i),d.get(i),m.get(i),y.get(i)));
+                Log.i(TAG, s.get(i));
+            }setListAdapter(adapter);
+
+        }catch (ClassCastException e) {
+            Log.e(TAG, e.getMessage());
+        }catch(NullPointerException e){
+            Log.e(TAG, e.getMessage());
+        }catch(IndexOutOfBoundsException e){
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+
 
 
 }

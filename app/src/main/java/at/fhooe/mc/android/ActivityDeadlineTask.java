@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.DatePicker;
@@ -41,8 +42,9 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
     protected DeadlineTask mDeadlineTask;
     int mLabelCount = 0;
+    GridView mLabelView;
     List<String> mLabelList;
-    ArrayAdapter<String> mArrayAdapter;
+    ArrayAdapter<String> mLabelAdapter;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -61,13 +63,23 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         ImageView ok = findViewById(R.id.DeadlineTask_Activity_Check_Button);
         ok.setOnClickListener(this);
 
-        GridView tableRow = findViewById(R.id.task_Activity_Label_layout);
+        mLabelView = findViewById(R.id.task_Activity_Label_layout);
         mLabelList = new ArrayList<>();
-        mArrayAdapter = new ArrayAdapter<>(ActivityDeadlineTask.this,android.R.layout.simple_expandable_list_item_1,mLabelList);
-        tableRow.setAdapter(mArrayAdapter);
+        mLabelAdapter = new ArrayAdapter<>(ActivityDeadlineTask.this,android.R.layout.simple_expandable_list_item_1,mLabelList);
+        mLabelView.setAdapter(mLabelAdapter);
 
         ImageView label = findViewById(R.id.DeadlineTask_Activity_Label_Button);
         label.setOnClickListener(this);
+
+        mLabelView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
+
+                mLabelAdapter.remove(mLabelList.get(_position));
+                Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelDelete_Toast, Toast.LENGTH_SHORT).show();
+                mLabelCount--;
+            }
+        });
 
     }
 
@@ -84,7 +96,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                     EditText txt = findViewById(R.id.DeadlineTask_Activity_setLabel_field);
                     String getLabel = txt.getText().toString();
                     mLabelList.add(mLabelList.size(), getLabel);
-                    mArrayAdapter.notifyDataSetChanged();
+                    mLabelAdapter.notifyDataSetChanged();
                     mDeadlineTask.setLabel(mLabelList);
                     Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelSuccess_Toast, Toast.LENGTH_SHORT).show();
                     txt.setText("");

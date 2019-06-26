@@ -3,11 +3,14 @@
     <string name="action_settings">Settings</string>
 
     //authentication
-    <string name="main_Activity_Auth_LogIn_Email">please enter your email</string>
-    <string name="main_Activity_Auth_LogIn_Password">please enter your password</string>
-    <string name="main_Activity_LogIn_Button">log in</string>
-    <string name="main_Activity_SignIn_Button">sign in</string>
 
+    <string name="main_Activity_Motivation">Just do it</string>
+
+    <string name="main_Activity_Auth_LogIn_Email">email</string>
+    <string name="main_Activity_Auth_LogIn_Password">password</string>
+    <string name="main_Activity_LogIn_Button">log in</string>
+    <string name="main_Activity_SignIn_Button">sign up</string>
+    <string name="main_Activity_help_dialog">Please enter your email address \n and your password. The password \n has to have at least 7 characters. \n If you already have an account \n click "log in", if you wish to create \n a new Account click "sign up"</string>
 
     <string name="main_Activity_SignIn_Toast">New account created</string>
     <string name="main_Activity_SignInFail_Toast">Couldn\'t create account</string>
@@ -19,12 +22,12 @@
     <string name="main_Activity_PasswordInvalid_Toast">invalid password</string>
     <string name="main_Activity_EmailInvalid_Toast">invalid email</string>
     <string name="main_Activity_EmailPasswordInvalid_Toast">invalid email and invalid password</string>
-
     <string name="list_Activity_LogOut_Button">log out</string>
 
 
     //task functions
-    <string name="task_Activity_LabelSuccess_Toast">label added successFully</string>
+    <string name="task_Activity_LabelSuccess_Toast">label successfully added </string>
+    <string name="task_Activity_LabelDelete_Toast">label successfully deleted </string>
     <string name="task_Activity_LabelFail_Toast">too many labels</string>
     <string name="task_Activity_Label_layout">layout</string>
 
@@ -64,9 +67,6 @@
     <string name="DeadlineTask_Activity_description_field">put more information here</string>
     <string name="DeadlineTask_Activity_Check_Button">OK</string>
 
-
-
-
     //list functions
     <string name="list_Activity_delete_button">delete</string>
     <string name="list_Activity_add_button">add</string>
@@ -76,7 +76,6 @@
 
     //alarm
     <string name="Receiver_Notification_Activity">Test!</string>
-
     <string name="Receiver_Notification_title">Test!</string>
     <string name="Receiver_Notification_dialog">Das ist ein Test</string>
 
