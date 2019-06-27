@@ -74,7 +74,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         Repository.getInstance().getData(ref2, this);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
-        Repository.getInstance().getData(ref, this);
+        Repository.getInstance().getLongData(ref);
 
         adapter = new DataAdapter(this);
         setListAdapter(adapter);
@@ -116,13 +116,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
-
-
     }
-
-
-
-
 
     @Override
     protected void onListItemClick(ListView l, View v, int _position, long id) {
@@ -187,18 +181,19 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t) {
-        if(_d.size() != 0) {
-            _d.remove(_d.size() - 1);
-            _m.remove(_m.size() - 1);
-            _y.remove(_y.size() - 1);
-            _h.remove(_h.size() - 1);
-            _min.remove(_min.size() - 1);
-        }
+    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal) {
+        {
+            if (_d.size() != 0) {
+                _d.remove(_d.size() - 1);
+                _m.remove(_m.size() - 1);
+                _y.remove(_y.size() - 1);
+                _h.remove(_h.size() - 1);
+                _min.remove(_min.size() - 1);
+            }
 
-        List<PendingIntent> piList = new LinkedList<>();
+            List<PendingIntent> piList = new LinkedList<>();
 
-        for(int i = 0; i <_d.size(); i++) {
+            for (int i = 0; i < _d.size(); i++) {
 
                 Calendar calendar = Calendar.getInstance();
                 if (_d.get(i) == null) {
@@ -227,7 +222,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 Random r = new Random();
                 Intent intent = new Intent(this, NotificationAlarm.class);
                 intent.putExtra("title", "The time for your task: " + _t.get(i) + " is up!");
-                intent.putExtra("text","You better have your things done");
+                intent.putExtra("text", "You better have your things done");
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
@@ -242,24 +237,25 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             int motivation = mMotivation.size();
             int snarky = mSnarkyMotivation.size();
 
-            if(mGotIntoData != 1) {
+            if (mGotIntoData != 1) {
                 for (int i = 0; i < 4; i++) {
                     calendar.setTime(new Date());
                     calendar.add(Calendar.HOUR_OF_DAY, r.nextInt(12));
                     calendar.add(Calendar.MINUTE, r.nextInt(60));
                     Intent intent = new Intent(this, NotificationAlarm.class);
-                    intent.putExtra("title","Motivation coming through");
-                    intent.putExtra("text",mMotivation.get(r.nextInt(motivation)));
+                    intent.putExtra("title", "Motivation coming through");
+                    intent.putExtra("text", mMotivation.get(r.nextInt(motivation)));
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
                 }
             }
-        mGotIntoData++;
+            mGotIntoData++;
+        }
     }
 
     @Override
-    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t) {
+    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal) {
 
         try {
             if (_t.size() != 0) {
@@ -301,41 +297,37 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
             }
         }catch (ClassCastException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "setNotificationData: " + e.getMessage());
         }catch(NullPointerException e){
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "setNotificationData: " + e.getMessage());
         }catch(IndexOutOfBoundsException e){
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "setNotificationData: " + e.getMessage());
         }
 
     }
 
     @Override
-    public void setTitle(List<String> _s, List<Integer> _d, List<Integer> _m, List<Integer> _y) {
+    public void setTitle(List<String> _repeatT, List<String> _deadT, List<Integer> _task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _repeats, List<String> _repeatCircle) {
 
-
-            Log.i(TAG, "LIST size --> " + _s.size());
-            try {adapter.clear();
-
-                Log.i(TAG, "LIST size --> " + _s.size());
-
-                Log.i(TAG, "LIST  1 --> " + _s.get(0));
-                Log.i(TAG, "LIST  2 --> " + _s.get(1));
-                Log.i(TAG, "LIST  3 --> " + _s.get(2));
-                Log.i(TAG, "LIST  4 --> " + _s.get(3));
-                for (int i = 0; i < _s.size(); i++) {
-
-                    adapter.add(new ListData(_s.get(i), _d.get(i), _m.get(i), _y.get(i)));
-                    Log.i(TAG, adapter.getCount() + " --> " + _s.get(i));
+            Log.i(TAG, "LIST size --> " + _deadT.size());
+            try {
+                adapter.clear();
+                Log.i(TAG, "LIST size --> " + _deadT.size());
+                Log.i(TAG, "LIST  1 --> " + _deadT.get(0));
+                for (int i = 0; i < _deadT.size(); i++) {
+                    adapter.add(new ListData(_deadT.get(i), _d.get(i), _m.get(i), _y.get(i)));
+                    Log.i(TAG, adapter.getCount() + " --> " + _deadT.get(i));
                 }
                 adapter.notifyDataSetChanged();
 
             } catch (ClassCastException e) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, "setTitle: " + e.getMessage());
             } catch (NullPointerException e) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, "setTitle: " + e.getMessage());
             } catch (IndexOutOfBoundsException e) {
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, "setTitle: " + e.getMessage());
+            } catch (Exception e) {
+                Log.e(TAG, "setTitle: " + e.getMessage());
             }
     }
 

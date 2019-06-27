@@ -13,14 +13,16 @@
 
         <EditText
             android:id="@+id/DeadlineTask_Activity_description_field"
-            android:layout_width="280dp"
+            android:layout_width="0dp"
             android:layout_height="84dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
             android:autofillHints="AUTOFILL_TYPE_TEXT"
             android:ems="10"
             android:gravity="top"
             android:hint="@string/RepeatTask_Activity_description_field"
             android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_description"
             app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_description" />
 
@@ -41,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="180dp"
             android:text="@string/RepeatTask_Activity_description"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +60,7 @@
             android:inputType="textPersonName"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_setLabel_field"
-            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activiy_Rectangle_light_blue" />
+            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activiy_Rectangle_title_light_blue" />
 
         <EditText
             android:id="@+id/RepeatTask_Activity_setLabel_field"
@@ -102,7 +104,7 @@
             app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_setLabel_field" />
 
         <ImageButton
-            android:id="@+id/RepeatTask_Activiy_Rectangle_light_blue"
+            android:id="@+id/RepeatTask_Activiy_Rectangle_title_light_blue"
             android:layout_width="0dp"
             android:layout_height="142dp"
             android:background="#00BCD4"
@@ -124,10 +126,10 @@
             android:textColor="#FDFDFE"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/RepeatTask_Activiy_Rectangle_light_blue"
+            app:layout_constraintEnd_toStartOf="@+id/RepeatTask_Activiy_Rectangle_title_light_blue"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activiy_Rectangle_light_blue"
-            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activiy_Rectangle_light_blue" />
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activiy_Rectangle_title_light_blue"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activiy_Rectangle_title_light_blue" />
 
         <ImageView
             android:id="@+id/RepeatTask_Activiy_smiley"
@@ -136,10 +138,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/ic_smiley"
-            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activiy_Rectangle_light_blue"
-            app:layout_constraintEnd_toStartOf="@+id/RepeatTask_Activiy_Rectangle_light_blue"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activiy_Rectangle_title_light_blue"
+            app:layout_constraintEnd_toStartOf="@+id/RepeatTask_Activiy_Rectangle_title_light_blue"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activiy_Rectangle_light_blue"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activiy_Rectangle_title_light_blue"
             app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_RepeatTask" />
 
         <TextView
@@ -211,6 +213,145 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/RepeatTask_Activity_Repeat"
             app:layout_constraintEnd_toEndOf="@+id/RepeatTask_Activity_fakeButton"
             app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_fakeButton" />
+
+        <ImageButton
+            android:id="@+id/RepeatTask_Activiy_Rectangle_notification_light_blue"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="#8500BCD4"
+            app:layout_constraintBottom_toTopOf="@+id/RepeatTask_Activity_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_fakeButton_2" />
+
+        <TextView
+            android:id="@+id/RepeatTask_Activity_notification_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/RepeatTask_Activity_notification_display"
+            android:textColor="#FDFDFE"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_Repeat"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activiy_Rectangle_notification_light_blue" />
+
+        <RadioButton
+            android:id="@+id/RepeatTask_Activity_MotiNormal_RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:buttonTint="#FDFDFE"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_MotiCute"
+            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_MotiCute_RadioButton" />
+
+        <RadioButton
+            android:id="@+id/RepeatTask_Activity_MotiSnarky_RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:buttonTint="#FDFDFE"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_MotiBrutal"
+            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_MotiBrutal_RadioButton" />
+
+        <RadioButton
+            android:id="@+id/RepeatTask_Activity_MotiBrutal_RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#FDFDFE"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_MotiBrutal"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_MotiBrutal"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiBrutal" />
+
+        <RadioButton
+            android:id="@+id/RepeatTask_Activity_MotiFunny_RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#FDFDFE"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_MotiBrutal"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_MotiFunny"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiBrutal" />
+
+        <RadioButton
+            android:id="@+id/RepeatTask_Activity_MotiCute_RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#FDFDFE"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_MotiCute"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_MotiCute"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiCute" />
+
+        <ImageButton
+            android:id="@+id/RepeatTask_Activity_MotiFunny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/ic_funnymotivation"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_MotiFunny_RadioButton"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_MotiBrutal_RadioButton"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiFunny_RadioButton" />
+
+        <ImageButton
+            android:id="@+id/RepeatTask_Activity_MotiNormal"
+            android:layout_width="28dp"
+            android:layout_height="29dp"
+            android:background="@drawable/ic_notification_active"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_MotiNormal_RadioButton"
+            app:layout_constraintEnd_toEndOf="@+id/RepeatTask_Activity_MotiCute"
+            app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_MotiCute"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiNormal_RadioButton" />
+
+        <ImageButton
+            android:id="@+id/RepeatTask_Activity_MotiBrutal"
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/ic_brutalmotivation"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_MotiCute_RadioButton"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_MotiCute_RadioButton"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiCute_RadioButton" />
+
+        <ImageButton
+            android:id="@+id/RepeatTask_Activity_MotiCute"
+            android:layout_width="26dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/ic_cutemotivation"
+            app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_notification_display"
+            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_notification_display" />
+
+        <ImageButton
+            android:id="@+id/RepeatTask_Activity_MotiSnarky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_snarkymotivation"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_MotiSnarky_RadioButton"
+            app:layout_constraintEnd_toEndOf="@+id/RepeatTask_Activity_MotiBrutal"
+            app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_MotiBrutal"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiSnarky_RadioButton" />
+
+        <ImageButton
+            android:id="@+id/RepeatTask_Activity_help_button"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_help_white"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_notification_display"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_notification_display"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_notification_display" />
+
+        <ImageButton
+            android:id="@+id/RepeatTask_Activity_help_dialog"
+            android:layout_width="246dp"
+            android:layout_height="152dp"
+            android:layout_marginStart="85dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/ic_help_dialog_light_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_help_button" />
 
     </android.support.constraint.ConstraintLayout>
 

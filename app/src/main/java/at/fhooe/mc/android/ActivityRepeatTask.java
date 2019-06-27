@@ -13,11 +13,13 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
 
 public class ActivityRepeatTask extends Activity implements Task, View.OnClickListener {
 
@@ -31,6 +33,12 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     List<String> mLabelList;
     ArrayAdapter<String> mLabelAdapter;
     GridView mLabelView;
+    private int mClickedHelp;
+    private int mBrutalClicked;
+    private int mCuteClicked;
+    private int mFunnyClicked;
+    private int mNormalClicked;
+    private int mSnarkyClicked;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -40,6 +48,27 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         mRepeatTask = new RepeatTask();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        ImageView helpDialog = findViewById(R.id.RepeatTask_Activity_help_dialog);
+        helpDialog.setVisibility(View.INVISIBLE);
+
+        ImageView help = findViewById(R.id.RepeatTask_Activity_help_button);
+        help.setOnClickListener(this);
+
+        RadioButton brutal = findViewById(R.id.RepeatTask_Activity_MotiBrutal_RadioButton);
+        brutal.setOnClickListener(this);
+
+        RadioButton cute = findViewById(R.id.RepeatTask_Activity_MotiCute_RadioButton);
+        cute.setOnClickListener(this);
+
+        RadioButton snarky = findViewById(R.id.RepeatTask_Activity_MotiSnarky_RadioButton);
+        snarky.setOnClickListener(this);
+
+        RadioButton funny = findViewById(R.id.RepeatTask_Activity_MotiFunny_RadioButton);
+        funny.setOnClickListener(this);
+
+        RadioButton normal = findViewById(R.id.RepeatTask_Activity_MotiNormal_RadioButton);
+        normal.setOnClickListener(this);
 
         TextView repeat = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
         repeat.setOnClickListener(this);
@@ -134,9 +163,17 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 String description = d.getText().toString();
                 String title = t.getText().toString();
 
+                if(title.equals("")){
+                    title = "Task";
+                }
                 mRepeatTask.setTitle(title);
                 mRepeatTask.setDescription(description);
                 mRepeatTask.setTask(1);
+
+                if(mLabelList != null){
+                    mLabelList.add("");
+                }
+                mRepeatTask.setLabel(mLabelList);
 
                 if(mTimesPicker != null){
                     mRepeatTask.setRepeats(mTimesPicker.getValue());
@@ -176,7 +213,69 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             break;
             case R.id.RepeatTask_Activity_RepeatCircles:{
                 showRepeatCircleDialog();
-            }
+            }break; 
+            case R.id.RepeatTask_Activity_help_button:{
+                ImageView helpDialog = findViewById(R.id.RepeatTask_Activity_help_dialog);
+                if(mClickedHelp % 2 == 0) {
+                    helpDialog.setVisibility(View.VISIBLE);
+                } else{
+                    helpDialog.setVisibility(View.INVISIBLE);
+                }
+                mClickedHelp++;
+            }break;
+
+            case R.id.RepeatTask_Activity_MotiBrutal_RadioButton:{
+                Log.i(TAG, "::onClick MotivationBrutal RadioButton was clicked");
+                if(mBrutalClicked % 2 == 0) {
+                    mRepeatTask.setBrutal(true);
+                }else{
+                    mRepeatTask.setBrutal(false);
+                    RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiBrutal_RadioButton);
+                    b.setChecked(false);
+                }mBrutalClicked++;
+
+            }break;
+            case R.id.RepeatTask_Activity_MotiCute_RadioButton:{
+                Log.i(TAG, "::onClick MotivationCute RadioButton was clicked");
+                if(mCuteClicked % 2 == 0) {
+                    mRepeatTask.setCute(true);
+                }else{
+                    mRepeatTask.setCute(false);
+                    RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiCute_RadioButton);
+                    b.setChecked(false);
+                }mCuteClicked++;
+
+            }break;
+            case R.id.RepeatTask_Activity_MotiFunny_RadioButton:{
+                Log.i(TAG, "::onClick MotivationFunny RadioButton was clicked");
+                if(mFunnyClicked % 2 == 0) {
+                    mRepeatTask.setFunny(true);
+                }else{
+                    mRepeatTask.setFunny(false);
+                    RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiFunny_RadioButton);
+                    b.setChecked(false);
+                }mFunnyClicked++;
+            }break;
+            case R.id.RepeatTask_Activity_MotiNormal_RadioButton:{
+                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                if(mNormalClicked % 2 == 0) {
+                    mRepeatTask.setNormal(true);
+                }else{
+                    mRepeatTask.setNormal(false);
+                    RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiNormal_RadioButton);
+                    b.setChecked(false);
+                }mNormalClicked++;
+            }break;
+            case R.id.RepeatTask_Activity_MotiSnarky_RadioButton:{
+                Log.i(TAG, "::onClick MotivationSnarky RadioButton was clicked");
+                if(mSnarkyClicked % 2 == 0) {
+                    mRepeatTask.setSnarky(true);
+                }else{
+                    mRepeatTask.setSnarky(false);
+                    RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiSnarky_RadioButton);
+                    b.setChecked(false);
+                }mSnarkyClicked++;
+            }break;
             default:
                 Log.e(TAG, "task_Activity::onClick unexpected ID encountered");
 
