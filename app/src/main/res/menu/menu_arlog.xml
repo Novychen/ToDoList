@@ -3,18 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_arlog_add"
+        android:id="@+id/menu_arlog_add_dead"
+        android:enabled="true"
         android:icon="@drawable/ic_add"
-        android:title="@string/list_Activity_add_button"
-        app:showAsAction="ifRoom" />
+        android:title="addDeadline"
+        android:visible="true"
+        app:showAsAction="always" />
     <item
-        android:id="@+id/menu_arlog_remove"
-        android:icon="@drawable/ic_remove"
-        android:title="@string/list_Activity_delete_button"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/menu_arlog_add_rep"
+        android:enabled="true"
+        android:icon="@drawable/ic_add"
+        android:title="addRepeat"
+        android:visible="true"
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_arlog_logout"
+        android:enabled="true"
         android:icon="@drawable/ic_logout"
         android:title="@string/list_Activity_logout_button"
-        app:showAsAction="ifRoom" />
+        android:visible="true"
+        app:showAsAction="always|ifRoom" />
 </menu>

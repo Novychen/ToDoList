@@ -1,5 +1,6 @@
 package at.fhooe.mc.android;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -11,6 +12,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static at.fhooe.mc.android.MainActivity.getTaskNumber;
 
 /**
  * This class (Singelton Pattern) implements all methods that are connected to the database such as {@link Repository#getData(DatabaseReference, IFirebaseCallback)} or {@link Repository#saveData(Task)})}.
@@ -90,6 +93,7 @@ class Repository {
        _myRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
+
                mValue.clear();
                mDay.clear();
                mMonth.clear();
@@ -108,8 +112,8 @@ class Repository {
                mDescription.clear();
                mReference.clear();
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
-                   String refence = listSnapshot.getKey();
-                   mReference.add(refence);
+                   String reference = listSnapshot.getKey();
+                   mReference.add(reference);
 
                    Object value = listSnapshot.getValue(Object.class);
                    mValue.add(value);
@@ -179,6 +183,7 @@ class Repository {
            }
        });
    }
+
 
     /*private void addChildEventListener() {
         ChildEventListener childListener = new ChildEventListener() {
@@ -261,4 +266,11 @@ class Repository {
         return mUserId;
     }
 
+    public void removeDate(String key) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child(key);
+        ref.removeValue();
+        long taskNumber = MainActivity.getTaskNumber() -1;
+        Log.i(TAG, "taskNumber Value is: " + taskNumber);
+        Repository.getInstance().saveData(taskNumber);
+    }
 }

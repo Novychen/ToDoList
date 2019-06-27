@@ -39,6 +39,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     private int mYear;
     private int mHour;
     private int mMinute;
+    private boolean mCheckTime;
 
     protected DeadlineTask mDeadlineTask;
     int mLabelCount = 0;
@@ -116,6 +117,18 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
                 mDeadlineTask.setTitle(title);
                 mDeadlineTask.setDescription(description);
+                Calendar calendar = Calendar.getInstance();
+                if(mDay == 0){
+                    mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                    mMonth = calendar.get(Calendar.MONTH);
+                    mYear = calendar.get(Calendar.YEAR);
+                }
+
+                if(!mCheckTime){
+                    mMinute = calendar.get(Calendar.MINUTE);
+                    mHour = calendar.get(Calendar.HOUR_OF_DAY);
+                }
+
                 mDeadlineTask.setDay(mDay);
                 mDeadlineTask.setMonth(mMonth);
                 mDeadlineTask.setYear(mYear);
@@ -160,6 +173,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                         }else{
                             mMinute = minute;
                             mHour = hourOfDay;
+                            mCheckTime = true;
                         }
                     }
                 }, hourOfDay, minute, true);

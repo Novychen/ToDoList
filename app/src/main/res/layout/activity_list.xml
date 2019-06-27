@@ -1,47 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#004EB7F0"
     tools:context=".ActivityList">
 
     <LinearLayout
+        android:id="@+id/activity_list_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/activity_list_item"
-            android:layout_width="326dp"
+        <TextView
+            android:id="@+id/activity_list_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@string/list_Activity_title_listItem"
+            android:textColor="#8BC34A"
+            android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/activity_list_title"
-                android:layout_width="296dp"
-                android:layout_height="wrap_content"
-                android:text="@string/list_Activity_title_listItem"
-                android:textColor="#8BC34A"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/activity_list_date"
-                android:layout_width="296dp"
-                android:layout_height="wrap_content"
-                android:text="@string/list_Activity_date_listItem"
-                android:textColor="#000000"
-                android:textSize="24sp" />
-        </LinearLayout>
-
-        <CheckBox
-            android:id="@+id/activity_list_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="74dp"
-            android:layout_weight="3"
-            android:textColor="#EBE6E6" />
+        <TextView
+            android:id="@+id/activity_list_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/list_Activity_date_listItem"
+            android:textColor="#000000"
+            android:textSize="24sp" />
 
     </LinearLayout>
 
