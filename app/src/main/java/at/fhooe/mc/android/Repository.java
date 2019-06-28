@@ -1,9 +1,7 @@
 package at.fhooe.mc.android;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -12,8 +10,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static at.fhooe.mc.android.MainActivity.getTaskNumber;
 
 /**
  * This class (Singelton Pattern) implements all methods that are connected to the database such as {@link Repository#getData(DatabaseReference, IFirebaseCallback)} or {@link Repository#saveData(Task)})}.
@@ -24,22 +20,36 @@ class Repository {
     private static Repository mInstance;
     private static String mUserId;
 
-    private static List<Object> mValue = new LinkedList<>();
-    private static List<Integer> mDay = new LinkedList<>();
-    private static List<Integer> mMonth = new LinkedList<>();
-    private static List<Integer> mYear = new LinkedList<>();
-    private static List<Integer> mHour = new LinkedList<>();
-    private static List<Integer> mMinute = new LinkedList<>();
-    private static List<String> mDescription = new LinkedList<>();
-    private static List<Integer> mTasks = new LinkedList<>();
-    private static List<String> mTitle = new LinkedList<>();
-    private static List<String> mReference = new LinkedList<>();
+    private List<Integer> mTasks = new LinkedList<>();
 
-    private  List<Integer> mRepeats = new LinkedList<>();
-    private  List<String> mRepeatRotation = new LinkedList<>();
-    private  List<List<String>> mLabel = new LinkedList<>();
+    private List<Integer> mDay = new LinkedList<>();
+    private List<Integer> mMonth = new LinkedList<>();
+    private List<Integer> mYear = new LinkedList<>();
+    private List<Integer> mHour = new LinkedList<>();
+    private List<Integer> mMinute = new LinkedList<>();
 
+    private List<Integer> mRepeats = new LinkedList<>();
+    private List<String> mRepeatRotation = new LinkedList<>();
 
+    private List<String> mTitleRepeat = new LinkedList<>();
+    private List<String> mTitleDead = new LinkedList<>();
+    private List<List<String>> mLabelRepeat = new LinkedList<>();
+    private List<List<String>> mLabelDead = new LinkedList<>();
+    private List<String> mDescriptionRepeat = new LinkedList<>();
+    private List<String> mDescriptionDead = new LinkedList<>();
+    private List<String> mReferenceRepeat = new LinkedList<>();
+    private List<String> mReferenceDead = new LinkedList<>();
+    private List<Boolean> mBrutalRepeat = new LinkedList<>();
+    private List<Boolean> mCuteRepeat = new LinkedList<>();
+    private List<Boolean> mSnarkyRepeat = new LinkedList<>();
+    private List<Boolean> mFunnyRepeat = new LinkedList<>();
+    private List<Boolean> mNormalRepeat = new LinkedList<>();
+    private List<Boolean> mBrutalDead = new LinkedList<>();
+    private List<Boolean> mCuteDead = new LinkedList<>();
+    private List<Boolean> mSnarkyDead = new LinkedList<>();
+    private List<Boolean> mFunnyDead = new LinkedList<>();
+    private List<Boolean> mNormalDead = new LinkedList<>();
+    private List<Boolean> mNotification = new LinkedList<>();
 
     /**
      * Constructor for Repository
@@ -70,12 +80,10 @@ class Repository {
                 try {
                     MainActivity.setTaskNumber(dataSnapshot.getValue(Long.class));
                 }catch(NullPointerException e){
-                    return;
+                    Log.e(TAG, "getLongData: " + e.getMessage());
                 }catch(ClassCastException e){
-                    return;
+                    Log.e(TAG,"getLongData: " + e.getMessage());
                 }
-                Log.i(TAG, "Value is: " + mValue);
-
             }
 
             @Override
@@ -95,132 +103,151 @@ class Repository {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
 
-               mValue.clear();
+               mTasks.clear();
+
                mDay.clear();
                mMonth.clear();
                mYear.clear();
                mHour.clear();
                mMinute.clear();
-               mTasks.clear();
-               mTitle.clear();
+               mBrutalDead.clear();
+               mCuteDead.clear();
+               mSnarkyDead.clear();
+               mFunnyDead.clear();
+               mNormalDead.clear();
+               mTitleDead.clear();
+               mLabelDead.clear();
+               mDescriptionDead.clear();
+               mReferenceDead.clear();
+               mNotification.clear();
+
+               mTitleRepeat.clear();
                mRepeatRotation.clear();
                mRepeats.clear();
-               // This method is called once with the initial value and again
-               // whenever data at this location is updated.
-               mValue.clear();
-               mTitle.clear();
-               mLabel.clear();
-               mDescription.clear();
-               mReference.clear();
+               mBrutalRepeat.clear();
+               mCuteRepeat.clear();
+               mSnarkyRepeat.clear();
+               mFunnyRepeat.clear();
+               mNormalRepeat.clear();
+               mLabelRepeat.clear();
+               mDescriptionRepeat.clear();
+               mReferenceRepeat.clear();
+
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
-                   String reference = listSnapshot.getKey();
-                   mReference.add(reference);
 
-                   Object value = listSnapshot.getValue(Object.class);
-                   mValue.add(value);
                    Integer task = listSnapshot.child("task").getValue(Integer.class);
+                   mTasks.add(task);
 
-                       Integer day = listSnapshot.child("day").getValue(Integer.class);
-                       mDay.add(day);
+                   if(task != null) {
+                       if(task == 0){
+                           String reference = listSnapshot.getKey();
+                           mReferenceDead.add(reference);
 
-                       Integer month = listSnapshot.child("month").getValue(Integer.class);
-                       mMonth.add(month);
+                           Integer day = listSnapshot.child("day").getValue(Integer.class);
+                           mDay.add(day);
 
-                       Integer year = listSnapshot.child("year").getValue(Integer.class);
-                       mYear.add(year);
+                           Integer month = listSnapshot.child("month").getValue(Integer.class);
+                           mMonth.add(month);
 
-                       Integer hour = listSnapshot.child("hour").getValue(Integer.class);
-                       mHour.add(hour);
+                           Integer year = listSnapshot.child("year").getValue(Integer.class);
+                           mYear.add(year);
 
-                       Integer minute = listSnapshot.child("minute").getValue(Integer.class);
-                       mMinute.add(minute);
+                           Integer hour = listSnapshot.child("hour").getValue(Integer.class);
+                           mHour.add(hour);
 
-                       String description = listSnapshot.child("description").getValue(String.class);
-                       mDescription.add(description);
+                           Integer minute = listSnapshot.child("minute").getValue(Integer.class);
+                           mMinute.add(minute);
 
-                       String title = listSnapshot.child("title").getValue(String.class);
-                       mTitle.add(title);
+                           String description = listSnapshot.child("description").getValue(String.class);
+                           mDescriptionDead.add(description);
 
-                       String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
-                       String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
-                       String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
-                       LinkedList <String> s = new LinkedList<>();
-                       s.add(firstLabel);
-                       s.add(secondLabel);
-                       s.add(thirdLabel);
-                       mLabel.add(s);
+                           String title = listSnapshot.child("title").getValue(String.class);
+                           mTitleDead.add(title);
 
-/*                   } else if (task != null && task == 1){
-                        String repeatRotation  = listSnapshot.child("repeatRotation").getValue(String.class);
-                        mRepeatRotation.add(repeatRotation);
+                           Boolean brutal = listSnapshot.child("brutal").getValue(Boolean.class);
+                           mBrutalDead.add(brutal);
 
-                        Integer repeat  = listSnapshot.child("repeats").getValue(Integer.class);
-                        mRepeats.add(repeat);
+                           Boolean cute = listSnapshot.child("cute").getValue(Boolean.class);
+                           mCuteDead.add(cute);
 
-                        String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
-                        String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
-                        String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
-                        LinkedList <String> s = new LinkedList<>();
-                        s.add(firstLabel);
-                        s.add(secondLabel);
-                        s.add(thirdLabel);
-                        mLabel.add(s);
+                           Boolean funny = listSnapshot.child("funny").getValue(Boolean.class);
+                           mFunnyDead.add(funny);
 
-                    }*/
+                           Boolean snarky = listSnapshot.child("snarky").getValue(Boolean.class);
+                           mSnarkyDead.add(snarky);
 
+                           Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
+                           mNormalDead.add(normal);
+
+                           Boolean notification = listSnapshot.child("notification").getValue(Boolean.class);
+                           mNotification.add(notification);
+
+                           String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
+                           String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
+                           String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
+                           LinkedList<String> s = new LinkedList<>();
+                           s.add(firstLabel);
+                           s.add(secondLabel);
+                           s.add(thirdLabel);
+                           mLabelDead.add(s);
+                      }else if(task == 1){
+                           String reference = listSnapshot.getKey();
+                           mReferenceRepeat.add(reference);
+
+                           String description = listSnapshot.child("description").getValue(String.class);
+                           mDescriptionRepeat.add(description);
+
+                           String title = listSnapshot.child("title").getValue(String.class);
+                           mTitleRepeat.add(title);
+
+                           String repeatRotation = listSnapshot.child("repeatRotation").getValue(String.class);
+                           mRepeatRotation.add(repeatRotation);
+
+                           Integer repeat = listSnapshot.child("repeats").getValue(Integer.class);
+                           mRepeats.add(repeat);
+
+                           Boolean brutal = listSnapshot.child("brutal").getValue(Boolean.class);
+                           mBrutalRepeat.add(brutal);
+
+                           Boolean cute = listSnapshot.child("cute").getValue(Boolean.class);
+                           mCuteRepeat.add(cute);
+
+                           Boolean funny = listSnapshot.child("funny").getValue(Boolean.class);
+                           mFunnyRepeat.add(funny);
+
+                           Boolean snarky = listSnapshot.child("snarky").getValue(Boolean.class);
+                           mSnarkyRepeat.add(snarky);
+
+                           Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
+                           mNormalRepeat.add(normal);
+
+                           String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
+                           String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
+                           String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
+                           LinkedList<String> s = new LinkedList<>();
+                           s.add(firstLabel);
+                           s.add(secondLabel);
+                           s.add(thirdLabel);
+                           mLabelRepeat.add(s);
+                       }
+                   }
                }
-               Log.d(TAG, "Value is: " + mValue);
-
-                   _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute,mTitle);
-                   _callback.setTitle(mTitle,mDay, mMonth, mYear);
-                   _callback.setAll(mTitle,mDay,mMonth,mYear,mHour,mMinute,mTasks,mDescription,mReference,mLabel);
-
+                    if(mTasks.size() != 0) {
+                        mTasks.remove(mTasks.size() - 1);
+                    }
+                   _callback.setTitle(mTitleRepeat, mTitleDead, mTasks,mDay, mMonth, mYear, mRepeats, mRepeatRotation);
+                   _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute, mTitleDead,mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotification);
+                   _callback.setNotificationRepeatData(mRepeats,mRepeatRotation, mTitleRepeat,mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat, mNotification);
+                   _callback.setAll(mTitleRepeat,mTitleDead,mDay,mMonth,mYear,mHour,mMinute,mTasks, mDescriptionRepeat, mReferenceRepeat, mLabelRepeat,mDescriptionRepeat,mDescriptionDead,mReferenceRepeat,mReferenceDead);
            }
 
            @Override
            public void onCancelled(DatabaseError error) {
-               // Failed to read value
                Log.w(TAG, "Failed to read value.", error.toException());
            }
        });
    }
 
-
-    /*private void addChildEventListener() {
-        ChildEventListener childListener = new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String key = dataSnapshot.getKey();
-                int index = mRepeatRotation.indexOf(key);
-
-                if (index != -1) {
-                    listItems.remove(index);
-                    listKeys.remove(index);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        dbRef.addChildEventListener(childListener);
-    }*/
 
 
     /**
@@ -252,6 +279,20 @@ class Repository {
     }
 
     /**
+     * saves the current TaskNumber into the database
+     * @param _notification the number that represents the current Task
+     * @param _ref the number that represents the current Task
+     */
+    void saveData(boolean _notification, String _ref){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        if (mUserId == null){
+            return;
+        }
+        DatabaseReference reference = database.getReference(mUserId).child(_ref).child("notification");
+        reference.setValue(_notification);
+    }
+
+    /**
      * setter for the {@link Repository#mUserId}, which saves who is logged in
      * @param _user the UserID of the currentUser
      */
@@ -267,15 +308,11 @@ class Repository {
         return mUserId;
     }
 
-    public void removeDate(String key) {
+    void removeDate(String key) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child(key);
         ref.removeValue();
         long taskNumber = MainActivity.getTaskNumber() -1;
         Log.i(TAG, "taskNumber Value is: " + taskNumber);
         Repository.getInstance().saveData(taskNumber);
-
-
-
-
     }
 }

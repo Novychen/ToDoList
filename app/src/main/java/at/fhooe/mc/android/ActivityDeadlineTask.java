@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,12 +41,22 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     private int mYear;
     private int mHour;
     private int mMinute;
+    private boolean mCheckTime;
+    private int mClickedHelp;
+    private int mBrutalClicked;
+    private int mCuteClicked;
+    private int mFunnyClicked;
+    private int mNormalClicked;
+    private int mSnarkyClicked;
+
+
 
     protected DeadlineTask mDeadlineTask;
     int mLabelCount = 0;
     GridView mLabelView;
     List<String> mLabelList;
     ArrayAdapter<String> mLabelAdapter;
+    private int mNoClicked;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -61,8 +72,32 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         TextView dateFiled = findViewById(R.id.DeadlineTask_Activity_date_field);
         dateFiled.setOnClickListener(this);
 
+        ImageView helpButton = findViewById(R.id.DeadlineTask_Activity_help_button);
+        helpButton.setOnClickListener(this);
+
+        ImageView helpDialog = findViewById(R.id.DeadlineTask_Activity_help_dialog);
+        helpDialog.setVisibility(View.INVISIBLE);
+
         ImageView ok = findViewById(R.id.DeadlineTask_Activity_Check_Button);
         ok.setOnClickListener(this);
+
+        RadioButton brutal = findViewById(R.id.DeadlineTask_Activity_MotiBrutal_RadioButton);
+        brutal.setOnClickListener(this);
+
+        RadioButton cute = findViewById(R.id.DeadlineTask_Activity_MotiCute_RadioButton);
+        cute.setOnClickListener(this);
+
+        RadioButton snarky = findViewById(R.id.DeadlineTask_Activity_MotiSnarky_RadioButton);
+        snarky.setOnClickListener(this);
+
+        RadioButton funny = findViewById(R.id.DeadlineTask_Activity_MotiFunny_RadioButton);
+        funny.setOnClickListener(this);
+
+        RadioButton normal = findViewById(R.id.DeadlineTask_Activity_MotiNormal_RadioButton);
+        normal.setOnClickListener(this);
+
+        RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
+        b.setOnClickListener(this);
 
         mLabelView = findViewById(R.id.task_Activity_Label_layout);
         mLabelList = new ArrayList<>();
@@ -115,8 +150,24 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 String title = t.getText().toString();
                 String description = d.getText().toString();
 
+                if(title.equals("")){
+                    title = "Task";
+                }
+
                 mDeadlineTask.setTitle(title);
                 mDeadlineTask.setDescription(description);
+                Calendar calendar = Calendar.getInstance();
+                if(mDay == 0){
+                    mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                    mMonth = calendar.get(Calendar.MONTH);
+                    mYear = calendar.get(Calendar.YEAR);
+                }
+
+                if(!mCheckTime){
+                    mMinute = calendar.get(Calendar.MINUTE);
+                    mHour = calendar.get(Calendar.HOUR_OF_DAY);
+                }
+
                 mDeadlineTask.setDay(mDay);
                 mDeadlineTask.setMonth(mMonth);
                 mDeadlineTask.setYear(mYear);
@@ -124,6 +175,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mDeadlineTask.setHour(mHour);
                 mDeadlineTask.setMinute(mMinute);
                 mDeadlineTask.setTask(0);
+
                  if(mLabelList != null){
                      mLabelList.add("");
                  }
@@ -161,6 +213,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                         }else{
                             mMinute = minute;
                             mHour = hourOfDay;
+                            mCheckTime = true;
                         }
                     }
                 }, hourOfDay, minute, true);
@@ -182,7 +235,6 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                         TextView dateField = findViewById(R.id.DeadlineTask_Activity_date_field);
                         month = month + 1;
                         dateField.setText(dayOfMonth + "." + month + "." + year + " ");
-
                         mMonth = month;
                         mDay = dayOfMonth;
                         mYear = year;
@@ -192,6 +244,77 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             }
             break;
 
+            case R.id.DeadlineTask_Activity_MotiBrutal_RadioButton:{
+                Log.i(TAG, "::onClick MotivationBrutal RadioButton was clicked");
+                if(mBrutalClicked % 2 == 0) {
+                    mDeadlineTask.setBrutal(true);
+                }else{
+                    mDeadlineTask.setBrutal(false);
+                    RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiBrutal_RadioButton);
+                    b.setChecked(false);
+                }mBrutalClicked++;
+
+            }break;
+            case R.id.DeadlineTask_Activity_MotiCute_RadioButton:{
+                Log.i(TAG, "::onClick MotivationCute RadioButton was clicked");
+                if(mCuteClicked % 2 == 0) {
+                    mDeadlineTask.setCute(true);
+                }else{
+                    mDeadlineTask.setCute(false);
+                    RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiCute_RadioButton);
+                    b.setChecked(false);
+                }mCuteClicked++;
+
+            }break;
+            case R.id.DeadlineTask_Activity_MotiFunny_RadioButton:{
+                Log.i(TAG, "::onClick MotivationFunny RadioButton was clicked");
+                if(mFunnyClicked % 2 == 0) {
+                    mDeadlineTask.setFunny(true);
+                }else{
+                    mDeadlineTask.setFunny(false);
+                    RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiFunny_RadioButton);
+                    b.setChecked(false);
+                }mFunnyClicked++;
+            }break;
+            case R.id.DeadlineTask_Activity_MotiNormal_RadioButton:{
+                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                if(mNormalClicked % 2 == 0) {
+                    mDeadlineTask.setNormal(true);
+                }else{
+                    mDeadlineTask.setNormal(false);
+                    RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNormal_RadioButton);
+                    b.setChecked(false);
+                }mNormalClicked++;
+            }break;
+            case R.id.DeadlineTask_Activity_MotiSnarky_RadioButton:{
+                Log.i(TAG, "::onClick MotivationSnarky RadioButton was clicked");
+                if(mSnarkyClicked % 2 == 0) {
+                    mDeadlineTask.setSnarky(true);
+                }else{
+                    mDeadlineTask.setSnarky(false);
+                    RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiSnarky_RadioButton);
+                    b.setChecked(false);
+                }mSnarkyClicked++;
+            }break;
+            case R.id.DeadlineTask_Activity_MotiNo_RadioButton:{
+                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                if(mNoClicked % 2 == 0) {
+                    mDeadlineTask.setNotification(false);
+                }else{
+                    mDeadlineTask.setNotification(true);
+                    RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
+                    b.setChecked(false);
+                }mNoClicked++;
+            }break;
+            case R.id.DeadlineTask_Activity_help_button:{
+                ImageView helpDialog = findViewById(R.id.DeadlineTask_Activity_help_dialog);
+                if(mClickedHelp % 2 == 0) {
+                    helpDialog.setVisibility(View.VISIBLE);
+                } else{
+                    helpDialog.setVisibility(View.INVISIBLE);
+                }
+                mClickedHelp++;
+            }break;
             default:
                 Log.e(TAG, "::onClick unexpected ID encountered");
         }
