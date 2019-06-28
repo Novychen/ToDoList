@@ -63,7 +63,7 @@ public class RepeatTask implements Task {
      * setter for the variable {@link RepeatTask#mLabel}
      * @param _label the label of the task
      */
-    void setLabel(List<String> _label) {
+    public void setLabel(List<String> _label) {
         mLabel = _label;
     }
 
@@ -71,7 +71,7 @@ public class RepeatTask implements Task {
      * setter for the variable {@link RepeatTask#mDescription}
      * @param _description the description of the task
      */
-    void setDescription(String _description) {
+    public void setDescription(String _description) {
         mDescription = _description;
     }
 
@@ -79,27 +79,27 @@ public class RepeatTask implements Task {
      * setter for the variable {@link RepeatTask#mTitle}
      * @param _title the title of the task
      */
-    void setTitle(String _title) {
+    public void setTitle(String _title) {
         mTitle = _title;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    void setRepeats(int _repeats) {
+    public void setRepeats(int _repeats) {
         mRepeats = _repeats;
     }
 
-    int getRepeats() {
+    public int getRepeats() {
         return mRepeats;
     }
 
-    void setRepeatRotation(String _repeatRotation) {
+    public void setRepeatRotation(String _repeatRotation) {
         mRepeatRotation = _repeatRotation;
     }
 
-    String getRepeatRotation() {
+    public String getRepeatRotation() {
         return mRepeatRotation;
     }
 
@@ -107,29 +107,27 @@ public class RepeatTask implements Task {
         mTask = _task;
     }
 
-    public int getTask(int _task) {
-        return mTask;
-    }
+    public int getTask() { return mTask; }
 
-    void setCute(boolean _cute) { mCute = _cute; }
+    public void setCute(boolean _cute) { mCute = _cute; }
 
-    boolean getCute() { return mCute; }
+    public boolean getCute() { return mCute; }
 
-    void setBrutal(boolean _brutal) { mBrutal = _brutal; }
+    public void setBrutal(boolean _brutal) { mBrutal = _brutal; }
 
-    boolean getBrutal() { return mBrutal; }
+    public boolean getBrutal() { return mBrutal; }
 
-    void setNormal(boolean _normal) { mNormal = _normal; }
+    public void setNormal(boolean _normal) { mNormal = _normal; }
 
-    boolean getNormal() { return mNormal; }
+    public boolean getNormal() { return mNormal; }
 
-    void setSnarky(boolean _snarky) { mSnarky = _snarky; }
+    public void setSnarky(boolean _snarky) { mSnarky = _snarky; }
 
-    boolean getSnarky() { return mSnarky; }
+    public boolean getSnarky() { return mSnarky; }
 
-    void setFunny(boolean _funny) { mFunny = _funny; }
+    public void setFunny(boolean _funny) { mFunny = _funny; }
 
-    boolean getFunny() { return mFunny; }
+    public boolean getFunny() { return mFunny; }
 
     public boolean getNotification() { return mNotification; }
 
@@ -141,4 +139,7 @@ public class RepeatTask implements Task {
 
     public int getCount() { return mCount; }
 
+    public String getDescription() {
+        return mDescription;
+    }
 }

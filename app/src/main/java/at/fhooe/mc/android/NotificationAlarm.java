@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.util.Random;
@@ -18,10 +19,36 @@ public class NotificationAlarm extends BroadcastReceiver {
 
     public void onReceive(Context _context, Intent _intent) {
 
-        Intent i = new Intent(_context,TaskDue.class);
+        final Intent i = new Intent(_context,TaskDue.class);
+        int task = _intent.getIntExtra("Task",0);
+        i.putExtra("Task",task);
+        if(task == 0) {
+            String title = _intent.getStringExtra("DeadLineTitle");
+            i.putExtra("DeadLineTitle", title);
+
+            String time = _intent.getStringExtra("Time");
+            i.putExtra("Time", time);
+
+            String date = _intent.getStringExtra("Date");
+            i.putExtra("Date", date);
+
+            String description = _intent.getStringExtra("Description");
+            i.putExtra("Description", description);
+
+            String label1 = _intent.getStringExtra("DeadlineLabel1");
+            i.putExtra("DeadlineLabel1",label1);
+
+            String label2 = _intent.getStringExtra("DeadlineLabel2");
+            i.putExtra("DeadlineLabel2",label1);
+
+            String label3 = _intent.getStringExtra("DeadlineLabel3");
+            i.putExtra("DeadlineLabel3",label1);
+        }
+
         Random r = new Random();
-        PendingIntent pi = PendingIntent.getActivity(_context,  r.nextInt(10000) ,i,0);
+
         inboxStyle.setBigContentTitle("ToDoList");
+        final PendingIntent pi = PendingIntent.getActivity(_context,  r.nextInt(10000) ,i,PendingIntent.FLAG_UPDATE_CURRENT);
 
         if(mGroupCount == 0) {
             Notification.Builder groupBuilder = new Notification.Builder(_context)

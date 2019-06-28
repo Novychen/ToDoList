@@ -236,7 +236,7 @@ class Repository {
                         mTasks.remove(mTasks.size() - 1);
                     }
                    _callback.setTitle(mTitleRepeat, mTitleDead, mTasks,mDay, mMonth, mYear, mRepeats, mRepeatRotation);
-                   _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute, mTitleDead,mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotification);
+                   _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute, mTitleDead,mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotification, mDescriptionDead,mLabelDead);
                    _callback.setNotificationRepeatData(mRepeats,mRepeatRotation, mTitleRepeat,mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat, mNotification);
                    _callback.setAll(mTitleRepeat,mDay,mMonth,mYear,mHour,mMinute,mTasks, mDescriptionRepeat, mReferenceRepeat, mLabelRepeat);
            }
@@ -247,7 +247,6 @@ class Repository {
            }
        });
    }
-
 
 
     /**

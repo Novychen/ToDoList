@@ -185,15 +185,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification) {
+    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
         {
-            if (_d.size() != 0) {
-                _d.remove(_d.size() - 1);
-                _m.remove(_m.size() - 1);
-                _y.remove(_y.size() - 1);
-                _h.remove(_h.size() - 1);
-                _min.remove(_min.size() - 1);
-            }
+
             List <String> motivation = new LinkedList<>();
 
             for (int i = 0; i < _d.size(); i++) {
@@ -226,7 +220,26 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                     Intent intent = new Intent(this, NotificationAlarm.class);
                     intent.putExtra("title", "The time for your task: " + _t.get(i) + " is up!");
                     intent.putExtra("text", "You better have your things done");
-                    intent.putExtra("notification", _notification.get(i));
+                    intent.putExtra("Task", 0);
+                    intent.putExtra("DeadLineTitle", _t.get(i));
+                    intent.putExtra("DeadlineLabel1", _label.get(i).get(0));
+                    intent.putExtra("DeadlineLabel2", _label.get(i).get(1));
+                    intent.putExtra("DeadlineLabel3", _label.get(i).get(2));
+
+                    int m = _min.get(i);
+                    int h = _h.get(i);
+                    String stringMin = String.valueOf(m);
+                    String stringHour = String.valueOf(h);
+                    if(m < 10){
+                        stringMin = "0" + m;
+                    }
+                    if(h < 10){
+                        stringHour = "0" + h;
+                    }
+                    intent.putExtra("Time",stringHour + ":" + stringMin);
+                    intent.putExtra("Date", _d.get(i) + "." + _m.get(i) + "." + _y.get(i));
+                    intent.putExtra("Description", _des.get(i));
+                    intent.putExtra("Notification", _notification.get(i));
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
