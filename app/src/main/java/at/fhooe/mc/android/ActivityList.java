@@ -1,5 +1,6 @@
 package at.fhooe.mc.android;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.ListActivity;
@@ -70,12 +71,13 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
+        Log.e(TAG, "OnCreate :: ActivityList");
+
         DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref2, this);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
         Repository.getInstance().getData(ref, this);
-
         adapter = new DataAdapter(this);
         setListAdapter(adapter);
 
@@ -314,17 +316,14 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     @Override
     public void setTitle(List<String> _s, List<Integer> _d, List<Integer> _m, List<Integer> _y) {
 
-
             Log.i(TAG, "LIST size --> " + _s.size());
             try {adapter.clear();
 
                 Log.i(TAG, "LIST size --> " + _s.size());
 
-                Log.i(TAG, "LIST  1 --> " + _s.get(0));
-                Log.i(TAG, "LIST  2 --> " + _s.get(1));
-                Log.i(TAG, "LIST  3 --> " + _s.get(2));
-                Log.i(TAG, "LIST  4 --> " + _s.get(3));
-                for (int i = 0; i < _s.size(); i++) {
+
+
+                for (int i = 0; i < 10; i++) {
 
                     adapter.add(new ListData(_s.get(i), _d.get(i), _m.get(i), _y.get(i)));
                     Log.i(TAG, adapter.getCount() + " --> " + _s.get(i));
@@ -366,17 +365,33 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG, "OnResume:: ActivityList");
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.e(TAG, "OnPause :: ActivityList");
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.e(TAG, "OnStop:: ActivityList");
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+       /* DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getData(ref2, this);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
+        Repository.getInstance().getData(ref, this);*/
+        Log.e(TAG, "OnStart:: ActivityList");
+    }
 }
