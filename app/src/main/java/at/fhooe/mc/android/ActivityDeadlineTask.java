@@ -148,6 +148,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
             case R.id.DeadlineTask_Activity_Check_Button: {
                 Log.i(TAG, "::onClick check Button was pressed");
+
                 EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
                 EditText d = findViewById(R.id.DeadlineTask_Activity_description_field);
 
@@ -189,7 +190,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
                 Log.i(TAG, "taskNumber Value is: " + taskNumber);
                 Repository.getInstance().saveData(mDeadlineTask);
-                Repository.getInstance().saveData(taskNumber);
+                //Repository.getInstance().saveData(taskNumber);
                 finish();
             }
             break;

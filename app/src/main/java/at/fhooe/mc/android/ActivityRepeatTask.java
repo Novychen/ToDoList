@@ -112,7 +112,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         Button set = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
         set.setOnClickListener(this);
         mPicker = d.findViewById(R.id.RepeatTask_Activity_Picker);
-        s = new String[] {"mYear","mMonth","week", "mDay"};
+        s = new String[] {"year","month","week", "day"};
         mPicker.setDisplayedValues(s);
         mPicker.setMaxValue(s.length-1);
         mPicker.setMinValue(0);
@@ -190,14 +190,14 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                     int choice = mPicker.getValue();
                     mRepeatTask.setRepeatRotation(s[choice]);
                 }else{
-                    mRepeatTask.setRepeatRotation("");
+                    mRepeatTask.setRepeatRotation("day");
                 }
 
                 long taskNumber = MainActivity.getTaskNumber() +1;
 
                 Log.i(TAG, "taskNumber Value is: " + taskNumber);
                 Repository.getInstance().saveData(mRepeatTask);
-                Repository.getInstance().saveData(taskNumber);
+                //Repository.getInstance().saveData(taskNumber);
                 finish();
             }
             break;

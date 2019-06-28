@@ -206,12 +206,12 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
 
 
     @Override
-    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<Integer> _count, List<String> _ref, List<String> _des, List<List<String>> _label) {
+    public void setNotificationDeadlineData(List <Integer>_task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<Integer> _count, List<String> _ref, List<String> _des, List<List<String>> _label) {
 
     }
 
     @Override
-    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
+    public void setNotificationRepeatData(List <Integer>_task, List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
 
     }
 

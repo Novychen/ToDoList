@@ -33,11 +33,9 @@ import java.util.Random;
  *
  * Repeat task algorithmus überlegen für Notifications
  * offline Daten
- * Wechseln zwischen tasks
  * notificationsarten einstellen
  * wiederholgun der noti einsetellen
  * gemeinere Notis nach der Zeit
- * notis fixen (es kommen zu viele)
  * repeat task fixen
  *
  */
@@ -88,7 +86,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     int[] rep;
     String[] cir;
 
-
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
@@ -96,13 +93,17 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
-        Log.i(TAG, "OnCreate :: ActivityList");
+        Log.i(TAG, " :: onCreate I was here");
+        Log.i(TAG, "OnCreate");
 
         DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref2, this);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
         Repository.getInstance().getLongData(ref);
+
+        DatabaseReference ref3 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getNotificationData(ref3,this);
 
         adapter = new DataAdapter(this);
         setListAdapter(adapter);
@@ -169,14 +170,18 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         if(task.get(_position)==0){
             i.putExtra("title",tDead.get(deadp));
             i.putExtra("ref",refDead.get(deadp));
-            StringBuilder s= new StringBuilder();
-         //   s.append(day.get(deadp)+"."+month.get(deadp)+"."+year.get(deadp));
+            String h = String.valueOf(hour.get(deadp));
+            String m = String.valueOf(min.get(deadp));
+            //   s.append(day.get(deadp)+"."+month.get(deadp)+"."+year.get(deadp));
             i.putExtra("date",day.get(deadp) + "." + month.get(deadp) + "." + year.get(deadp));
-            s = new StringBuilder();
-            s.append(hour.get(deadp)+":"+min.get(deadp));
-            i.putExtra("time",s.toString());
+            if(hour.get(deadp) < 10){
+                h = "0" + h;
+            }if(min.get(deadp) < 10){
+                m = "0" + m;
+            }
+            i.putExtra("time",h + ":" + m);
             i.putExtra("des",desDead.get(deadp));
-            Log.i(TAG,"title,ref,time,des---------->"+tDead.get(deadp)+" ,"+refDead.get(deadp)+" ,"+s+" ,"+desDead.get(deadp));
+            Log.i(TAG,"title,ref,time,des---------->"+ tDead.get(deadp)+" ,"+ refDead.get(deadp)+" ,"+ hour + ":" + min +" ,"+ desDead.get(deadp));
 
             i.putExtra("brutal", mBrutalDead.get(deadp));
             i.putExtra("snarky", mSnarkyDead.get(deadp));
@@ -258,13 +263,13 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<Integer> _count, List<String> _ref,List<String> _des, List<List<String>> _label) {
+    public void setNotificationDeadlineData(List <Integer>_task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<Integer> _count, List<String> _ref,List<String> _des, List<List<String>> _label) {
         {
-
+        Log.i(TAG, "setNotificationDeadlineData :: I was here");
             List <String> motivation = new LinkedList<>();
 
             for (int i = 0; i < _d.size(); i++) {
-                if(_notification.get(i) && _count.get(i) < 1) {
+                if(_notification.get(i) && _task.get(i) == 0) {
                     Calendar calendar = Calendar.getInstance();
                     if (_d.get(i) == null) {
                         _d.set(i, 0);
@@ -313,8 +318,13 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                     intent.putExtra("label1", _label.get(i).get(0));
                     intent.putExtra("label2", _label.get(i).get(1));
                     intent.putExtra("label3", _label.get(i).get(2));
-                    intent.putExtra("Notification", _notification.get(i));
-                    Repository.getInstance().saveData(_count.get(i) +1,_ref.get(i));
+                    intent.putExtra("brutal", _brutal.get(i));
+                    intent.putExtra("snarky", _snarky.get(i));
+                    intent.putExtra("funny", _funny.get(i));
+                    intent.putExtra("cute", _cute.get(i));
+                    intent.putExtra("normal", _norm.get(i));
+                    intent.putExtra("noNoti", _notification.get(i));
+                    //Repository.getInstance().saveData(_count.get(i) +1,_ref.get(i));
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
@@ -356,7 +366,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal ,List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
+    public void setNotificationRepeatData(List <Integer>_task,List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal ,List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
+
+        NotificationAlarm.mGroupEnabled = true;
 
         try {
             if (_t.size() != 0) {
@@ -366,43 +378,51 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
             for (int i = 0; i < _r.size(); i++) {
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                if (_r.get(i) == null) {
-                    _r.set(i, 0);
+                if(_notification.get(i) && _task.get(i) == 1) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(new Date());
+                    if (_r.get(i) == null) {
+                        _r.set(i, 0);
+                    }
+                    if (_c.get(i).equals("year")) {
+
+                    }
+                    if (_c.get(i).equals("month")) {
+
+                    }
+                    if (_c.get(i).equals("week")) {
+                        calendar.add(Calendar.DAY_OF_MONTH, 2);
+                    }
+
+                    int year = 0;
+                    int month = 0;
+                    int day = 0;
+                    int hour = 0;
+                    int minute = 0;
+
+                    calendar.set(year, month, day, hour, minute);
+
+                    Random rand = new Random();
+                    Intent intent = new Intent(this, NotificationAlarm.class);
+                    intent.putExtra("NotificationTitle", "The time for your task: " + _t.get(i) + " is up!");
+                    intent.putExtra("text", "You better have your things done");
+                    intent.putExtra("task", 1);
+                    intent.putExtra("title", _t.get(i));
+                    intent.putExtra("date", _r.get(i) + " times per " + _c.get(i));
+                    intent.putExtra("des", _des.get(i));
+                    intent.putExtra("label1", _label.get(i).get(0));
+                    intent.putExtra("label2", _label.get(i).get(1));
+                    intent.putExtra("label3", _label.get(i).get(2));
+                    intent.putExtra("brutal", _brutal.get(i));
+                    intent.putExtra("snarky", _snarky.get(i));
+                    intent.putExtra("funny", _funny.get(i));
+                    intent.putExtra("cute", _cute.get(i));
+                    intent.putExtra("normal", _norm.get(i));
+                    intent.putExtra("noNoti", _notification.get(i));
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    PendingIntent pi = PendingIntent.getBroadcast(this, rand.nextInt(1000), intent, 0);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
                 }
-                if(_c.get(i).equals("year")) {
-
-                }
-                if(_c.get(i).equals("month")) {
-
-                }
-                if(_c.get(i).equals("week")) {
-                    calendar.add(Calendar.DAY_OF_MONTH,2);
-                }
-
-                int year = 0;
-                int month = 0;
-                int day = 0;
-                int hour = 0;
-                int minute = 0;
-
-                calendar.set(year, month, day, hour, minute);
-
-                Random rand = new Random();
-                Intent intent = new Intent(this, NotificationAlarm.class);
-                intent.putExtra("NotificationTitle", "The time for your task: " + _t.get(i) + " is up!");
-                intent.putExtra("text", "You better have your things done");
-                intent.putExtra("date",_r.get(i) +" times per "+ _c.get(i));
-                intent.putExtra("des", _des.get(i));
-                intent.putExtra("label1", _label.get(i).get(0));
-                intent.putExtra("label2", _label.get(i).get(1));
-                intent.putExtra("label3", _label.get(i).get(2));
-                intent.putExtra("Notification", _notification.get(i));
-
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                PendingIntent pi = PendingIntent.getBroadcast(this, rand.nextInt(1000), intent, 0);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
             }
         }catch (ClassCastException e) {
             Log.e(TAG, "setNotificationData: " + e.getMessage());
@@ -416,7 +436,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     @Override
     public void setTitle(List<String> _repeatT, List<String> _deadT, List<Integer> _task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _repeats, List<String> _repeatCircle) {
 
-            Log.i(TAG, "LIST size --> " + _task.size());
+            Log.i(TAG, "setTitle :: LIST size --> " + _task.size());
             try {
                 adapter.clear();
 
@@ -425,12 +445,12 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 for (int i = 0; i < _task.size(); i++) {
                     if(_task.get(i)==0){
                         adapter.add(new ListData(_deadT.get(deadi),_d.get(deadi),_m.get(deadi),_y.get(deadi)));
-                        Log.i(TAG, adapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _deadT.get(deadi));
+                        Log.i(TAG, "setTitle :: " + adapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _deadT.get(deadi));
                         deadi++;
                     }
                     if(_task.get(i)==1){
                         adapter.add(new ListData(_repeatT.get(repi),_repeats.get(repi),_repeatCircle.get(repi)));
-                        Log.i(TAG, adapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _repeatT.get(repi));
+                        Log.i(TAG, "setTitle :: " + adapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _repeatT.get(repi));
                         repi++;
                     }
                 }
@@ -488,6 +508,5 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 }

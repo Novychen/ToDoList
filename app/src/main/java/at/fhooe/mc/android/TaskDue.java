@@ -2,6 +2,8 @@ package at.fhooe.mc.android;
 
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,17 @@ public class TaskDue extends Activity implements View.OnClickListener {
             setContentView(R.layout.activity_deadline_task_due);
         }
 
+
+        if( i.getBooleanExtra("fromNotification",false)) {
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(i.getIntExtra("NotificationID", 0));
+            NotificationAlarm.mGroupCount--;
+        }
+        if(NotificationAlarm.mGroupCount == 0){
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
+        }
+
         String title = i.getStringExtra("title");
         String des = i.getStringExtra("des");
         String date = i.getStringExtra("date");
@@ -35,7 +48,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
         boolean funny = i.getBooleanExtra("funny", false);
         boolean cute = i.getBooleanExtra("cute", false);
         boolean normal = i.getBooleanExtra("normal", false);
-        boolean noNoti = i.getBooleanExtra("noNoti", false);
+        boolean noNoti = i.getBooleanExtra("noNoti", true);
         key = i.getStringExtra("ref");
 
         if(task==0){
@@ -241,16 +254,16 @@ public class TaskDue extends Activity implements View.OnClickListener {
         switch (_v.getId()) {
             case R.id.activity_task_due_deadline_remove: {
                 Repository.getInstance().removeDate(key);
-                long taskNumber = MainActivity.getTaskNumber() -1;
+               /* long taskNumber = MainActivity.getTaskNumber() -1;
                 Log.i(TAG, "taskNumber Value is: " + taskNumber);
-                Repository.getInstance().saveData(taskNumber);
+                Repository.getInstance().saveData(taskNumber);*/
                 finish();
             }break;
             case R.id.activity_task_due_repeat_remove: {
                 Repository.getInstance().removeDate(key);
-                long taskNumber = MainActivity.getTaskNumber() -1;
+               /* long taskNumber = MainActivity.getTaskNumber() -1;
                 Log.i(TAG, "taskNumber Value is: " + taskNumber);
-                Repository.getInstance().saveData(taskNumber);
+                Repository.getInstance().saveData(taskNumber);*/
                 finish();
             }break;
             case R.id.activity_task_due_deadline_back: {
