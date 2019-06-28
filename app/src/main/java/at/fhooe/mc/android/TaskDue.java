@@ -25,18 +25,22 @@ public class TaskDue extends Activity implements View.OnClickListener {
 
         String title = i.getStringExtra("title");
         String des = i.getStringExtra("des");
-
+        String date = i.getStringExtra("date");
+        boolean brutal = i.getBooleanExtra("brutal", false);
+        boolean snarky = i.getBooleanExtra("snarky", false);
+        boolean funny = i.getBooleanExtra("funny", false);
+        boolean cute = i.getBooleanExtra("cute", false);
+        boolean normal = i.getBooleanExtra("normal", false);
+        boolean noNoti = i.getBooleanExtra("noNoti", false);
         key = i.getStringExtra("ref");
 
         if(task==0){
             String time =  i.getStringExtra("time");
             TextView tv = findViewById(R.id.activity_task_due_deadline_title);
             tv.setText(title);
-            int date = i.getIntExtra("day",0);
-            StringBuilder s = new StringBuilder(date);
 
             tv = findViewById(R.id.activity_task_due_deadline_date);
-            tv.setText(s.toString());
+            tv.setText(date);
 
             tv = findViewById(R.id.activity_task_due_deadline_time);
             tv.setText(time);
@@ -44,55 +48,53 @@ public class TaskDue extends Activity implements View.OnClickListener {
             tv = findViewById(R.id.activity_task_due_deadline_des);
             tv.setText(des);
 
-
             ImageView b = findViewById(R.id.activity_task_due_deadline_remove);
             b.setOnClickListener(this);
+
+            b = findViewById(R.id.activity_task_due_deadline_back);
+            b.setOnClickListener(this);
+
+            if(!brutal){
+                ImageView x = findViewById(R.id.activity_task_due_deadline_brutal);
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!snarky){
+                ImageView x = findViewById(R.id.activity_task_due_deadline_snarky);
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!funny){
+                ImageView x = findViewById(R.id.activity_task_due_deadline_funny);
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!cute){
+                ImageView x = findViewById(R.id.activity_task_due_deadline_cute);
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!normal){
+                ImageView x = findViewById(R.id.activity_task_due_deadline_normal);
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!noNoti){
+                ImageView x = findViewById(R.id.activity_task_due_deadline_not);
+                x.setVisibility(View.INVISIBLE);
+            }
 
         }else{
             TextView tv = findViewById(R.id.activity_task_due_repeat_title);
             tv.setText(title);
 
-           /* tv = findViewById(R.id.activity_task_due_repeat_date);
-            tv.setText(day);
-*/
+            tv = findViewById(R.id.activity_task_due_repeat_date);
+            tv.setText(date);
+
             tv = findViewById(R.id.activity_task_due_repeat_des);
             tv.setText(des);
 
             ImageView b = findViewById(R.id.activity_task_due_repeat_remove);
             b.setOnClickListener(this);
 
-
-
+            b = findViewById(R.id.activity_task_due_repeat_back);
+            b.setOnClickListener(this);
         }
-
-
-   /*     if(l0 == null){
-            l0 = "    ";
-        }
-        if(l1 == null){
-            l1 = "    ";
-        }
-        if(l2 == null){
-            l2 = "    ";
-        }
-        String label = l0 + " " + l1 + " " + l2;
-        String s = day + "." + month + "." + year  + "       " + hour + ":" + min;*/
-
-/*     TextView tv = findViewById(R.id.activity_task_due_title);
-        tv.setText(title);*/
-/*
-        tv = findViewById(R.id.activity_task_due_date);
-        tv.setText(s);
-
-        tv = findViewById(R.id.activity_task_due_Note);
-        tv.setText(des);*/
-/*
-        ImageView b = findViewById(R.id.activity_task_due_remove);
-        b.setOnClickListener(this);*/
-
-  /*      Log.i(TAG, "data ---->" + title +","+ day +","+ month +","+ year +","
-                + hour+","+ min +"," + des);*/
-/*        Log.i(TAG, "Title ---->"+title);*/
     }
 
 
@@ -112,7 +114,15 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 Log.i(TAG, "taskNumber Value is: " + taskNumber);
                 Repository.getInstance().saveData(taskNumber);
                 finish();
-            }
+            }break;
+            case R.id.activity_task_due_deadline_back: {
+                finish();
+            }break;
+            case R.id.activity_task_due_repeat_back: {
+                finish();
+            }break;
+            default:
+                Log.e(TAG, "::onClick unexpected ID encountered");
         }
     }
 }

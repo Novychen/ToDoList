@@ -67,9 +67,18 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List<String> refRep = null;
     List<String> desDead = null;
     List<String> refDead = null;
+    List<Boolean> mBrutal = null;
+    List<Boolean> mSnarky = null;
+    List<Boolean> mFunnny = null;
+    List<Boolean> mCute = null;
+    List<Boolean> mNormal = null;
+    List<Boolean> mNoNoti = null;
+
     List<List<String>> label = null;
     List<Integer> repeats = null;
     List<String> circle = null;
+    int[] rep = null;
+    String[] cir = null;
 
 
     @Override
@@ -86,6 +95,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
         Repository.getInstance().getLongData(ref);
+
+        DatabaseReference ref3 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getNotificationData(ref3, this);
 
         adapter = new DataAdapter(this);
         setListAdapter(adapter);
@@ -123,14 +135,14 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         mCuteMotivation.add("After the rain comes the rainbow");
         mCuteMotivation.add("You are doing great! Keep pushing!");
 
-
-
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int _position, long id) {
+        Log.i(TAG,"repeatsSIZE---------------------->"+rep.length);
+        Log.i(TAG,"CircleSIZE---------------------->"+circle.size());
         ListAdapter list = getListAdapter();
         ListData       item = (ListData) list.getItem(_position);
         Log.i(TAG, "Position ------> " + _position );
@@ -153,17 +165,34 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             i.putExtra("title",tDead.get(deadp));
             i.putExtra("ref",refDead.get(deadp));
             StringBuilder s= new StringBuilder();
-
-           // i.putExtra("day",day.get(deadp));
-
+         //   s.append(day.get(deadp)+"."+month.get(deadp)+"."+year.get(deadp));
+            i.putExtra("date",day.get(deadp) + "." + month.get(deadp) + "." + year.get(deadp));
+            s = new StringBuilder();
+            s.append(hour.get(deadp)+":"+min.get(deadp));
+            i.putExtra("time",s.toString());
             i.putExtra("des",desDead.get(deadp));
-           Log.i(TAG,"DaY Size---------->"+ day.get(0));
             Log.i(TAG,"title,ref,time,des---------->"+tDead.get(deadp)+" ,"+refDead.get(deadp)+" ,"+s+" ,"+desDead.get(deadp));
+
+            /*
+            hier sind meine Extras für die 6 Buttons, ich übergebe sie der TaskDue wo ich sie weiter
+            verarbeite. Damit ich sie hier verwenden kann habe ich die setAll um diese 6 Listen erweitert - Yvonne
+            --------------------------------------------------------------- */
+            i.putExtra("brutal", mBrutal.get(deadp));
+            i.putExtra("snarky", mSnarky.get(deadp));
+            i.putExtra("funny", mFunnny.get(deadp));
+            i.putExtra("cute", mCute.get(deadp));
+            i.putExtra("normal", mNormal.get(deadp));
+            i.putExtra("noNoti", mNoNoti.get(deadp));
+            //--------------------------------------------------------------
         }else {
+
             i.putExtra("title",tREp.get(repp));
             i.putExtra("ref",refRep.get(repp));
             StringBuilder s= new StringBuilder();
-            i.putExtra("date",s.toString());
+            //s.append(repeats.get(repp)+" times per "+circle.get(repp));
+            Log.i(TAG,repeats.size()+" times per "+circle.size());
+            s.append("hello");
+            i.putExtra("date",rep[repp]+" times per "+cir[repp]);
             i.putExtra("des",desRep.get(repp));
             Log.i(TAG,"title,ref,time,des---------->"+tREp.get(repp)+" ,"+refRep.get(repp)+" ,"+s+" ,"+desRep.get(repp));
         }
@@ -214,19 +243,13 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification) {
+    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<Integer> _count, List<String> _ref) { // List<String> _des, List<List<String>> _label
         {
-            if (_d.size() != 0) {
-                _d.remove(_d.size() - 1);
-                _m.remove(_m.size() - 1);
-                _y.remove(_y.size() - 1);
-                _h.remove(_h.size() - 1);
-                _min.remove(_min.size() - 1);
-            }
+
             List <String> motivation = new LinkedList<>();
 
             for (int i = 0; i < _d.size(); i++) {
-                if(_notification.get(i)) {
+                if(_notification.get(i) && _count.get(i) < 1) {
                     Calendar calendar = Calendar.getInstance();
                     if (_d.get(i) == null) {
                         _d.set(i, 0);
@@ -255,7 +278,27 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                     Intent intent = new Intent(this, NotificationAlarm.class);
                     intent.putExtra("title", "The time for your task: " + _t.get(i) + " is up!");
                     intent.putExtra("text", "You better have your things done");
-                    intent.putExtra("notification", _notification.get(i));
+                    intent.putExtra("Task", 0);
+                    intent.putExtra("DeadLineTitle", _t.get(i));
+                    /*intent.putExtra("DeadlineLabel1", _label.get(i).get(0));
+                    intent.putExtra("DeadlineLabel2", _label.get(i).get(1));
+                    intent.putExtra("DeadlineLabel3", _label.get(i).get(2));*/
+
+                    int m = _min.get(i);
+                    int h = _h.get(i);
+                    String stringMin = String.valueOf(m);
+                    String stringHour = String.valueOf(h);
+                    if(m < 10){
+                        stringMin = "0" + m;
+                    }
+                    if(h < 10){
+                        stringHour = "0" + h;
+                    }
+                    intent.putExtra("Time",stringHour + ":" + stringMin);
+                    intent.putExtra("Date", _d.get(i) + "." + _m.get(i) + "." + _y.get(i));
+                    //intent.putExtra("Description", _des.get(i));
+                    intent.putExtra("Notification", _notification.get(i));
+                    Repository.getInstance().saveData(_count.get(i) +1,_ref.get(i));
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
@@ -383,7 +426,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<List<String>> _label,List<String> _desrep,List<String> _desdead,List<String> _refrep,List<String> _refdead,List<Integer> _repeats, List<String> _repeatCircle) {
+    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<List<String>> _label,List<String> _desrep,List<String> _desdead,List<String> _refrep,List<String> _refdead,List<Integer> _repeats, List<String> _repeatCircle, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification) {
+        repeats = _repeats;
+        circle = _repeatCircle;
         tDead = _deadT;
         tREp =_repeatT;
         task = _t;
@@ -396,41 +441,27 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         desRep=_desrep;
         refDead=_refdead;
         refRep=_refrep;
-        repeats = _repeats;
-        circle = _repeatCircle;
-    }
 
+        mBrutal = _brutal;
+        mSnarky = _snarky;
+        mFunnny = _funny;
+        mCute = _cute;
+        mNormal = _norm;
+        mNoNoti = _notification;
+        Log.i(TAG,"repeatsSIZE---------------------->"+repeats.size());
+        Log.i(TAG,"CircleSIZE---------------------->"+circle.size());
+        rep = new int[repeats.size()];
+        cir = new String[circle.size()];
+        for(int i = 0; i<circle.size();i++){
+        Log.i(TAG,repeats.get(i)+" times per "+circle.get(i));
+        rep[i]= repeats.get(i);
+        cir[i] = circle.get(i);
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "OnResume:: ActivityList");
 
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e(TAG, "OnPause :: ActivityList");
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e(TAG, "OnStop:: ActivityList");
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-       /* DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
-        Repository.getInstance().getData(ref2, this);
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
-        Repository.getInstance().getData(ref, this);*/
-        Log.e(TAG, "OnStart:: ActivityList");
     }
 }
