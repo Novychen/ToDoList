@@ -6,31 +6,63 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class TaskDue extends Activity {
+public class TaskDue extends Activity implements View.OnClickListener {
     private static final String TAG = "at.fhooe.mc.toDoList :: TaskDue";
     public String key = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repeat_task_due);
-
         Intent i = getIntent();
-   /*     String title = i.getStringExtra("title");*/
- /*      int day = i.getIntExtra("day",0);
-        int month = i.getIntExtra("month",0);
-        int year = i.getIntExtra("year",0);
-        int hour = i.getIntExtra("hour",0);
-        int min = i.getIntExtra("min",0);
-        String l0 =  i.getStringExtra("label_0");
-        String l1 = i.getStringExtra("label_1");
-        String l2  = i.getStringExtra("label_2");
-        String des = i.getStringExtra("des");*/
-/*        key = i.getStringExtra("ref");*/
-       /* int task = i.getIntExtra("task",0);*/
+        int task = i.getIntExtra("task",-1);
+        if(task ==1) {
+            setContentView(R.layout.activity_repeat_task_due);
+        }else {
+            setContentView(R.layout.activity_deadline_task_due);
+        }
+
+        String title = i.getStringExtra("title");
+        String des = i.getStringExtra("des");
+        String date = i.getStringExtra("date");
+        key = i.getStringExtra("ref");
+
+        if(task==0){
+            String time =  i.getStringExtra("time");
+            TextView tv = findViewById(R.id.activity_task_due_deadline_title);
+            tv.setText(title);
+
+            tv = findViewById(R.id.activity_task_due_deadline_date);
+            tv.setText(date);
+
+            tv = findViewById(R.id.activity_task_due_deadline_time);
+            tv.setText(time);
+
+            tv = findViewById(R.id.activity_task_due_deadline_des);
+            tv.setText(des);
+
+
+            ImageView b = findViewById(R.id.activity_task_due_deadline_remove);
+            b.setOnClickListener(this);
+
+        }else{
+            TextView tv = findViewById(R.id.activity_task_due_repeat_title);
+            tv.setText(title);
+
+            tv = findViewById(R.id.activity_task_due_repeat_date);
+            tv.setText(date);
+
+            tv = findViewById(R.id.activity_task_due_repeat_des);
+            tv.setText(des);
+
+            ImageView b = findViewById(R.id.activity_task_due_repeat_remove);
+            b.setOnClickListener(this);
+
+
+
+        }
+
 
    /*     if(l0 == null){
             l0 = "    ";
@@ -62,10 +94,17 @@ public class TaskDue extends Activity {
     }
 
 
- /*   @Override
+    @Override
     public void onClick(View _v) {
         switch (_v.getId()) {
-            case R.id.activity_task_due_remove: {
+            case R.id.activity_task_due_deadline_remove: {
+                Repository.getInstance().removeDate(key);
+                long taskNumber = MainActivity.getTaskNumber() -1;
+                Log.i(TAG, "taskNumber Value is: " + taskNumber);
+                Repository.getInstance().saveData(taskNumber);
+                finish();
+            }break;
+            case R.id.activity_task_due_repeat_remove: {
                 Repository.getInstance().removeDate(key);
                 long taskNumber = MainActivity.getTaskNumber() -1;
                 Log.i(TAG, "taskNumber Value is: " + taskNumber);
@@ -73,5 +112,5 @@ public class TaskDue extends Activity {
                 finish();
             }
         }
-    }*/
+    }
 }

@@ -238,7 +238,7 @@ class Repository {
                    _callback.setTitle(mTitleRepeat, mTitleDead, mTasks,mDay, mMonth, mYear, mRepeats, mRepeatRotation);
                    _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute, mTitleDead,mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotification);
                    _callback.setNotificationRepeatData(mRepeats,mRepeatRotation, mTitleRepeat,mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat, mNotification);
-                   _callback.setAll(mTitleRepeat,mTitleDead,mDay,mMonth,mYear,mHour,mMinute,mTasks, mDescriptionRepeat, mReferenceRepeat, mLabelRepeat,mDescriptionRepeat,mDescriptionDead,mReferenceRepeat,mReferenceDead);
+                   _callback.setAll(mTitleRepeat,mTitleDead,mDay,mMonth,mYear,mHour,mMinute,mTasks, mLabelRepeat,mDescriptionRepeat,mDescriptionDead,mReferenceRepeat,mReferenceDead, mRepeats, mRepeatRotation);
            }
 
            @Override

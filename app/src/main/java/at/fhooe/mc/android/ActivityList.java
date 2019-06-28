@@ -55,17 +55,21 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List <String> mMotivation = new LinkedList<>();
     List <String> mBrutalMotivation = new LinkedList<>();
     int mGotIntoData;
-    List<String> tREp;
-    List<String> tDead;
+    List<String> tREp=null;
+    List<String> tDead=null;
     List<Integer> day = null;
     List<Integer> month = null;
     List<Integer> year = null;
     List<Integer> hour = null;
     List<Integer> min = null ;
     List<Integer> task = null;
-    List<String> des = null;
-    List<String> ref = null;
+    List<String> desRep = null;
+    List<String> refRep = null;
+    List<String> desDead = null;
+    List<String> refDead = null;
     List<List<String>> label = null;
+    List<Integer> repeats = null;
+    List<String> circle = null;
 
 
     @Override
@@ -133,9 +137,37 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         Log.i(TAG, "clicked item " + item);
         Intent i = new Intent(this, TaskDue.class);
         Log.i(TAG,"TASK SIZE after SetALL-------->"+task.size());
+        i.putExtra("task", task.get(_position));
+        int deadp =0;
+        int repp =0;
+        for (int p  = 0; p!=_position;p++){
+            if(task.get(p)==0) {
+                deadp++;
+            }else {
+                repp++;
+            }
+        }
+        Log.i(TAG, "dead " + deadp);
+        Log.i(TAG, "rep " + repp);
         if(task.get(_position)==0){
-
-
+            i.putExtra("title",tDead.get(deadp));
+            i.putExtra("ref",refDead.get(deadp));
+            StringBuilder s= new StringBuilder();
+         //   s.append(day.get(deadp)+"."+month.get(deadp)+"."+year.get(deadp));
+            i.putExtra("date",s.toString());
+            s = new StringBuilder();
+          //  s.append(hour.get(deadp)+":"+min.get(deadp));
+            i.putExtra("time",s.toString());
+            i.putExtra("des",desDead.get(deadp));
+            Log.i(TAG,"title,ref,time,des---------->"+tDead.get(deadp)+" ,"+refDead.get(deadp)+" ,"+s+" ,"+desDead.get(deadp));
+        }else {
+            i.putExtra("title",tREp.get(repp));
+            i.putExtra("ref",refRep.get(repp));
+            StringBuilder s= new StringBuilder();
+           // s.append(repeats.get(repp)+" times per "+circle.get(repp));
+            i.putExtra("date",s.toString());
+            i.putExtra("des",desRep.get(repp));
+            Log.i(TAG,"title,ref,time,des---------->"+tREp.get(repp)+" ,"+refRep.get(repp)+" ,"+s+" ,"+desRep.get(repp));
         }
 
 
@@ -353,10 +385,21 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<String> _des, List<String> _ref, List<List<String>> _label,List<String> _desrep,List<String> _desdead,List<String> _refrep,List<String> _refdead) {
+    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<List<String>> _label,List<String> _desrep,List<String> _desdead,List<String> _refrep,List<String> _refdead,List<Integer> _repeats, List<String> _repeatCircle) {
         tDead = _deadT;
         tREp =_repeatT;
         task = _t;
+        day =_d;
+        month = _mo;
+        year=_y;
+        hour =_h;
+        min = _mi;
+        desDead=_desdead;
+        desRep=_desrep;
+        refDead=_refdead;
+        refRep=_refrep;
+        repeats = _repeats;
+        circle = _repeatCircle;
     }
 
 

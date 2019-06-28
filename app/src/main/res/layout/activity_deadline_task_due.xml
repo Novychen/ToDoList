@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/activity_task_due_title"
+        android:id="@+id/activity_task_due_deadline_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -53,8 +53,8 @@
         android:layout_width="18dp"
         android:layout_height="21dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/activity_task_due_title"
-        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_title"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_deadline_title"
+        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_deadline_title"
         app:srcCompat="@drawable/ic_label_bright_green" />
 
     <ImageView
@@ -78,7 +78,7 @@
         app:srcCompat="@drawable/ic_label_bright_green" />
 
     <ImageView
-        android:id="@+id/activity_task_due_remove"
+        android:id="@+id/activity_task_due_deadline_remove"
         android:layout_width="47dp"
         android:layout_height="56dp"
         android:layout_marginEnd="8dp"
@@ -102,9 +102,9 @@
         android:layout_height="41dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/ic_time"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_date"
-        app:layout_constraintEnd_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/activity_task_due_date" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_date"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_time"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_date" />
 
     <TextView
         android:id="@+id/activity_task_due_tags"
@@ -117,7 +117,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_title" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_deadline_title" />
 
     <TextView
         android:id="@+id/textView3"
@@ -131,7 +131,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageView8" />
 
     <TextView
-        android:id="@+id/activity_task_due_date"
+        android:id="@+id/activity_task_due_deadline_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -143,7 +143,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/activity_task_due_deadline_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="xx:xx"
@@ -279,7 +279,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView19" />
 
     <TextView
-        android:id="@+id/activity_task_due_Note"
+        android:id="@+id/activity_task_due_deadline_des"
         android:layout_width="0dp"
         android:layout_height="164dp"
         android:layout_marginTop="24dp"
@@ -290,13 +290,13 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView13" />
 
     <ImageView
-        android:id="@+id/imageView21"
+        android:id="@+id/activity_task_due_deadline_back"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/ic_cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_remove"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_remove"
         app:layout_constraintStart_toStartOf="@+id/imageView16"
-        app:layout_constraintTop_toTopOf="@+id/activity_task_due_remove" />
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_remove" />
 
 </android.support.constraint.ConstraintLayout>

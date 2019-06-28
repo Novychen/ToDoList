@@ -222,9 +222,11 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     }
 
     @Override
-    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task, List<String> des, List<String> ref, List<List<String>> label, List<String> _desrep, List<String> _desdead, List<String> _refrep, List<String> _refdead) {
+    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task, List<List<String>> label, List<String> _desrep, List<String> _desdead, List<String> _refrep, List<String> _refdead, List<Integer> _repeats, List<String> _repeatCircle) {
 
     }
+
+
 
 
 }
