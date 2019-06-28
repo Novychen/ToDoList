@@ -24,7 +24,7 @@ public class RepeatTask implements Task {
      * Consturctor for the Class {@link RepeatTask} everything is the default value (null,0,false, ...)
      */
     RepeatTask() {
-        this(null,null,null,0,null,0,false,0,false,false,false,false,false);
+        this(null,null,null,0,null,0,true,0,false,false,false,false,false);
     }
 
     /**

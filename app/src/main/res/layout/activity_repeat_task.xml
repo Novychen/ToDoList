@@ -274,6 +274,15 @@
             app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiBrutal" />
 
         <RadioButton
+            android:id="@+id/RepeatTask_Activity_MotiNo_RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:buttonTint="#FDFDFE"
+            app:layout_constraintStart_toEndOf="@+id/RepeatTask_Activity_MotiFunny"
+            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_MotiFunny_RadioButton" />
+
+        <RadioButton
             android:id="@+id/RepeatTask_Activity_MotiCute_RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -351,7 +360,19 @@
             android:background="@drawable/ic_help_dialog_light_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_help_button" />
+            app:layout_constraintTop_toBottomOf="@+id/RepeatTask_Activity_help_button"
+            tools:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/repeatTask_Activity_MotiNo"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/ic_notifications_off"
+            app:layout_constraintBottom_toBottomOf="@+id/RepeatTask_Activity_MotiNo_RadioButton"
+            app:layout_constraintEnd_toEndOf="@+id/RepeatTask_Activity_MotiFunny"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/RepeatTask_Activity_MotiFunny"
+            app:layout_constraintTop_toTopOf="@+id/RepeatTask_Activity_MotiNo_RadioButton" />
 
     </android.support.constraint.ConstraintLayout>
 

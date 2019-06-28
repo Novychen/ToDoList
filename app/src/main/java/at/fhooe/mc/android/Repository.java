@@ -49,7 +49,7 @@ class Repository {
     private List<Boolean> mSnarkyDead = new LinkedList<>();
     private List<Boolean> mFunnyDead = new LinkedList<>();
     private List<Boolean> mNormalDead = new LinkedList<>();
-
+    private List<Boolean> mNotification = new LinkedList<>();
 
     /**
      * Constructor for Repository
@@ -119,6 +119,7 @@ class Repository {
                mLabelDead.clear();
                mDescriptionDead.clear();
                mReferenceDead.clear();
+               mNotification.clear();
 
                mTitleRepeat.clear();
                mRepeatRotation.clear();
@@ -178,6 +179,9 @@ class Repository {
                            Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
                            mNormalDead.add(normal);
 
+                           Boolean notification = listSnapshot.child("notification").getValue(Boolean.class);
+                           mNotification.add(notification);
+
                            String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
                            String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
                            String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
@@ -232,8 +236,8 @@ class Repository {
                         mTasks.remove(mTasks.size() - 1);
                     }
                    _callback.setTitle(mTitleRepeat, mTitleDead, mTasks,mDay, mMonth, mYear, mRepeats, mRepeatRotation);
-                   _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute, mTitleDead,mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead);
-                   _callback.setNotificationRepeatData(mRepeats,mRepeatRotation, mTitleRepeat,mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat);
+                   _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute, mTitleDead,mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotification);
+                   _callback.setNotificationRepeatData(mRepeats,mRepeatRotation, mTitleRepeat,mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat, mNotification);
                    _callback.setAll(mTitleRepeat,mDay,mMonth,mYear,mHour,mMinute,mTasks, mDescriptionRepeat, mReferenceRepeat, mLabelRepeat);
            }
 
@@ -272,6 +276,20 @@ class Repository {
         }
         DatabaseReference reference = database.getReference(ref);
         reference.setValue(_currTaskNumber);
+    }
+
+    /**
+     * saves the current TaskNumber into the database
+     * @param _notification the number that represents the current Task
+     * @param _ref the number that represents the current Task
+     */
+    void saveData(boolean _notification, String _ref){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        if (mUserId == null){
+            return;
+        }
+        DatabaseReference reference = database.getReference(mUserId).child(_ref).child("notification");
+        reference.setValue(_notification);
     }
 
     /**

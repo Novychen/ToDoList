@@ -39,6 +39,8 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     private int mFunnyClicked;
     private int mNormalClicked;
     private int mSnarkyClicked;
+    private int mNoClicked;
+
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -69,6 +71,9 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
 
         RadioButton normal = findViewById(R.id.RepeatTask_Activity_MotiNormal_RadioButton);
         normal.setOnClickListener(this);
+
+        RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiNo_RadioButton);
+        b.setOnClickListener(this);
 
         TextView repeat = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
         repeat.setOnClickListener(this);
@@ -265,6 +270,16 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                     RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiNormal_RadioButton);
                     b.setChecked(false);
                 }mNormalClicked++;
+            }break;
+            case R.id.RepeatTask_Activity_MotiNo_RadioButton:{
+                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                if(mNoClicked % 2 == 0) {
+                    mRepeatTask.setNotification(false);
+                }else{
+                    mRepeatTask.setNotification(true);
+                    RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiNo_RadioButton);
+                    b.setChecked(false);
+                }mNoClicked++;
             }break;
             case R.id.RepeatTask_Activity_MotiSnarky_RadioButton:{
                 Log.i(TAG, "::onClick MotivationSnarky RadioButton was clicked");

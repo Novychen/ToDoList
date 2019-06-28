@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,10 +35,13 @@ import java.util.Random;
  *
  *
  * Repeat task algorithmus überlegen für Notifications
- * remove
  * offline Daten
  * Wechseln zwischen tasks
- * Settings wo Notificationart eingestellt werden kann
+ * notificationsarten einstellen
+ * wiederholgun der noti einsetellen
+ * gemeinere Notis nach der Zeit
+ * notis fixen (es kommen zu viele)
+ * repeat task fixen
  *
  */
 public class ActivityList extends ListActivity implements IFirebaseCallback{
@@ -181,7 +185,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal) {
+    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification) {
         {
             if (_d.size() != 0) {
                 _d.remove(_d.size() - 1);
@@ -190,72 +194,81 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 _h.remove(_h.size() - 1);
                 _min.remove(_min.size() - 1);
             }
-
-            List<PendingIntent> piList = new LinkedList<>();
+            List <String> motivation = new LinkedList<>();
 
             for (int i = 0; i < _d.size(); i++) {
+                if(_notification.get(i)) {
+                    Calendar calendar = Calendar.getInstance();
+                    if (_d.get(i) == null) {
+                        _d.set(i, 0);
+                    }
+                    if (_m.get(i) == null) {
+                        _m.set(i, 0);
+                    }
+                    if (_y.get(i) == null) {
+                        _y.set(i, 0);
+                    }
+                    if (_h.get(i) == null) {
+                        _h.set(i, 0);
+                    }
+                    if (_min.get(i) == null) {
+                        _min.set(i, 0);
+                    }
+                    int year = _y.get(i);
+                    int month = _m.get(i) - 1;
+                    int day = _d.get(i);
+                    int hour = _h.get(i);
+                    int minute = _min.get(i);
 
-                Calendar calendar = Calendar.getInstance();
-                if (_d.get(i) == null) {
-                    _d.set(i, 0);
-                }
-                if (_m.get(i) == null) {
-                    _m.set(i, 0);
-                }
-                if (_y.get(i) == null) {
-                    _y.set(i, 0);
-                }
-                if (_h.get(i) == null) {
-                    _h.set(i, 0);
-                }
-                if (_min.get(i) == null) {
-                    _min.set(i, 0);
-                }
-                int year = _y.get(i);
-                int month = _m.get(i) - 1;
-                int day = _d.get(i);
-                int hour = _h.get(i);
-                int minute = _min.get(i);
+                    calendar.set(year, month, day, hour, minute);
 
-                calendar.set(year, month, day, hour, minute);
+                    Random r = new Random();
+                    Intent intent = new Intent(this, NotificationAlarm.class);
+                    intent.putExtra("title", "The time for your task: " + _t.get(i) + " is up!");
+                    intent.putExtra("text", "You better have your things done");
+                    intent.putExtra("notification", _notification.get(i));
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
 
-                Random r = new Random();
-                Intent intent = new Intent(this, NotificationAlarm.class);
-                intent.putExtra("title", "The time for your task: " + _t.get(i) + " is up!");
-                intent.putExtra("text", "You better have your things done");
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+                    if (_norm.get(i)) {
+                        motivation.addAll(mMotivation);
+                    } else if (_brutal.get(i)) {
+                        motivation.addAll(mBrutalMotivation);
+                    } else if (_cute.get(i)) {
+                        motivation.addAll(mCuteMotivation);
+                    } else if (_funny.get(i)) {
+                        motivation.addAll(mFunnyMotivation);
+                    } else if (_snarky.get(i)) {
+                        motivation.addAll(mSnarkyMotivation);
+                    }
+                }
             }
-
 
             Random r = new Random();
             Calendar calendar = Calendar.getInstance();
-            int brutal = mBrutalMotivation.size();
-            int cute = mCuteMotivation.size();
-            int funny = mFunnyMotivation.size();
-            int motivation = mMotivation.size();
-            int snarky = mSnarkyMotivation.size();
-
-            if (mGotIntoData != 1) {
-                for (int i = 0; i < 4; i++) {
-                    calendar.setTime(new Date());
-                    calendar.add(Calendar.HOUR_OF_DAY, r.nextInt(12));
-                    calendar.add(Calendar.MINUTE, r.nextInt(60));
-                    Intent intent = new Intent(this, NotificationAlarm.class);
-                    intent.putExtra("title", "Motivation coming through");
-                    intent.putExtra("text", mMotivation.get(r.nextInt(motivation)));
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+            int size = motivation.size();
+            if(size != 0) {
+                if (mGotIntoData != 1) {
+                    for (int i = 0; i < 4; i++) {
+                        calendar.setTime(new Date());
+                        calendar.add(Calendar.HOUR_OF_DAY, r.nextInt(12));
+                        calendar.add(Calendar.MINUTE, r.nextInt(60));
+                        Intent intent = new Intent(this, NotificationAlarm.class);
+                        intent.putExtra("title", "Motivation coming through");
+                        intent.putExtra("text", motivation.get(r.nextInt(size)));
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+                    }
                 }
+                mGotIntoData++;
             }
-            mGotIntoData++;
         }
     }
 
     @Override
-    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal) {
+    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal ,List<Boolean> _notification) {
 
         try {
             if (_t.size() != 0) {
@@ -346,21 +359,4 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         Log.i(TAG,"Label: " + _label);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
 }

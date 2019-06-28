@@ -55,6 +55,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     GridView mLabelView;
     List<String> mLabelList;
     ArrayAdapter<String> mLabelAdapter;
+    private int mNoClicked;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -93,6 +94,9 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
         RadioButton normal = findViewById(R.id.DeadlineTask_Activity_MotiNormal_RadioButton);
         normal.setOnClickListener(this);
+
+        RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
+        b.setOnClickListener(this);
 
         mLabelView = findViewById(R.id.task_Activity_Label_layout);
         mLabelList = new ArrayList<>();
@@ -290,6 +294,16 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                     RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiSnarky_RadioButton);
                     b.setChecked(false);
                 }mSnarkyClicked++;
+            }break;
+            case R.id.DeadlineTask_Activity_MotiNo_RadioButton:{
+                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                if(mNoClicked % 2 == 0) {
+                    mDeadlineTask.setNotification(false);
+                }else{
+                    mDeadlineTask.setNotification(true);
+                    RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
+                    b.setChecked(false);
+                }mNoClicked++;
             }break;
             case R.id.DeadlineTask_Activity_help_button:{
                 ImageView helpDialog = findViewById(R.id.DeadlineTask_Activity_help_dialog);

@@ -21,7 +21,6 @@ public class NotificationAlarm extends BroadcastReceiver {
         Intent i = new Intent(_context,TaskDue.class);
         Random r = new Random();
         PendingIntent pi = PendingIntent.getActivity(_context,  r.nextInt(10000) ,i,0);
-
         inboxStyle.setBigContentTitle("ToDoList");
 
         if(mGroupCount == 0) {

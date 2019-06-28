@@ -255,6 +255,15 @@
             app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activity_MotiCute" />
 
         <RadioButton
+            android:id="@+id/DeadlineTask_Activity_MotiNo_RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:buttonTint="#FFFFFF"
+            app:layout_constraintStart_toEndOf="@+id/DeadlineTask_Activity_MotiFunny"
+            app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_MotiFunny_RadioButton" />
+
+        <RadioButton
             android:id="@+id/DeadlineTask_Activity_MotiNormal_RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -332,6 +341,16 @@
             app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activity_MotiFunny_RadioButton"
             app:layout_constraintVertical_bias="0.625" />
 
+        <ImageView
+            android:id="@+id/DeadlineTask_Activity_MotiNo"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/ic_notifications_off"
+            app:layout_constraintBottom_toBottomOf="@+id/DeadlineTask_Activity_MotiNo_RadioButton"
+            app:layout_constraintEnd_toEndOf="@+id/DeadlineTask_Activity_MotiFunny"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_MotiFunny"
+            app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activity_MotiNo_RadioButton" />
+
         <TextView
             android:id="@+id/DeadlineTask_Activity_notification_display"
             android:layout_width="wrap_content"
@@ -353,7 +372,8 @@
             android:background="@drawable/ic_help_dialog_light_green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_help_button" />
+            app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_help_button"
+            tools:visibility="invisible" />
 
 
     </android.support.constraint.ConstraintLayout>

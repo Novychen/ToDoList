@@ -28,7 +28,7 @@ public class DeadlineTask implements Task{
      * Consturctor for the Class {@link DeadlineTask} everything is the default value (null,0,false, ...)
      */
     DeadlineTask(){
-        this(null,null,null,0,0,0,0,0,0,false,0,false,false,false,false,false);
+        this(null,null,null,0,0,0,0,0,0,true,0,false,false,false,false,false);
     }
 
     /**
