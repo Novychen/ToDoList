@@ -83,23 +83,23 @@ public class RepeatTask implements Task {
         mTitle = _title;
     }
 
-    public String getTitle() {
+   public String getTitle() {
         return mTitle;
     }
 
-    public void setRepeats(int _repeats) {
+   public void setRepeats(int _repeats) {
         mRepeats = _repeats;
     }
 
-    public int getRepeats() {
+   public int getRepeats() {
         return mRepeats;
     }
 
-    public void setRepeatRotation(String _repeatRotation) {
+   public void setRepeatRotation(String _repeatRotation) {
         mRepeatRotation = _repeatRotation;
     }
 
-    public String getRepeatRotation() {
+   public String getRepeatRotation() {
         return mRepeatRotation;
     }
 
@@ -107,7 +107,9 @@ public class RepeatTask implements Task {
         mTask = _task;
     }
 
-    public int getTask() { return mTask; }
+    public int getTask() {
+        return mTask;
+    }
 
     public void setCute(boolean _cute) { mCute = _cute; }
 

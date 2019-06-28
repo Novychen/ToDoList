@@ -8,9 +8,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.util.Random;
-public class NotificationAlarm extends BroadcastReceiver {
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.List;
+import java.util.Random;
+public class NotificationAlarm extends BroadcastReceiver  {
+
+/*    List<String> title = null;
+    List<Integer> day = null;
+    List<Integer> month = null;
+    List<Integer> year = null;
+    List<Integer> hour = null;
+    List<Integer> min = null ;
+    List<Integer> task = null;
+    List<String> des = null;
+    List<String> ref = null;
+    List<List<String>> label = null;*/
 
     public static final String TAG = "at.fhooe.mc.toDoList :: NotificationAlarm";
     private static final  String GROUP_KEY = "at.fhooe.mc.toDoList.GROUP_KEY";
@@ -80,5 +94,6 @@ public class NotificationAlarm extends BroadcastReceiver {
 
         Log.i(TAG,"notification");
         }
+
 
 }

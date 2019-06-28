@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/activity_repeat_task_due_title"
+        android:id="@+id/activity_task_due_repeat_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -39,248 +39,225 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <ImageView
-        android:id="@+id/activity_repeat_task_due_label_icon1"
+        android:id="@+id/activity_task_due_repeat_icon_label1"
         android:layout_width="18dp"
         android:layout_height="21dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/ic_label_bright_blue"
-        app:layout_constraintStart_toStartOf="@+id/activity_repeat_task_due_title"
-        app:layout_constraintTop_toBottomOf="@+id/activity_repeat_task_due_title" />
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_title"
+        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_repeat_title" />
 
     <ImageView
-        android:id="@+id/activity_repeat_task_due_label_icon2"
+        android:id="@+id/activity_task_due_repeat_icon_label2"
         android:layout_width="18dp"
         android:layout_height="21dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/ic_label_bright_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_repeat_task_due_label_icon1"
-        app:layout_constraintStart_toEndOf="@+id/activity_repeat_task_due_label1"
-        app:layout_constraintTop_toTopOf="@+id/activity_repeat_task_due_label_icon1" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_icon_label1"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_icon_label1" />
 
     <ImageView
-        android:id="@+id/activity_repeat_task_due_label_icon3"
+        android:id="@+id/activity_task_due_repeat_icon_label3"
         android:layout_width="18dp"
         android:layout_height="21dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/ic_label_bright_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_repeat_task_due_label_icon2"
-        app:layout_constraintStart_toEndOf="@+id/activity_repeat_task_due_label2"
-        app:layout_constraintTop_toTopOf="@+id/activity_repeat_task_due_label_icon2" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_icon_label2"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_label2"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_icon_label2" />
 
     <TextView
-        android:id="@+id/activity_repeat_task_due_label1"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="2dp"
         android:text="label1"
         android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_repeat_task_due_label_icon1"
-        app:layout_constraintStart_toEndOf="@+id/activity_repeat_task_due_label_icon1"
-        app:layout_constraintTop_toBottomOf="@+id/activity_repeat_task_due_title" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_icon_label1"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_icon_label1"
+        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_repeat_title" />
 
     <TextView
-        android:id="@+id/activity_repeat_task_due_label2"
+        android:id="@+id/activity_task_due_repeat_label2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:text="label2"
         android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_repeat_task_due_label_icon2"
-        app:layout_constraintStart_toEndOf="@+id/activity_repeat_task_due_label_icon2" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_icon_label2"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_icon_label2" />
 
     <TextView
-        android:id="@+id/activity_repeat_task_due_label3"
+        android:id="@+id/activity_task_due_repeat_label3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:text="label3"
         android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_repeat_task_due_label_icon3"
-        app:layout_constraintStart_toEndOf="@+id/activity_repeat_task_due_label_icon3" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_icon_label3"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_icon_label3" />
 
     <ImageView
-        android:id="@+id/imageView26"
+        android:id="@+id/activity_task_due_repeat_boxSnarky"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView29"
-        app:layout_constraintStart_toEndOf="@+id/imageView29"
-        app:layout_constraintTop_toTopOf="@+id/imageView29" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxBrutal"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_boxBrutal"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxBrutal" />
 
     <ImageView
-        android:id="@+id/imageView27"
+        android:id="@+id/activity_task_due_repeat_boxCute"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView28"
-        app:layout_constraintStart_toEndOf="@+id/imageView28"
-        app:layout_constraintTop_toTopOf="@+id/imageView28" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxFunny"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_boxFunny"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxFunny" />
 
     <ImageView
-        android:id="@+id/imageView28"
+        android:id="@+id/activity_task_due_repeat_boxFunny"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView26"
-        app:layout_constraintStart_toEndOf="@+id/imageView26"
-        app:layout_constraintTop_toTopOf="@+id/imageView26" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxSnarky"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_boxSnarky"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxSnarky" />
 
     <ImageView
-        android:id="@+id/imageView29"
+        android:id="@+id/activity_task_due_repeat_boxBrutal"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/ic_button_round_blue"
-        app:layout_constraintStart_toStartOf="@+id/activity_repeat_task_due_label_icon1"
-        app:layout_constraintTop_toBottomOf="@+id/activity_repeat_task_due_times" />
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_icon_label1"
+        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_repeat_date" />
 
     <ImageView
-        android:id="@+id/imageView30"
+        android:id="@+id/activity_task_due_repeat_boxNo"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView31"
-        app:layout_constraintStart_toEndOf="@+id/imageView31"
-        app:layout_constraintTop_toTopOf="@+id/imageView31" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxNormal"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_boxNormal"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxNormal" />
 
     <ImageView
-        android:id="@+id/imageView31"
+        android:id="@+id/activity_task_due_repeat_boxNormal"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_blue"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView27"
-        app:layout_constraintStart_toEndOf="@+id/imageView27"
-        app:layout_constraintTop_toTopOf="@+id/imageView27" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxCute"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_repeat_boxCute"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxCute" />
 
     <ImageView
-        android:id="@+id/imageView32"
+        android:id="@+id/activity_task_due_repeat_brutal"
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:background="@drawable/ic_brutalmotivation"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView29"
-        app:layout_constraintEnd_toEndOf="@+id/imageView29"
-        app:layout_constraintStart_toStartOf="@+id/imageView29"
-        app:layout_constraintTop_toTopOf="@+id/imageView29" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxBrutal"
+        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_repeat_boxBrutal"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_boxBrutal"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxBrutal" />
 
     <ImageView
-        android:id="@+id/imageView33"
+        android:id="@+id/activity_task_due_repeat_cute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_cutemotivation"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView27"
-        app:layout_constraintEnd_toEndOf="@+id/imageView27"
-        app:layout_constraintStart_toStartOf="@+id/imageView27"
-        app:layout_constraintTop_toTopOf="@+id/imageView27" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxCute"
+        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_repeat_boxCute"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_boxCute"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxCute" />
 
     <ImageView
-        android:id="@+id/imageView34"
+        android:id="@+id/activity_task_due_repeat_normal"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:background="@drawable/ic_notification_active"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView31"
-        app:layout_constraintEnd_toEndOf="@+id/imageView31"
-        app:layout_constraintStart_toStartOf="@+id/imageView31"
-        app:layout_constraintTop_toTopOf="@+id/imageView31" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxNormal"
+        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_repeat_boxNormal"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_boxNormal"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxNormal" />
 
     <ImageView
-        android:id="@+id/imageView35"
+        android:id="@+id/activity_task_due_repeat_funny"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_funnymotivation"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView28"
-        app:layout_constraintEnd_toEndOf="@+id/imageView28"
-        app:layout_constraintStart_toStartOf="@+id/imageView28"
-        app:layout_constraintTop_toTopOf="@+id/imageView28" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxFunny"
+        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_repeat_boxFunny"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_boxFunny"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxFunny" />
 
     <ImageView
-        android:id="@+id/imageView36"
+        android:id="@+id/activity_task_due_repeat_snarky"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_snarkymotivation"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView26"
-        app:layout_constraintEnd_toEndOf="@+id/imageView26"
-        app:layout_constraintStart_toStartOf="@+id/imageView26"
-        app:layout_constraintTop_toTopOf="@+id/imageView26" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxSnarky"
+        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_repeat_boxSnarky"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_boxSnarky"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxSnarky" />
 
     <ImageView
-        android:id="@+id/imageView37"
+        android:id="@+id/activity_task_due_repeat_no"
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:background="@drawable/ic_notifications_off"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView30"
-        app:layout_constraintEnd_toEndOf="@+id/imageView30"
-        app:layout_constraintStart_toStartOf="@+id/imageView30"
-        app:layout_constraintTop_toTopOf="@+id/imageView30" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_boxNo"
+        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_repeat_boxNo"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_boxNo"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_boxNo" />
 
     <TextView
-        android:id="@+id/activity_repeat_task_due_description"
+        android:id="@+id/activity_task_due_repeat_des"
         android:layout_width="0dp"
         android:layout_height="164dp"
         android:layout_marginTop="24dp"
         android:text="This is a text to demonstrate the effect of the describe field"
-        app:layout_constraintEnd_toEndOf="@+id/imageView30"
-        app:layout_constraintStart_toStartOf="@+id/imageView29"
-        app:layout_constraintTop_toBottomOf="@+id/imageView28" />
+        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_repeat_boxNo"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_boxBrutal"
+        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_repeat_boxFunny" />
 
     <ImageView
-        android:id="@+id/imageView38"
+        android:id="@+id/activity_task_due_repeat_remove"
         android:layout_width="47dp"
         android:layout_height="56dp"
         android:layout_marginEnd="4dp"
         android:background="@drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="@+id/imageView22"
-        app:layout_constraintEnd_toEndOf="@+id/imageView35"
+        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_repeat_funny"
         app:layout_constraintTop_toTopOf="@+id/imageView22" />
 
     <ImageView
-        android:id="@+id/imageView39"
+        android:id="@+id/activity_task_due_repeat_back"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/ic_cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView38"
-        app:layout_constraintStart_toStartOf="@+id/imageView33"
-        app:layout_constraintTop_toTopOf="@+id/imageView38" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_repeat_remove"
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_cute"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_repeat_remove" />
 
     <TextView
-        android:id="@+id/activity_repeat_task_due_times"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/activity_task_due_repeat_date"
+        android:layout_width="266dp"
+        android:layout_height="34dp"
         android:layout_marginTop="24dp"
         android:text="XX"
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/activity_repeat_task_due_title"
-        app:layout_constraintTop_toBottomOf="@+id/activity_repeat_task_due_label1" />
-
-    <TextView
-        android:id="@+id/activity_repeat_task_due_circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="xxxxx"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/activity_repeat_task_due_timesper"
-        app:layout_constraintStart_toEndOf="@+id/activity_repeat_task_due_timesper" />
-
-    <TextView
-        android:id="@+id/activity_repeat_task_due_timesper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="times per"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/activity_repeat_task_due_times"
-        app:layout_constraintStart_toEndOf="@+id/activity_repeat_task_due_times" />
+        app:layout_constraintStart_toStartOf="@+id/activity_task_due_repeat_title"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 </android.support.constraint.ConstraintLayout>

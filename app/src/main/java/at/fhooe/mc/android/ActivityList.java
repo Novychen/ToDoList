@@ -1,5 +1,6 @@
 package at.fhooe.mc.android;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.ListActivity;
@@ -54,17 +55,28 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List <String> mMotivation = new LinkedList<>();
     List <String> mBrutalMotivation = new LinkedList<>();
     int mGotIntoData;
-
-    List<String> title = null;
+    List<String> tREp=null;
+    List<String> tDead=null;
     List<Integer> day = null;
     List<Integer> month = null;
     List<Integer> year = null;
     List<Integer> hour = null;
     List<Integer> min = null ;
     List<Integer> task = null;
-    List<String> des = null;
-    List<String> ref = null;
+    List<String> desRep = null;
+    List<String> refRep = null;
+    List<String> desDead = null;
+    List<String> refDead = null;
+    List<Boolean> mBrutal = null;
+    List<Boolean> mSnarky = null;
+    List<Boolean> mFunnny = null;
+    List<Boolean> mCute = null;
+    List<Boolean> mNormal = null;
+    List<Boolean> mNoNoti = null;
+
     List<List<String>> label = null;
+    List<Integer> repeats = null;
+    List<String> circle = null;
 
 
     @Override
@@ -74,11 +86,16 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
        /* setContentView(R.layout.activity_list);*/
 
+        Log.e(TAG, "OnCreate :: ActivityList");
+
         DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref2, this);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
         Repository.getInstance().getLongData(ref);
+
+        DatabaseReference ref3 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getNotificationData(ref3, this);
 
         adapter = new DataAdapter(this);
         setListAdapter(adapter);
@@ -116,8 +133,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         mCuteMotivation.add("After the rain comes the rainbow");
         mCuteMotivation.add("You are doing great! Keep pushing!");
 
-
-
         final ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
     }
@@ -129,17 +144,53 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         Log.i(TAG, "Position ------> " + _position );
         Log.i(TAG, "clicked item " + item);
         Intent i = new Intent(this, TaskDue.class);
-        i.putExtra("title", title.get(_position));
-        i.putExtra("day",day.get(_position));
-        i.putExtra("month", month.get(_position));
-        i.putExtra("year",year.get(_position));
-        i.putExtra("hour", hour.get(_position));
-        i.putExtra("min",min.get(_position));
-        i.putExtra("des",des.get(_position));
-        i.putExtra("ref",ref.get(_position));
-        i.putExtra("label_0",label.get(_position).get(0));
-        i.putExtra("label_1",label.get(_position).get(1));
-        i.putExtra("label_2",label.get(_position).get(2));
+        Log.i(TAG,"TASK SIZE after SetALL-------->"+task.size());
+        i.putExtra("task", task.get(_position));
+        int deadp =0;
+        int repp =0;
+        for (int p  = 0; p!=_position;p++){
+            if(task.get(p)==0) {
+                deadp++;
+            }else {
+                repp++;
+            }
+        }
+        Log.i(TAG, "dead " + deadp);
+        Log.i(TAG, "rep " + repp);
+        if(task.get(_position)==0){
+            i.putExtra("title",tDead.get(deadp));
+            i.putExtra("ref",refDead.get(deadp));
+            StringBuilder s= new StringBuilder();
+         //   s.append(day.get(deadp)+"."+month.get(deadp)+"."+year.get(deadp));
+            i.putExtra("date",day.get(deadp) + "." + month.get(deadp) + "." + year.get(deadp));
+            s = new StringBuilder();
+          //  s.append(hour.get(deadp)+":"+min.get(deadp));
+            i.putExtra("time",s.toString());
+            i.putExtra("des",desDead.get(deadp));
+            Log.i(TAG,"title,ref,time,des---------->"+tDead.get(deadp)+" ,"+refDead.get(deadp)+" ,"+s+" ,"+desDead.get(deadp));
+
+            /*
+            hier sind meine Extras für die 6 Buttons, ich übergebe sie der TaskDue wo ich sie weiter
+            verarbeite. Damit ich sie hier verwenden kann habe ich die setAll um diese 6 Listen erweitert - Yvonne
+            --------------------------------------------------------------- */
+            i.putExtra("brutal", mBrutal.get(deadp));
+            i.putExtra("snarky", mSnarky.get(deadp));
+            i.putExtra("funny", mFunnny.get(deadp));
+            i.putExtra("cute", mCute.get(deadp));
+            i.putExtra("normal", mNormal.get(deadp));
+            i.putExtra("noNoti", mNoNoti.get(deadp));
+            //--------------------------------------------------------------
+        }else {
+            i.putExtra("title",tREp.get(repp));
+            i.putExtra("ref",refRep.get(repp));
+            StringBuilder s= new StringBuilder();
+           // s.append(repeats.get(repp)+" times per "+circle.get(repp));
+            i.putExtra("date",s.toString());
+            i.putExtra("des",desRep.get(repp));
+            Log.i(TAG,"title,ref,time,des---------->"+tREp.get(repp)+" ,"+refRep.get(repp)+" ,"+s+" ,"+desRep.get(repp));
+        }
+
+
         startActivity(i);
      }
 
@@ -185,13 +236,13 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
+    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<Integer> _count, List<String> _ref) { // List<String> _des, List<List<String>> _label
         {
 
             List <String> motivation = new LinkedList<>();
 
             for (int i = 0; i < _d.size(); i++) {
-                if(_notification.get(i)) {
+                if(_notification.get(i) && _count.get(i) < 1) {
                     Calendar calendar = Calendar.getInstance();
                     if (_d.get(i) == null) {
                         _d.set(i, 0);
@@ -222,9 +273,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                     intent.putExtra("text", "You better have your things done");
                     intent.putExtra("Task", 0);
                     intent.putExtra("DeadLineTitle", _t.get(i));
-                    intent.putExtra("DeadlineLabel1", _label.get(i).get(0));
+                    /*intent.putExtra("DeadlineLabel1", _label.get(i).get(0));
                     intent.putExtra("DeadlineLabel2", _label.get(i).get(1));
-                    intent.putExtra("DeadlineLabel3", _label.get(i).get(2));
+                    intent.putExtra("DeadlineLabel3", _label.get(i).get(2));*/
 
                     int m = _min.get(i);
                     int h = _h.get(i);
@@ -238,8 +289,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                     }
                     intent.putExtra("Time",stringHour + ":" + stringMin);
                     intent.putExtra("Date", _d.get(i) + "." + _m.get(i) + "." + _y.get(i));
-                    intent.putExtra("Description", _des.get(i));
+                    //intent.putExtra("Description", _des.get(i));
                     intent.putExtra("Notification", _notification.get(i));
+                    Repository.getInstance().saveData(_count.get(i) +1,_ref.get(i));
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
@@ -335,14 +387,23 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     @Override
     public void setTitle(List<String> _repeatT, List<String> _deadT, List<Integer> _task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _repeats, List<String> _repeatCircle) {
 
-            Log.i(TAG, "LIST size --> " + _deadT.size());
+            Log.i(TAG, "LIST size --> " + _task.size());
             try {
                 adapter.clear();
-                Log.i(TAG, "LIST size --> " + _deadT.size());
-                Log.i(TAG, "LIST  1 --> " + _deadT.get(0));
-                for (int i = 0; i < _deadT.size(); i++) {
-                    adapter.add(new ListData(_deadT.get(i), _d.get(i), _m.get(i), _y.get(i)));
-                    Log.i(TAG, adapter.getCount() + " --> " + _deadT.get(i));
+
+                int deadi= 0;
+                int repi = 0;
+                for (int i = 0; i < _task.size(); i++) {
+                    if(_task.get(i)==0){
+                        adapter.add(new ListData(_deadT.get(deadi),_d.get(deadi),_m.get(deadi),_y.get(deadi)));
+                        Log.i(TAG, adapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _deadT.get(deadi));
+                        deadi++;
+                    }
+                    if(_task.get(i)==1){
+                        adapter.add(new ListData(_repeatT.get(repi),_repeats.get(repi),_repeatCircle.get(repi)));
+                        Log.i(TAG, adapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _repeatT.get(repi));
+                        repi++;
+                    }
                 }
                 adapter.notifyDataSetChanged();
 
@@ -358,18 +419,32 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setAll(List<String> _s, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<String> _des,List<String> _ref, List<List<String>> _label) {
-        title = _s;
-        day = _d;
-        month = _mo;
-        year = _y;
-        hour = _h;
-        min =_mi;
+    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<List<String>> _label,List<String> _desrep,List<String> _desdead,List<String> _refrep,List<String> _refdead,List<Integer> _repeats, List<String> _repeatCircle, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification) {
+        tDead = _deadT;
+        tREp =_repeatT;
         task = _t;
-        des = _des;
-        ref = _ref;
-        label = _label;
+        day =_d;
+        month = _mo;
+        year=_y;
+        hour =_h;
+        min = _mi;
+        desDead=_desdead;
+        desRep=_desrep;
+        refDead=_refdead;
+        refRep=_refrep;
+        repeats = _repeats;
+        circle = _repeatCircle;
+        mBrutal = _brutal;
+        mSnarky = _snarky;
+        mFunnny = _funny;
+        mCute = _cute;
+        mNormal = _norm;
+        mNoNoti = _notification;
+    }
 
-        Log.i(TAG,"Label: " + _label);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

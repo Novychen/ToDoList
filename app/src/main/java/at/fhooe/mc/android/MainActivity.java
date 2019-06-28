@@ -200,14 +200,12 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                             Log.w(TAG, "main_Activity::createUserWithEmail failure - could not create account", task.getException());
                             Toast.makeText(MainActivity.this, getText(R.string.main_Activity_SignInFail_Toast), Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
     }
 
-
     @Override
-    public void setNotificationDeadlineData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<String> t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
+    public void setNotificationDeadlineData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<String> t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<Integer> _count, List<String> _ref) {
 
     }
 
@@ -221,10 +219,12 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
 
     }
 
-
     @Override
-    public void setAll(List<String> s, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task, List<String> _des,List<String> ref, List<List<String>> label) {
+    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task, List<List<String>> label, List<String> _desrep, List<String> _desdead, List<String> _refrep, List<String> _refdead, List<Integer> _repeats, List<String> _repeatCircle, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification) {
+
     }
+
+
 }
 
 
