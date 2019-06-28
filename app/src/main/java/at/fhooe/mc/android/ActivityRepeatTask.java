@@ -175,7 +175,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 mRepeatTask.setDescription(description);
                 mRepeatTask.setTask(1);
 
-                if(mLabelList != null){
+                if(mLabelList.size() == 0){
                     mLabelList.add("");
                 }
                 mRepeatTask.setLabel(mLabelList);

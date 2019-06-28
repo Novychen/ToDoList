@@ -146,7 +146,7 @@ class Repository {
                cleanLists();
 
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
-                   Integer task = listSnapshot.child("mTask").getValue(Integer.class);
+                   Integer task = listSnapshot.child("task").getValue(Integer.class);
                    mTasks.add(task);
 
                    if(task != null) {
@@ -154,16 +154,16 @@ class Repository {
                            String reference = listSnapshot.getKey();
                            mReferenceDead.add(reference);
 
-                           Integer day = listSnapshot.child("mDay").getValue(Integer.class);
+                           Integer day = listSnapshot.child("day").getValue(Integer.class);
                            mDay.add(day);
 
-                           Integer month = listSnapshot.child("mMonth").getValue(Integer.class);
+                           Integer month = listSnapshot.child("month").getValue(Integer.class);
                            mMonth.add(month);
 
-                           Integer year = listSnapshot.child("mYear").getValue(Integer.class);
+                           Integer year = listSnapshot.child("year").getValue(Integer.class);
                            mYear.add(year);
 
-                           Integer hour = listSnapshot.child("mHour").getValue(Integer.class);
+                           Integer hour = listSnapshot.child("hour").getValue(Integer.class);
                            mHour.add(hour);
 
                            Integer minute = listSnapshot.child("minute").getValue(Integer.class);
@@ -196,9 +196,9 @@ class Repository {
                            Integer count = listSnapshot.child("count").getValue(Integer.class);
                            mCount.add(count);
 
-                           String firstLabel = listSnapshot.child("mRepeatLabel").child("0").getValue(String.class);
-                           String secondLabel = listSnapshot.child("mRepeatLabel").child("1").getValue(String.class);
-                           String thirdLabel = listSnapshot.child("mRepeatLabel").child("2").getValue(String.class);
+                           String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
+                           String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
+                           String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
                            LinkedList<String> s = new LinkedList<>();
                            s.add(firstLabel);
                            s.add(secondLabel);
@@ -238,9 +238,9 @@ class Repository {
                            Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
                            mNormalRepeat.add(normal);
 
-                           String firstLabel = listSnapshot.child("mRepeatLabel").child("0").getValue(String.class);
-                           String secondLabel = listSnapshot.child("mRepeatLabel").child("1").getValue(String.class);
-                           String thirdLabel = listSnapshot.child("mRepeatLabel").child("2").getValue(String.class);
+                           String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
+                           String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
+                           String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
                            LinkedList<String> s = new LinkedList<>();
                            s.add(firstLabel);
                            s.add(secondLabel);
@@ -252,9 +252,10 @@ class Repository {
                     if(mTasks.size() != 0) {
                         mTasks.remove(mTasks.size() - 1);
                     }
-                   _callback.setTitle(mTitleRepeat, mTitleDead, mTasks,mDay, mMonth, mYear, mRepeats, mRepeatRotation);
-                    _callback.setNotificationDeadlineData(mDay,mMonth,mYear,mHour,mMinute,mTitleDead,mNormalDead,mFunnyDead,mSnarkyDead,mCuteDead,mBrutalDead, mNotificationDead,mCount,mReferenceDead,mDescriptionDead,mLabelDead);
-                    _callback.setNotificationRepeatData(mRepeats,mRepeatRotation,mTitleRepeat,mNormalRepeat,mFunnyRepeat,mSnarkyRepeat,mCuteRepeat,mBrutalRepeat, mNotificationDead,mReferenceRepeat,mDescriptionRepeat,mLabelRepeat);
+                   _callback.setTitle(mTitleRepeat,mTitleDead,mTasks,mDay,mMonth,mYear,mRepeats,mRepeatRotation);
+                   _callback.setAll(mTitleRepeat,mTitleDead,mDay,mMonth,mYear,mHour,mMinute,mTasks,mLabelRepeat,mLabelDead,mDescriptionRepeat,mDescriptionDead,mReferenceRepeat,mReferenceDead,mRepeats,mRepeatRotation,mNormalRepeat,mFunnyRepeat,mSnarkyRepeat,mCuteRepeat,mBrutalRepeat,mNotificationRepeat,mNormalDead,mFunnyDead,mSnarkyDead,mCuteDead,mBrutalDead,mNotificationDead);                   _callback.setTitle(mTitleRepeat, mTitleDead, mTasks,mDay, mMonth, mYear, mRepeats, mRepeatRotation);
+                   _callback.setNotificationDeadlineData(mDay,mMonth,mYear,mHour,mMinute,mTitleDead,mNormalDead,mFunnyDead,mSnarkyDead,mCuteDead,mBrutalDead, mNotificationDead,mCount,mReferenceDead,mDescriptionDead,mLabelDead);
+                   _callback.setNotificationRepeatData(mRepeats,mRepeatRotation,mTitleRepeat,mNormalRepeat,mFunnyRepeat,mSnarkyRepeat,mCuteRepeat,mBrutalRepeat, mNotificationDead,mDescriptionRepeat,mLabelRepeat);
            }
 
            @Override

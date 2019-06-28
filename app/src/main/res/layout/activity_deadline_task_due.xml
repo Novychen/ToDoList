@@ -64,7 +64,7 @@
         android:layout_marginStart="16dp"
         android:background="@drawable/ic_label_bright_green"
         app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_icon_label1"
-        app:layout_constraintStart_toEndOf="@+id/activity_task_due_tags"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_label1"
         app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_icon_label1" />
 
     <ImageView
@@ -97,7 +97,7 @@
         app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_time" />
 
     <TextView
-        android:id="@+id/activity_task_due_tags"
+        android:id="@+id/activity_task_due_deadline_label1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -273,7 +273,7 @@
         android:layout_height="164dp"
         android:layout_marginTop="24dp"
         android:text="This is a text to demonstrate the effect of the describe field"
-        android:textColor="#000000"
+        android:textColor="#28000000"
         app:layout_constraintEnd_toEndOf="@+id/activity_task_due_deadline_boxNot"
         app:layout_constraintStart_toStartOf="@+id/activity_task_due_deadline_calendar"
         app:layout_constraintTop_toBottomOf="@+id/activity_task_due_deadline_boxFunny" />

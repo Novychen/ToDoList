@@ -34,8 +34,8 @@ public class NotificationAlarm extends BroadcastReceiver  {
     public void onReceive(Context _context, Intent _intent) {
 
         final Intent i = new Intent(_context,TaskDue.class);
-        int task = _intent.getIntExtra("mTask",0);
-        i.putExtra("mTask",task);
+        int task = _intent.getIntExtra("task",0);
+        i.putExtra("task",task);
         if(task == 0) {
             String title = _intent.getStringExtra("title");
             i.putExtra("title", title);

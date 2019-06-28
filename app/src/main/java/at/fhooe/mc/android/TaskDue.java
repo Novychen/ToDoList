@@ -16,7 +16,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        int task = i.getIntExtra("mTask",-1);
+        int task = i.getIntExtra("task",-1);
         if(task ==1) {
             setContentView(R.layout.activity_repeat_task_due);
         }else {
@@ -29,6 +29,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
         String label1 = i.getStringExtra("label1");
         String label2 = i.getStringExtra("label2");
         String label3 = i.getStringExtra("label3");
+
         boolean brutal = i.getBooleanExtra("brutal", false);
         boolean snarky = i.getBooleanExtra("snarky", false);
         boolean funny = i.getBooleanExtra("funny", false);
@@ -87,14 +88,14 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
-            if(!noNoti){
+            if(noNoti){
                 ImageView x = findViewById(R.id.activity_task_due_deadline_not);
                 ImageView y = findViewById(R.id.activity_task_due_deadline_boxNot);
                 y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
-            if(label1 == ""){
-                TextView l1 = findViewById(R.id.activity_task_due_tags);
+            if(label1.equals("")){
+                TextView l1 = findViewById(R.id.activity_task_due_deadline_label1);
                 ImageView iconl1 = findViewById(R.id.activity_task_due_deadline_icon_label1);
                 l1.setVisibility(View.INVISIBLE);
                 iconl1.setVisibility(View.INVISIBLE);
@@ -108,7 +109,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 iconl3.setVisibility(View.INVISIBLE);
 
             }else if(label2 == null){
-                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                TextView l1 = findViewById(R.id.activity_task_due_deadline_label1);
                 l1.setText(label1);
                 TextView l2 = findViewById(R.id.activity_task_due_deadline_label2);
                 ImageView iconl2 = findViewById(R.id.activity_task_due_deadline_icon_label2);
@@ -119,7 +120,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 l3.setVisibility(View.INVISIBLE);
                 iconl3.setVisibility(View.INVISIBLE);
             }else if(label3 == null){
-                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                TextView l1 = findViewById(R.id.activity_task_due_deadline_label1);
                 l1.setText(label1);
                 TextView l2 = findViewById(R.id.activity_task_due_deadline_label2);
                 l2.setText(label2);
@@ -128,7 +129,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 l3.setVisibility(View.INVISIBLE);
                 iconl3.setVisibility(View.INVISIBLE);
             }else{
-                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                TextView l1 = findViewById(R.id.activity_task_due_deadline_label1);
                 l1.setText(label1);
                 TextView l2 = findViewById(R.id.activity_task_due_deadline_label2);
                 l2.setText(label2);
@@ -182,13 +183,13 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
-            if(!noNoti){
+            if(noNoti){
                 ImageView x = findViewById(R.id.activity_task_due_repeat_no);
                 ImageView y = findViewById(R.id.activity_task_due_repeat_boxNo);
                 y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
-            if(label1 == ""){
+            if(label1.equals("")){
                 TextView l1 = findViewById(R.id.activity_task_due_repeat_label1);
                 ImageView iconl1 = findViewById(R.id.activity_task_due_repeat_icon_label1);
                 l1.setVisibility(View.INVISIBLE);
@@ -223,7 +224,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 l3.setVisibility(View.INVISIBLE);
                 iconl3.setVisibility(View.INVISIBLE);
             }else{
-                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                TextView l1 = findViewById(R.id.activity_task_due_deadline_label1);
                 l1.setText(label1);
                 TextView l2 = findViewById(R.id.activity_task_due_repeat_label2);
                 l2.setText(label2);

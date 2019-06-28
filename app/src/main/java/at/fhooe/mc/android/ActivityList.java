@@ -31,14 +31,14 @@ import java.util.Random;
  * this class displays the toDoList and implements action that can manipulate the list
  *
  *
- * Repeat mTask algorithmus überlegen für Notifications
+ * Repeat task algorithmus überlegen für Notifications
  * offline Daten
  * Wechseln zwischen tasks
  * notificationsarten einstellen
  * wiederholgun der noti einsetellen
  * gemeinere Notis nach der Zeit
  * notis fixen (es kommen zu viele)
- * repeat mTask fixen
+ * repeat task fixen
  *
  */
 public class ActivityList extends ListActivity implements IFirebaseCallback{
@@ -51,16 +51,17 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List <String> mMotivation = new LinkedList<>();
     List <String> mBrutalMotivation = new LinkedList<>();
     int mGotIntoData;
-    private List<String> mTitleRep;
-    private List<String> mTitleDead;
-    private List<List<String>> mDeadLabel;
-    List<Integer> mDay;
-    List<Integer> mMonth;
-    List<Integer> mYear;
-    List<Integer> mHour;
-    List<Integer> mMin ;
-    List<Integer> mTask;
-    List<String> mDescriptionDead;
+    List<String> tRep;
+    List<String> tDead;
+    List<Integer> day;
+    List<Integer> month;
+    List<Integer> year;
+    List<Integer> hour;
+    List<Integer> min ;
+    List<Integer> task;
+    List<String> desRep;
+    List<String> refRep;
+    List<String> desDead;
     List<String> refDead;
     List<Boolean> mBrutalDead;
     List<Boolean> mSnarkyDead;
@@ -70,8 +71,8 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List<Boolean> mNoNotiDead;
 
     List<String> mDescriptionRep;
-    List<String> refRep;
     List<List<String>> mRepeatLabel;
+    List<List<String>> mDeadLabel;
     List<Integer> mRepeats;
     List<String> mCircle;
     List<String> mCircleRepeat;
@@ -81,6 +82,11 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     List<Boolean> mCuteRepeat;
     List<Boolean> mNormalRepeat;
     List<Boolean> mNoNotiRepeat;
+    List<List<String>> label;
+    List<Integer> repeats;
+    List<String> circle;
+    int[] rep;
+    String[] cir;
 
 
     @Override
@@ -100,6 +106,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         adapter = new DataAdapter(this);
         setListAdapter(adapter);
+
 
         mFunnyMotivation.add("People often say that motivation doesn’t last. Well, neither does bathing — that’s why we recommend it daily");
         mSnarkyMotivation.add("Anything's possible if you've got enough nerve.");
@@ -125,7 +132,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         mCuteMotivation.add("Believe you can and you’re halfway there.");
         mCuteMotivation.add("You can totally do it!");
-        mCuteMotivation.add("Life is not a problem to be solved but a gift to be enjoyed. Make the best of this mDay!");
+        mCuteMotivation.add("Life is not a problem to be solved but a gift to be enjoyed. Make the best of this day!");
         mCuteMotivation.add("There's hope for tomorrow, cheer up :D !");
         mCuteMotivation.add("Just a little bit longer - you can do it!");
         mCuteMotivation.add("Don't worry - be happy");
@@ -139,18 +146,19 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     protected void onListItemClick(ListView l, View v, int _position, long id) {
+        Log.i(TAG,"repeatsSIZE---------------------->"+rep.length);
+        Log.i(TAG,"CircleSIZE---------------------->"+circle.size());
         ListAdapter list = getListAdapter();
         ListData       item = (ListData) list.getItem(_position);
         Log.i(TAG, "Position ------> " + _position );
         Log.i(TAG, "clicked item " + item);
         Intent i = new Intent(this, TaskDue.class);
-        Log.i(TAG,"TASK SIZE after SetALL-------->"+ mTask.size());
-        Log.i(TAG,"mCircle---------->" + mCircle);
-        i.putExtra("mTask", mTask.get(_position));
+        Log.i(TAG,"TASK SIZE after SetALL-------->"+task.size());
+        i.putExtra("task", task.get(_position));
         int deadp =0;
         int repp =0;
         for (int p  = 0; p!=_position;p++){
-            if(mTask.get(p)==0) {
+            if(task.get(p)==0) {
                 deadp++;
             }else {
                 repp++;
@@ -158,18 +166,17 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         }
         Log.i(TAG, "dead " + deadp);
         Log.i(TAG, "rep " + repp);
-
-        if(mTask.get(_position)==0){
-            i.putExtra("title", mTitleDead.get(deadp));
+        if(task.get(_position)==0){
+            i.putExtra("title",tDead.get(deadp));
             i.putExtra("ref",refDead.get(deadp));
             StringBuilder s= new StringBuilder();
-         //   s.append(mDay.get(deadp)+"."+mMonth.get(deadp)+"."+mYear.get(deadp));
-            i.putExtra("date", mDay.get(deadp) + "." + mMonth.get(deadp) + "." + mYear.get(deadp));
+         //   s.append(day.get(deadp)+"."+month.get(deadp)+"."+year.get(deadp));
+            i.putExtra("date",day.get(deadp) + "." + month.get(deadp) + "." + year.get(deadp));
             s = new StringBuilder();
-          //  s.append(mHour.get(deadp)+":"+mMin.get(deadp));
+            s.append(hour.get(deadp)+":"+min.get(deadp));
             i.putExtra("time",s.toString());
-            i.putExtra("des", mDescriptionDead.get(deadp));
-            Log.i(TAG,"title,ref,time,des---------->"+ mTitleDead.get(deadp)+" ,"+refDead.get(deadp)+" ,"+s+" ,"+ mDescriptionDead.get(deadp));
+            i.putExtra("des",desDead.get(deadp));
+            Log.i(TAG,"title,ref,time,des---------->"+tDead.get(deadp)+" ,"+refDead.get(deadp)+" ,"+s+" ,"+desDead.get(deadp));
 
             i.putExtra("brutal", mBrutalDead.get(deadp));
             i.putExtra("snarky", mSnarkyDead.get(deadp));
@@ -177,28 +184,34 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             i.putExtra("cute", mCuteDead.get(deadp));
             i.putExtra("normal", mNormalDead.get(deadp));
             i.putExtra("noNoti", mNoNotiDead.get(deadp));
+
             i.putExtra("label1", mDeadLabel.get(deadp).get(0));
             i.putExtra("label2", mDeadLabel.get(deadp).get(1));
             i.putExtra("label3", mDeadLabel.get(deadp).get(2));
 
+
         }else {
-            i.putExtra("title", mTitleRep.get(repp));
+
+            i.putExtra("title", tRep.get(repp));
             i.putExtra("ref",refRep.get(repp));
             StringBuilder s= new StringBuilder();
-            String x = mRepeats.get(repp)+" times per " + mCircle.get(repp);
-            Log.i(TAG,"mCircle---------->" + mRepeats.get(repp)+" times per "+ mCircle.get(repp));
-            i.putExtra("date", x);
-            i.putExtra("des", mDescriptionRep.get(repp));
-            i.putExtra("brutal", mBrutalDead.get(repp));
-            i.putExtra("snarky", mSnarkyDead.get(repp));
-            i.putExtra("funny", mFunnnyDead.get(repp));
-            i.putExtra("cute", mCuteDead.get(repp));
-            i.putExtra("normal", mNormalDead.get(repp));
-            i.putExtra("noNoti", mNoNotiDead.get(repp));
+            //s.append(repeats.get(repp)+" times per "+circle.get(repp));
+            Log.i(TAG,repeats.size()+" times per "+circle.size());
+            s.append("hello");
+            i.putExtra("date",rep[repp]+" times per "+cir[repp]);
+            i.putExtra("des",desRep.get(repp));
+            Log.i(TAG,"title,ref,time,des---------->"+ tRep.get(repp)+" ,"+refRep.get(repp)+" ,"+s+" ,"+desRep.get(repp));
+
+            i.putExtra("brutal", mBrutalRepeat.get(repp));
+            i.putExtra("snarky", mSnarkyRepeat.get(repp));
+            i.putExtra("funny", mFunnnyRepeat.get(repp));
+            i.putExtra("cute", mCuteRepeat.get(repp));
+            i.putExtra("normal", mNormalRepeat.get(repp));
+            i.putExtra("noNoti", mNoNotiRepeat.get(repp));
+
             i.putExtra("label1", mRepeatLabel.get(repp).get(0));
             i.putExtra("label2", mRepeatLabel.get(repp).get(1));
             i.putExtra("label3", mRepeatLabel.get(repp).get(2));
-            Log.i(TAG,"title,ref,time,des---------->"+ mTitleRep.get(repp)+" ,"+refRep.get(repp)+" ,"+s+" ,"+ mDescriptionRep.get(repp));
         }
         startActivity(i);
      }
@@ -245,171 +258,158 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     }
 
     @Override
-    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<Integer> _count, List<String> _ref, List<String> _des, List<List<String>> _label) {
+    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<Integer> _count, List<String> _ref,List<String> _des, List<List<String>> _label) {
+        {
 
-        mTitleDead =_t;
-        mDescriptionDead =_des;
-        mDeadLabel = _label;
-        mDay =_d;
-        mMonth = _m;
-        mYear =_y;
-        mHour =_h;
-        mMin = _min;
-        refDead = _ref;
+            List <String> motivation = new LinkedList<>();
 
-        List <String> motivation = new LinkedList<>();
+            for (int i = 0; i < _d.size(); i++) {
+                if(_notification.get(i) && _count.get(i) < 1) {
+                    Calendar calendar = Calendar.getInstance();
+                    if (_d.get(i) == null) {
+                        _d.set(i, 0);
+                    }
+                    if (_m.get(i) == null) {
+                        _m.set(i, 0);
+                    }
+                    if (_y.get(i) == null) {
+                        _y.set(i, 0);
+                    }
+                    if (_h.get(i) == null) {
+                        _h.set(i, 0);
+                    }
+                    if (_min.get(i) == null) {
+                        _min.set(i, 0);
+                    }
+                    int year = _y.get(i);
+                    int month = _m.get(i) - 1;
+                    int day = _d.get(i);
+                    int hour = _h.get(i);
+                    int minute = _min.get(i);
 
-        for (int i = 0; i < _d.size(); i++) {
-            if( _notification.get(i) && _count.get(i) < 1) {
-                Calendar calendar = Calendar.getInstance();
-                if (_d.get(i) == null) {
-                    _d.set(i, 0);
-                }
-                if (_m.get(i) == null) {
-                    _m.set(i, 0);
-                }
-                if (_y.get(i) == null) {
-                    _y.set(i, 0);
-                }
-                if (_h.get(i) == null) {
-                    _h.set(i, 0);
-                }
-                if (_min.get(i) == null) {
-                    _min.set(i, 0);
-                }
-                int year = _y.get(i);
-                int month = _m.get(i) - 1;
-                int day = _d.get(i);
-                int hour = _h.get(i);
-                int minute = _min.get(i);
+                    calendar.set(year, month, day, hour, minute);
 
-                calendar.set(year, month, day, hour, minute);
-
-                Random r = new Random();
-                Intent intent = new Intent(this, NotificationAlarm.class);
-                intent.putExtra("NotificationTitle", "The time for your mTask: " + _t.get(i) + " is up!");
-                intent.putExtra("text", "You better have your things done");
-                intent.putExtra("mTask", 0);
-
-                int m = _min.get(i);
-                int h = _h.get(i);
-                String stringMin = String.valueOf(m);
-                String stringHour = String.valueOf(h);
-                if(m < 10){
-                    stringMin = "0" + m;
-                }
-                if(h < 10){
-                    stringHour = "0" + h;
-                }
-                intent.putExtra("title", _t.get(i));
-                intent.putExtra("time",stringHour + ":" + stringMin);
-                intent.putExtra("date", _d.get(i) + "." + _m.get(i) + "." + _y.get(i));
-                intent.putExtra("des", _des.get(i));
-                intent.putExtra("label1",_label.get(i).get(0));
-                intent.putExtra("label2",_label.get(i).get(1));
-                intent.putExtra("label3",_label.get(i).get(2));
-                intent.putExtra("Notification", _notification.get(i));
-                Repository.getInstance().saveData(_count.get(i) +1,_ref.get(i));
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
-
-                if (_norm.get(i)) {
-                    motivation.addAll(mMotivation);
-                } else if (_brutal.get(i)) {
-                    motivation.addAll(mBrutalMotivation);
-                } else if (_cute.get(i)) {
-                    motivation.addAll(mCuteMotivation);
-                } else if (_funny.get(i)) {
-                    motivation.addAll(mFunnyMotivation);
-                } else if (_snarky.get(i)) {
-                    motivation.addAll(mSnarkyMotivation);
-                }
-            }
-        }
-
-        Random r = new Random();
-        Calendar calendar = Calendar.getInstance();
-        int size = motivation.size();
-        if(size != 0) {
-            if (mGotIntoData != 1) {
-                for (int i = 0; i < 4; i++) {
-                    calendar.setTime(new Date());
-                    calendar.add(Calendar.HOUR_OF_DAY, r.nextInt(12));
-                    calendar.add(Calendar.MINUTE, r.nextInt(60));
+                    Random r = new Random();
                     Intent intent = new Intent(this, NotificationAlarm.class);
-                    intent.putExtra("title", "Motivation coming through");
-                    intent.putExtra("text", motivation.get(r.nextInt(size)));
+                    intent.putExtra("NotificationTitle", "The time for your task: " + _t.get(i) + " is up!");
+                    intent.putExtra("text", "You better have your things done");
+                    intent.putExtra("task", 0);
+                    intent.putExtra("title", _t.get(i));
+
+
+                    int m = _min.get(i);
+                    int h = _h.get(i);
+                    String stringMin = String.valueOf(m);
+                    String stringHour = String.valueOf(h);
+                    if(m < 10){
+                        stringMin = "0" + m;
+                    }
+                    if(h < 10){
+                        stringHour = "0" + h;
+                    }
+                    intent.putExtra("time",stringHour + ":" + stringMin);
+                    intent.putExtra("date", _d.get(i) + "." + _m.get(i) + "." + _y.get(i));
+                    intent.putExtra("des", _des.get(i));
+                    intent.putExtra("label1", _label.get(i).get(0));
+                    intent.putExtra("label2", _label.get(i).get(1));
+                    intent.putExtra("label3", _label.get(i).get(2));
+                    intent.putExtra("Notification", _notification.get(i));
+                    Repository.getInstance().saveData(_count.get(i) +1,_ref.get(i));
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
+                    PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+
+                    if (_norm.get(i)) {
+                        motivation.addAll(mMotivation);
+                    } else if (_brutal.get(i)) {
+                        motivation.addAll(mBrutalMotivation);
+                    } else if (_cute.get(i)) {
+                        motivation.addAll(mCuteMotivation);
+                    } else if (_funny.get(i)) {
+                        motivation.addAll(mFunnyMotivation);
+                    } else if (_snarky.get(i)) {
+                        motivation.addAll(mSnarkyMotivation);
+                    }
                 }
             }
-            mGotIntoData++;
+
+            Random r = new Random();
+            Calendar calendar = Calendar.getInstance();
+            int size = motivation.size();
+            if(size != 0) {
+                if (mGotIntoData != 1) {
+                    for (int i = 0; i < 4; i++) {
+                        calendar.setTime(new Date());
+                        calendar.add(Calendar.HOUR_OF_DAY, r.nextInt(12));
+                        calendar.add(Calendar.MINUTE, r.nextInt(60));
+                        Intent intent = new Intent(this, NotificationAlarm.class);
+                        intent.putExtra("title", "Motivation coming through");
+                        intent.putExtra("text", motivation.get(r.nextInt(size)));
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        PendingIntent pi = PendingIntent.getBroadcast(this, i, intent, 0);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+                    }
+                }
+                mGotIntoData++;
+            }
         }
     }
 
     @Override
-    public void setNotificationRepeatData(List<Integer>_repeats, List<String> _repeatCircle, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification,List<String> _ref, List<String> _des, List<List<String>> _label) {
-        try{
+    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal ,List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
 
-            mTitleRep =_t;
-            mDescriptionRep = _des;
-            refRep = _ref;
-            mRepeats = _repeats;
-            mCircleRepeat = _repeatCircle;
-            mBrutalRepeat = _brutal;
-            mSnarkyRepeat = _snarky;
-            mFunnnyRepeat = _funny;
-            mCuteRepeat = _cute;
-            mNormalRepeat = _norm;
-            mNoNotiRepeat = _notification;
-            mRepeatLabel = _label;
-
-        if (_t.size() != 0) {
-            _repeatCircle.remove(_repeatCircle.size() - 1);
-            _repeats.remove(_repeats.size() - 1);
-        }
-
-        for (int i = 0; i < _repeats.size(); i++) {
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
-            if (_repeats.get(i) == null) {
-                _repeats.set(i, 0);
-            }
-            if(_repeatCircle.get(i).equals("mYear")) {
-
-            }
-            if(_repeatCircle.get(i).equals("mMonth")) {
-
-            }
-            if(_repeatCircle.get(i).equals("week")) {
-                calendar.add(Calendar.DAY_OF_MONTH,2);
+        try {
+            if (_t.size() != 0) {
+                _c.remove(_c.size() - 1);
+                _r.remove(_r.size() - 1);
             }
 
-            int year = 0;
-            int month = 0;
-            int day = 0;
-            int hour = 0;
-            int minute = 0;
+            for (int i = 0; i < _r.size(); i++) {
 
-            calendar.set(year, month, day, hour, minute);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date());
+                if (_r.get(i) == null) {
+                    _r.set(i, 0);
+                }
+                if(_c.get(i).equals("year")) {
 
-            Random rand = new Random();
-            Intent intent = new Intent(this, NotificationAlarm.class);
-            intent.putExtra("title", "The time for your mTask: " + _t.get(i) + " is up!");
-            intent.putExtra("text", "You better have your things done");
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            PendingIntent pi = PendingIntent.getBroadcast(this, rand.nextInt(1000), intent, 0);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
-        }
-    }catch (ClassCastException e) {
-        Log.e(TAG, "setNotificationData: " + e.getMessage());
+                }
+                if(_c.get(i).equals("month")) {
+
+                }
+                if(_c.get(i).equals("week")) {
+                    calendar.add(Calendar.DAY_OF_MONTH,2);
+                }
+
+                int year = 0;
+                int month = 0;
+                int day = 0;
+                int hour = 0;
+                int minute = 0;
+
+                calendar.set(year, month, day, hour, minute);
+
+                Random rand = new Random();
+                Intent intent = new Intent(this, NotificationAlarm.class);
+                intent.putExtra("NotificationTitle", "The time for your task: " + _t.get(i) + " is up!");
+                intent.putExtra("text", "You better have your things done");
+                intent.putExtra("date",_r.get(i) +" times per "+ _c.get(i));
+                intent.putExtra("des", _des.get(i));
+                intent.putExtra("label1", _label.get(i).get(0));
+                intent.putExtra("label2", _label.get(i).get(1));
+                intent.putExtra("label3", _label.get(i).get(2));
+                intent.putExtra("Notification", _notification.get(i));
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pi = PendingIntent.getBroadcast(this, rand.nextInt(1000), intent, 0);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+            }
+        }catch (ClassCastException e) {
+            Log.e(TAG, "setNotificationData: " + e.getMessage());
         }catch(NullPointerException e){
-        Log.e(TAG, "setNotificationData: " + e.getMessage());
+            Log.e(TAG, "setNotificationData: " + e.getMessage());
         }catch(IndexOutOfBoundsException e){
-        Log.e(TAG, "setNotificationData: " + e.getMessage());
+            Log.e(TAG, "setNotificationData: " + e.getMessage());
         }
     }
 
@@ -418,7 +418,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
             Log.i(TAG, "LIST size --> " + _task.size());
             try {
-                mTask = _task;
                 adapter.clear();
 
                 int deadi= 0;
@@ -448,6 +447,43 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             }
     }
 
+    @Override
+    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<List<String>> _labelRep, List<List<String>> _labelDead,List<String> _desrep,List<String> _desdead,List<String> _refrep,List<String> _refdead,List<Integer> _repeats, List<String> _repeatCircle, List<Boolean> _normRep, List<Boolean> _funnyRep, List<Boolean> _snarkyRep, List<Boolean> _cuteRep, List<Boolean> _brutalRep,List<Boolean> _notificationRep, List<Boolean> _normDead, List<Boolean> _funnyDead, List<Boolean> _snarkyDead, List<Boolean> _cuteDead, List<Boolean> _brutalDead,List<Boolean> _notificationDead) {
+        repeats = _repeats;
+        circle = _repeatCircle;
+        tDead = _deadT;
+        tRep =_repeatT;
+        task = _t;
+        day =_d;
+        month = _mo;
+        year=_y;
+        hour =_h;
+        min = _mi;
+        desDead=_desdead;
+        desRep=_desrep;
+        refDead=_refdead;
+        refRep=_refrep;
+        mRepeatLabel =_labelRep;
+        mDeadLabel = _labelDead;
+        mBrutalDead = _brutalDead;
+        mSnarkyDead = _snarkyDead;
+        mFunnnyDead = _funnyDead;
+        mCuteDead = _cuteDead;
+        mNormalDead = _normDead;
+        mNoNotiDead = _notificationDead;
+        mBrutalRepeat =_brutalRep;
+        mSnarkyRepeat = _snarkyRep;
+        mFunnnyRepeat = _funnyRep;
+        mCuteRepeat = _cuteRep;
+        mNormalRepeat = _normRep;
+        mNoNotiRepeat = _notificationRep;
+        rep = new int[repeats.size()];
+        cir = new String[circle.size()];
+        for(int i = 0; i<circle.size();i++){
+        rep[i]= repeats.get(i);
+        cir[i] = circle.get(i);
+        }
+    }
 
     @Override
     protected void onResume() {
