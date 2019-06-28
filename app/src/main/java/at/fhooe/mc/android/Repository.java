@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,7 +51,8 @@ class Repository {
     private List<Boolean> mSnarkyDead = new LinkedList<>();
     private List<Boolean> mFunnyDead = new LinkedList<>();
     private List<Boolean> mNormalDead = new LinkedList<>();
-    private List<Boolean> mNotification = new LinkedList<>();
+    private List<Boolean> mNotificationDead = new LinkedList<>();
+    private List<Boolean> mNotificationRepeat = new LinkedList<>();
 
     /**
      * Constructor for Repository
@@ -96,162 +98,44 @@ class Repository {
     }
 
 
-    /**
-     * gets data from the database
-     * @param _myRef the reference (path) of the object (in the database) that want to be fetched
-     */
-    void getNotificationData(DatabaseReference _myRef, final IFirebaseCallback _callback){
-        _myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+    private void cleanLists(){
 
-                mTasks.clear();
+        mTasks.clear();
 
-                mDay.clear();
-                mMonth.clear();
-                mYear.clear();
-                mHour.clear();
-                mMinute.clear();
-                mBrutalDead.clear();
-                mCuteDead.clear();
-                mSnarkyDead.clear();
-                mFunnyDead.clear();
-                mNormalDead.clear();
-                mTitleDead.clear();
-                mLabelDead.clear();
-                mDescriptionDead.clear();
-                mReferenceDead.clear();
-                mNotification.clear();
-                mCount.clear();
-                mTitleRepeat.clear();
-                mRepeatRotation.clear();
-                mRepeats.clear();
-                mBrutalRepeat.clear();
-                mCuteRepeat.clear();
-                mSnarkyRepeat.clear();
-                mFunnyRepeat.clear();
-                mNormalRepeat.clear();
-                mLabelRepeat.clear();
-                mDescriptionRepeat.clear();
-                mReferenceRepeat.clear();
+        mDay.clear();
+        mMonth.clear();
+        mYear.clear();
+        mHour.clear();
+        mMinute.clear();
+        mBrutalDead.clear();
+        mCuteDead.clear();
+        mSnarkyDead.clear();
+        mFunnyDead.clear();
+        mNormalDead.clear();
+        mTitleDead.clear();
+        mLabelDead.clear();
+        mDescriptionDead.clear();
+        mReferenceDead.clear();
+        mNotificationDead.clear();
+        mCount.clear();
 
-                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
 
-                    Integer task = listSnapshot.child("task").getValue(Integer.class);
-                    mTasks.add(task);
+        mTitleRepeat.clear();
+        mRepeatRotation.clear();
+        mRepeats.clear();
+        mBrutalRepeat.clear();
+        mCuteRepeat.clear();
+        mSnarkyRepeat.clear();
+        mFunnyRepeat.clear();
+        mNormalRepeat.clear();
+        mLabelRepeat.clear();
+        mDescriptionRepeat.clear();
+        mNotificationRepeat.clear();
+        mReferenceRepeat.clear();
 
-                    if(task != null) {
-                        if(task == 0){
-                            String reference = listSnapshot.getKey();
-                            mReferenceDead.add(reference);
-
-                            Integer day = listSnapshot.child("day").getValue(Integer.class);
-                            mDay.add(day);
-
-                            Integer month = listSnapshot.child("month").getValue(Integer.class);
-                            mMonth.add(month);
-
-                            Integer year = listSnapshot.child("year").getValue(Integer.class);
-                            mYear.add(year);
-
-                            Integer hour = listSnapshot.child("hour").getValue(Integer.class);
-                            mHour.add(hour);
-
-                            Integer minute = listSnapshot.child("minute").getValue(Integer.class);
-                            mMinute.add(minute);
-
-                            String description = listSnapshot.child("description").getValue(String.class);
-                            mDescriptionDead.add(description);
-
-                            String title = listSnapshot.child("title").getValue(String.class);
-                            mTitleDead.add(title);
-
-                            Boolean brutal = listSnapshot.child("brutal").getValue(Boolean.class);
-                            mBrutalDead.add(brutal);
-
-                            Boolean cute = listSnapshot.child("cute").getValue(Boolean.class);
-                            mCuteDead.add(cute);
-
-                            Boolean funny = listSnapshot.child("funny").getValue(Boolean.class);
-                            mFunnyDead.add(funny);
-
-                            Boolean snarky = listSnapshot.child("snarky").getValue(Boolean.class);
-                            mSnarkyDead.add(snarky);
-
-                            Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
-                            mNormalDead.add(normal);
-
-                            Boolean notification = listSnapshot.child("notification").getValue(Boolean.class);
-                            mNotification.add(notification);
-
-                            Integer count = listSnapshot.child("count").getValue(Integer.class);
-                            mCount.add(count);
-
-                            String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
-                            String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
-                            String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
-                            LinkedList<String> s = new LinkedList<>();
-                            s.add(firstLabel);
-                            s.add(secondLabel);
-                            s.add(thirdLabel);
-                            mLabelDead.add(s);
-                        }else if(task == 1){
-                            String reference = listSnapshot.getKey();
-                            mReferenceRepeat.add(reference);
-
-                            String description = listSnapshot.child("description").getValue(String.class);
-                            mDescriptionRepeat.add(description);
-
-                            String title = listSnapshot.child("title").getValue(String.class);
-                            mTitleRepeat.add(title);
-
-                            String repeatRotation = listSnapshot.child("repeatRotation").getValue(String.class);
-                            mRepeatRotation.add(repeatRotation);
-
-                            Integer repeat = listSnapshot.child("repeats").getValue(Integer.class);
-                            mRepeats.add(repeat);
-
-                            Boolean brutal = listSnapshot.child("brutal").getValue(Boolean.class);
-                            mBrutalRepeat.add(brutal);
-
-                            Boolean cute = listSnapshot.child("cute").getValue(Boolean.class);
-                            mCuteRepeat.add(cute);
-
-                            Boolean funny = listSnapshot.child("funny").getValue(Boolean.class);
-                            mFunnyRepeat.add(funny);
-
-                            Boolean snarky = listSnapshot.child("snarky").getValue(Boolean.class);
-                            mSnarkyRepeat.add(snarky);
-
-                            Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
-                            mNormalRepeat.add(normal);
-
-                            String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
-                            String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
-                            String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
-                            LinkedList<String> s = new LinkedList<>();
-                            s.add(firstLabel);
-                            s.add(secondLabel);
-                            s.add(thirdLabel);
-                            mLabelRepeat.add(s);
-                        }
-                    }
-                }
-                if(mTasks.size() != 0) {
-                    mTasks.remove(mTasks.size() - 1);
-                }
-                _callback.setNotificationDeadlineData(mDay, mMonth, mYear, mHour, mMinute, mTitleDead,mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotification, mCount,mReferenceDead); //mDescriptionDead,mLabelDead
-                _callback.setNotificationRepeatData(mRepeats,mRepeatRotation, mTitleRepeat,mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat, mNotification);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
     }
 
-    /**
+                          /**
      * gets data from the database
      * @param _myRef the reference (path) of the object (in the database) that want to be fetched
      */
@@ -259,40 +143,10 @@ class Repository {
        _myRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
-
-               mTasks.clear();
-
-               mDay.clear();
-               mMonth.clear();
-               mYear.clear();
-               mHour.clear();
-               mMinute.clear();
-               mBrutalDead.clear();
-               mCuteDead.clear();
-               mSnarkyDead.clear();
-               mFunnyDead.clear();
-               mNormalDead.clear();
-               mTitleDead.clear();
-               mLabelDead.clear();
-               mDescriptionDead.clear();
-               mReferenceDead.clear();
-               mNotification.clear();
-
-               mTitleRepeat.clear();
-               mRepeatRotation.clear();
-               mRepeats.clear();
-               mBrutalRepeat.clear();
-               mCuteRepeat.clear();
-               mSnarkyRepeat.clear();
-               mFunnyRepeat.clear();
-               mNormalRepeat.clear();
-               mLabelRepeat.clear();
-               mDescriptionRepeat.clear();
-               mReferenceRepeat.clear();
+               cleanLists();
 
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
-
-                   Integer task = listSnapshot.child("task").getValue(Integer.class);
+                   Integer task = listSnapshot.child("mTask").getValue(Integer.class);
                    mTasks.add(task);
 
                    if(task != null) {
@@ -300,16 +154,16 @@ class Repository {
                            String reference = listSnapshot.getKey();
                            mReferenceDead.add(reference);
 
-                           Integer day = listSnapshot.child("day").getValue(Integer.class);
+                           Integer day = listSnapshot.child("mDay").getValue(Integer.class);
                            mDay.add(day);
 
-                           Integer month = listSnapshot.child("month").getValue(Integer.class);
+                           Integer month = listSnapshot.child("mMonth").getValue(Integer.class);
                            mMonth.add(month);
 
-                           Integer year = listSnapshot.child("year").getValue(Integer.class);
+                           Integer year = listSnapshot.child("mYear").getValue(Integer.class);
                            mYear.add(year);
 
-                           Integer hour = listSnapshot.child("hour").getValue(Integer.class);
+                           Integer hour = listSnapshot.child("mHour").getValue(Integer.class);
                            mHour.add(hour);
 
                            Integer minute = listSnapshot.child("minute").getValue(Integer.class);
@@ -317,6 +171,9 @@ class Repository {
 
                            String description = listSnapshot.child("description").getValue(String.class);
                            mDescriptionDead.add(description);
+
+                           Boolean notification = listSnapshot.child("notification").getValue(Boolean.class);
+                           mNotificationDead.add(notification);
 
                            String title = listSnapshot.child("title").getValue(String.class);
                            mTitleDead.add(title);
@@ -336,18 +193,18 @@ class Repository {
                            Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
                            mNormalDead.add(normal);
 
-                           Boolean notification = listSnapshot.child("notification").getValue(Boolean.class);
-                           mNotification.add(notification);
+                           Integer count = listSnapshot.child("count").getValue(Integer.class);
+                           mCount.add(count);
 
-                           String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
-                           String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
-                           String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
+                           String firstLabel = listSnapshot.child("mRepeatLabel").child("0").getValue(String.class);
+                           String secondLabel = listSnapshot.child("mRepeatLabel").child("1").getValue(String.class);
+                           String thirdLabel = listSnapshot.child("mRepeatLabel").child("2").getValue(String.class);
                            LinkedList<String> s = new LinkedList<>();
                            s.add(firstLabel);
                            s.add(secondLabel);
                            s.add(thirdLabel);
                            mLabelDead.add(s);
-                      }else if(task == 1){
+                       }else if(task == 1){
                            String reference = listSnapshot.getKey();
                            mReferenceRepeat.add(reference);
 
@@ -362,6 +219,9 @@ class Repository {
 
                            Integer repeat = listSnapshot.child("repeats").getValue(Integer.class);
                            mRepeats.add(repeat);
+
+                           Boolean notification = listSnapshot.child("notification").getValue(Boolean.class);
+                           mNotificationRepeat.add(notification);
 
                            Boolean brutal = listSnapshot.child("brutal").getValue(Boolean.class);
                            mBrutalRepeat.add(brutal);
@@ -378,9 +238,9 @@ class Repository {
                            Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
                            mNormalRepeat.add(normal);
 
-                           String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
-                           String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
-                           String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
+                           String firstLabel = listSnapshot.child("mRepeatLabel").child("0").getValue(String.class);
+                           String secondLabel = listSnapshot.child("mRepeatLabel").child("1").getValue(String.class);
+                           String thirdLabel = listSnapshot.child("mRepeatLabel").child("2").getValue(String.class);
                            LinkedList<String> s = new LinkedList<>();
                            s.add(firstLabel);
                            s.add(secondLabel);
@@ -393,7 +253,8 @@ class Repository {
                         mTasks.remove(mTasks.size() - 1);
                     }
                    _callback.setTitle(mTitleRepeat, mTitleDead, mTasks,mDay, mMonth, mYear, mRepeats, mRepeatRotation);
-                   _callback.setAll(mTitleRepeat,mTitleDead,mDay,mMonth,mYear,mHour,mMinute,mTasks, mLabelRepeat,mDescriptionRepeat,mDescriptionDead,mReferenceRepeat,mReferenceDead, mRepeats, mRepeatRotation, mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotification);
+                    _callback.setNotificationDeadlineData(mDay,mMonth,mYear,mHour,mMinute,mTitleDead,mNormalDead,mFunnyDead,mSnarkyDead,mCuteDead,mBrutalDead, mNotificationDead,mCount,mReferenceDead,mDescriptionDead,mLabelDead);
+                    _callback.setNotificationRepeatData(mRepeats,mRepeatRotation,mTitleRepeat,mNormalRepeat,mFunnyRepeat,mSnarkyRepeat,mCuteRepeat,mBrutalRepeat, mNotificationDead,mReferenceRepeat,mDescriptionRepeat,mLabelRepeat);
            }
 
            @Override
@@ -406,7 +267,7 @@ class Repository {
 
     /**
      * saves a Task along with its tasknumber into the database
-     * @param _t the task, that is saved
+     * @param _t the mTask, that is saved
      */
     void saveData(Task _t){
         FirebaseDatabase database = FirebaseDatabase.getInstance();

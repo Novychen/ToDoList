@@ -5,11 +5,14 @@
     android:id="@+id/scrollView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     android:theme="@android:style/Theme.Holo.Light.NoActionBar">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF">
 
         <EditText
             android:id="@+id/DeadlineTask_Activity_description_field"

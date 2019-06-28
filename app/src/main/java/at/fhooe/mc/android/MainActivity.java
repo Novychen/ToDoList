@@ -204,13 +204,14 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                 });
     }
 
+
     @Override
-    public void setNotificationDeadlineData(List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<String> t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<Integer> _count, List<String> _ref) {
+    public void setNotificationDeadlineData(List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<Integer> _count, List<String> _ref, List<String> _des, List<List<String>> _label) {
 
     }
 
     @Override
-    public void setNotificationRepeatData(List<Integer> r, List<String> c, List<String> t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification) {
+    public void setNotificationRepeatData(List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<String> _ref, List<String> _des, List<List<String>> _label) {
 
     }
 
@@ -218,13 +219,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     public void setTitle(List<String> _repeatT, List<String> _deadT, List<Integer> _task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _repeats, List<String> _repeatCircle) {
 
     }
-
-    @Override
-    public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> d, List<Integer> m, List<Integer> y, List<Integer> h, List<Integer> min, List<Integer> task, List<List<String>> label, List<String> _desrep, List<String> _desdead, List<String> _refrep, List<String> _refdead, List<Integer> _repeats, List<String> _repeatCircle, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification) {
-
-    }
-
-
 }
 
 

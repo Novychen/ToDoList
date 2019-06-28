@@ -111,9 +111,9 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             @Override
             public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
 
-                mLabelAdapter.remove(mLabelList.get(_position));
-                Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelDelete_Toast, Toast.LENGTH_SHORT).show();
-                mLabelCount--;
+        mLabelAdapter.remove(mLabelList.get(_position));
+        Toast.makeText(ActivityDeadlineTask.this, R.string.task_Activity_LabelDelete_Toast, Toast.LENGTH_SHORT).show();
+        mLabelCount--;
             }
         });
 
@@ -131,6 +131,10 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 if (mLabelCount <= 3) {
                     EditText txt = findViewById(R.id.DeadlineTask_Activity_setLabel_field);
                     String getLabel = txt.getText().toString();
+                    if(getLabel.equals("")){
+                        mLabelCount--;
+                        return;
+                    }
                     mLabelList.add(mLabelList.size(), getLabel);
                     mLabelAdapter.notifyDataSetChanged();
                     mDeadlineTask.setLabel(mLabelList);
@@ -176,7 +180,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mDeadlineTask.setMinute(mMinute);
                 mDeadlineTask.setTask(0);
 
-                 if(mLabelList != null){
+                 if(mLabelList.size() == 0){
                      mLabelList.add("");
                  }
                 mDeadlineTask.setLabel(mLabelList);

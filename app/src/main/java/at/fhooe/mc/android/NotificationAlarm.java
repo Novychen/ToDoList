@@ -16,15 +16,15 @@ import java.util.Random;
 public class NotificationAlarm extends BroadcastReceiver  {
 
 /*    List<String> title = null;
-    List<Integer> day = null;
-    List<Integer> month = null;
-    List<Integer> year = null;
-    List<Integer> hour = null;
-    List<Integer> min = null ;
-    List<Integer> task = null;
+    List<Integer> mDay = null;
+    List<Integer> mMonth = null;
+    List<Integer> mYear = null;
+    List<Integer> mHour = null;
+    List<Integer> mMin = null ;
+    List<Integer> mTask = null;
     List<String> des = null;
     List<String> ref = null;
-    List<List<String>> label = null;*/
+    List<List<String>> mRepeatLabel = null;*/
 
     public static final String TAG = "at.fhooe.mc.toDoList :: NotificationAlarm";
     private static final  String GROUP_KEY = "at.fhooe.mc.toDoList.GROUP_KEY";
@@ -34,29 +34,29 @@ public class NotificationAlarm extends BroadcastReceiver  {
     public void onReceive(Context _context, Intent _intent) {
 
         final Intent i = new Intent(_context,TaskDue.class);
-        int task = _intent.getIntExtra("Task",0);
-        i.putExtra("Task",task);
+        int task = _intent.getIntExtra("mTask",0);
+        i.putExtra("mTask",task);
         if(task == 0) {
-            String title = _intent.getStringExtra("DeadLineTitle");
-            i.putExtra("DeadLineTitle", title);
+            String title = _intent.getStringExtra("title");
+            i.putExtra("title", title);
 
-            String time = _intent.getStringExtra("Time");
-            i.putExtra("Time", time);
+            String time = _intent.getStringExtra("time");
+            i.putExtra("time", time);
 
-            String date = _intent.getStringExtra("Date");
-            i.putExtra("Date", date);
+            String date = _intent.getStringExtra("date");
+            i.putExtra("date", date);
 
-            String description = _intent.getStringExtra("Description");
-            i.putExtra("Description", description);
+            String description = _intent.getStringExtra("des");
+            i.putExtra("des", description);
 
-            String label1 = _intent.getStringExtra("DeadlineLabel1");
-            i.putExtra("DeadlineLabel1",label1);
+            String label1 = _intent.getStringExtra("label1");
+            i.putExtra("label1",label1);
 
-            String label2 = _intent.getStringExtra("DeadlineLabel2");
-            i.putExtra("DeadlineLabel2",label1);
+            String label2 = _intent.getStringExtra("label2");
+            i.putExtra("label2",label2);
 
-            String label3 = _intent.getStringExtra("DeadlineLabel3");
-            i.putExtra("DeadlineLabel3",label1);
+            String label3 = _intent.getStringExtra("label3");
+            i.putExtra("label3",label3);
         }
 
         Random r = new Random();
@@ -81,7 +81,7 @@ public class NotificationAlarm extends BroadcastReceiver  {
         Notification.Builder bob = new Notification.Builder(_context)
                 .setSmallIcon(R.drawable.ic_notification_active)
                 .setContentText(_intent.getStringExtra("text"))
-                .setContentTitle(_intent.getStringExtra("title"))
+                .setContentTitle(_intent.getStringExtra("NotificationTitle"))
                 .setGroup(GROUP_KEY)
                 .setContentIntent(pi); //what happens when you press the notification
 

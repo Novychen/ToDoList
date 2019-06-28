@@ -3,7 +3,7 @@ package at.fhooe.mc.android;
 import java.util.List;
 
 /**
- * this class implements the task with the type Deadline
+ * this class implements the mTask with the type Deadline
  */
 public class DeadlineTask implements Task{
 
@@ -34,14 +34,14 @@ public class DeadlineTask implements Task{
     /**
      *
      * Consturctor for the Class {@link DeadlineTask}
-     * @param _title title of the task
-     * @param _label label/s of the task
-     * @param _description description of the task
-     * @param _day day of the deadline of the task
-     * @param _month  month of the deadline of the task
-     * @param _year year of the deadline of the task
-     * @param _hour hour of the deadline of the task
-     * @param _minute minute of the deadline of the task
+     * @param _title title of the mTask
+     * @param _label mRepeatLabel/s of the mTask
+     * @param _description description of the mTask
+     * @param _day mDay of the deadline of the mTask
+     * @param _month  mMonth of the deadline of the mTask
+     * @param _year mYear of the deadline of the mTask
+     * @param _hour mHour of the deadline of the mTask
+     * @param _minute minute of the deadline of the mTask
      * @param _notification
      * @param _count
      * @param _brutal
@@ -73,7 +73,7 @@ public class DeadlineTask implements Task{
 
     /**
      * getter for the variable {@link DeadlineTask#mLabel}
-     * @return the label {@link DeadlineTask#mLabel}
+     * @return the mRepeatLabel {@link DeadlineTask#mLabel}
      */
     public List<String> getLabel() {
         return mLabel;
@@ -81,7 +81,7 @@ public class DeadlineTask implements Task{
 
     /**
      * setter for the variable {@link DeadlineTask#mLabel}
-     * @param _label the label of the task
+     * @param _label the mRepeatLabel of the mTask
      */
     public void setLabel(List<String> _label) {
         mLabel = _label;
@@ -90,7 +90,7 @@ public class DeadlineTask implements Task{
 
     /**
      * setter for the variable {@link DeadlineTask#mDescription}
-     * @param _description the description of the task
+     * @param _description the description of the mTask
      */
     public void setDescription(String _description) {
         mDescription = _description;
@@ -98,7 +98,7 @@ public class DeadlineTask implements Task{
 
     /**
      * getter for the variable {@link DeadlineTask#mTitle}
-     * @return the title of the task
+     * @return the title of the mTask
      */
     public String getTitle() {
         return mTitle;
@@ -106,7 +106,7 @@ public class DeadlineTask implements Task{
 
     /**
      * setter for the variable {@link DeadlineTask#mTitle}
-     * @param _title the title of the task
+     * @param _title the title of the mTask
      */
     public void setTitle(String _title) {
         mTitle = _title;

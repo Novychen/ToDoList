@@ -29,11 +29,11 @@ public class RepeatTask implements Task {
 
     /**
      * Consturctor for the Class {@link RepeatTask}
-     * @param _title title of the task
-     * @param _label label/s of the task
-     * @param _description descripton of the task
-     * @param _repeats how many time the task needs to be done within {@link RepeatTask#mRepeatRotation}
-     * @param _repeatRotation how often the repeats take place
+     * @param _title title of the mTask
+     * @param _label mRepeatLabel/s of the mTask
+     * @param _description descripton of the mTask
+     * @param _repeats how many time the mTask needs to be done within {@link RepeatTask#mRepeatRotation}
+     * @param _repeatRotation how often the mRepeats take place
      */
     private RepeatTask(String _title, List<String> _label, String _description, int _repeats, String _repeatRotation, int _task, boolean _notification, int _count, boolean _brutal, boolean _cute, boolean _normal, boolean _snarky, boolean _funny){
         mDescription = _description;
@@ -53,7 +53,7 @@ public class RepeatTask implements Task {
 
     /**
      * getter for the variable {@link RepeatTask#mLabel}
-     * @return the label {@link RepeatTask#mLabel}
+     * @return the mRepeatLabel {@link RepeatTask#mLabel}
      */
     public List<String> getLabel() {
         return mLabel;
@@ -61,7 +61,7 @@ public class RepeatTask implements Task {
 
     /**
      * setter for the variable {@link RepeatTask#mLabel}
-     * @param _label the label of the task
+     * @param _label the mRepeatLabel of the mTask
      */
     public void setLabel(List<String> _label) {
         mLabel = _label;
@@ -69,7 +69,7 @@ public class RepeatTask implements Task {
 
     /**
      * setter for the variable {@link RepeatTask#mDescription}
-     * @param _description the description of the task
+     * @param _description the description of the mTask
      */
     public void setDescription(String _description) {
         mDescription = _description;
@@ -77,7 +77,7 @@ public class RepeatTask implements Task {
 
     /**
      * setter for the variable {@link RepeatTask#mTitle}
-     * @param _title the title of the task
+     * @param _title the title of the mTask
      */
     public void setTitle(String _title) {
         mTitle = _title;

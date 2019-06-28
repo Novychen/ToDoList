@@ -16,7 +16,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        int task = i.getIntExtra("task",-1);
+        int task = i.getIntExtra("mTask",-1);
         if(task ==1) {
             setContentView(R.layout.activity_repeat_task_due);
         }else {
@@ -26,6 +26,9 @@ public class TaskDue extends Activity implements View.OnClickListener {
         String title = i.getStringExtra("title");
         String des = i.getStringExtra("des");
         String date = i.getStringExtra("date");
+        String label1 = i.getStringExtra("label1");
+        String label2 = i.getStringExtra("label2");
+        String label3 = i.getStringExtra("label3");
         boolean brutal = i.getBooleanExtra("brutal", false);
         boolean snarky = i.getBooleanExtra("snarky", false);
         boolean funny = i.getBooleanExtra("funny", false);
@@ -56,27 +59,81 @@ public class TaskDue extends Activity implements View.OnClickListener {
 
             if(!brutal){
                 ImageView x = findViewById(R.id.activity_task_due_deadline_brutal);
+                ImageView y = findViewById(R.id.activity_task_due_deadline_boxBrutal);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
             if(!snarky){
                 ImageView x = findViewById(R.id.activity_task_due_deadline_snarky);
+                ImageView y = findViewById(R.id.activity_task_due_deadline_boxSnarky);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
             if(!funny){
                 ImageView x = findViewById(R.id.activity_task_due_deadline_funny);
+                ImageView y = findViewById(R.id.activity_task_due_deadline_boxFunny);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
             if(!cute){
                 ImageView x = findViewById(R.id.activity_task_due_deadline_cute);
+                ImageView y = findViewById(R.id.activity_task_due_deadline_boxCute);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
             if(!normal){
                 ImageView x = findViewById(R.id.activity_task_due_deadline_normal);
+                ImageView y = findViewById(R.id.activity_task_due_deadline_boxNormal);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
             }
             if(!noNoti){
                 ImageView x = findViewById(R.id.activity_task_due_deadline_not);
+                ImageView y = findViewById(R.id.activity_task_due_deadline_boxNot);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
                 x.setVisibility(View.INVISIBLE);
+            }
+            if(label1 == ""){
+                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                ImageView iconl1 = findViewById(R.id.activity_task_due_deadline_icon_label1);
+                l1.setVisibility(View.INVISIBLE);
+                iconl1.setVisibility(View.INVISIBLE);
+                TextView l2 = findViewById(R.id.activity_task_due_deadline_label2);
+                ImageView iconl2 = findViewById(R.id.activity_task_due_deadline_icon_label2);
+                l2.setVisibility(View.INVISIBLE);
+                iconl2.setVisibility(View.INVISIBLE);
+                TextView l3 = findViewById(R.id.activity_task_due_deadline_label3);
+                ImageView iconl3 = findViewById(R.id.activity_task_due_deadline_icon_label3);
+                l3.setVisibility(View.INVISIBLE);
+                iconl3.setVisibility(View.INVISIBLE);
+
+            }else if(label2 == null){
+                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                l1.setText(label1);
+                TextView l2 = findViewById(R.id.activity_task_due_deadline_label2);
+                ImageView iconl2 = findViewById(R.id.activity_task_due_deadline_icon_label2);
+                l2.setVisibility(View.INVISIBLE);
+                iconl2.setVisibility(View.INVISIBLE);
+                TextView l3 = findViewById(R.id.activity_task_due_deadline_label3);
+                ImageView iconl3 = findViewById(R.id.activity_task_due_deadline_icon_label3);
+                l3.setVisibility(View.INVISIBLE);
+                iconl3.setVisibility(View.INVISIBLE);
+            }else if(label3 == null){
+                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                l1.setText(label1);
+                TextView l2 = findViewById(R.id.activity_task_due_deadline_label2);
+                l2.setText(label2);
+                TextView l3 = findViewById(R.id.activity_task_due_deadline_label3);
+                ImageView iconl3 = findViewById(R.id.activity_task_due_deadline_icon_label3);
+                l3.setVisibility(View.INVISIBLE);
+                iconl3.setVisibility(View.INVISIBLE);
+            }else{
+                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                l1.setText(label1);
+                TextView l2 = findViewById(R.id.activity_task_due_deadline_label2);
+                l2.setText(label2);
+                TextView l3 = findViewById(R.id.activity_task_due_deadline_label3);
+                l3.setText(label3);
             }
 
         }else{
@@ -94,6 +151,86 @@ public class TaskDue extends Activity implements View.OnClickListener {
 
             b = findViewById(R.id.activity_task_due_repeat_back);
             b.setOnClickListener(this);
+
+            if(!brutal){
+                ImageView x = findViewById(R.id.activity_task_due_repeat_brutal);
+                ImageView y = findViewById(R.id.activity_task_due_repeat_boxBrutal);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!snarky){
+                ImageView x = findViewById(R.id.activity_task_due_repeat_snarky);
+                ImageView y = findViewById(R.id.activity_task_due_repeat_boxSnarky);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!funny){
+                ImageView x = findViewById(R.id.activity_task_due_repeat_funny);
+                ImageView y = findViewById(R.id.activity_task_due_repeat_boxFunny);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!cute){
+                ImageView x = findViewById(R.id.activity_task_due_repeat_cute);
+                ImageView y = findViewById(R.id.activity_task_due_repeat_boxCute);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!normal){
+                ImageView x = findViewById(R.id.activity_task_due_repeat_normal);
+                ImageView y = findViewById(R.id.activity_task_due_repeat_boxNormal);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(!noNoti){
+                ImageView x = findViewById(R.id.activity_task_due_repeat_no);
+                ImageView y = findViewById(R.id.activity_task_due_repeat_boxNo);
+                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
+                x.setVisibility(View.INVISIBLE);
+            }
+            if(label1 == ""){
+                TextView l1 = findViewById(R.id.activity_task_due_repeat_label1);
+                ImageView iconl1 = findViewById(R.id.activity_task_due_repeat_icon_label1);
+                l1.setVisibility(View.INVISIBLE);
+                iconl1.setVisibility(View.INVISIBLE);
+                TextView l2 = findViewById(R.id.activity_task_due_repeat_label2);
+                ImageView iconl2 = findViewById(R.id.activity_task_due_repeat_icon_label2);
+                l2.setVisibility(View.INVISIBLE);
+                iconl2.setVisibility(View.INVISIBLE);
+                TextView l3 = findViewById(R.id.activity_task_due_repeat_label3);
+                ImageView iconl3 = findViewById(R.id.activity_task_due_repeat_icon_label3);
+                l3.setVisibility(View.INVISIBLE);
+                iconl3.setVisibility(View.INVISIBLE);
+
+            }else if(label2 == null){
+                TextView l1 = findViewById(R.id.activity_task_due_repeat_label1);
+                l1.setText(label1);
+                TextView l2 = findViewById(R.id.activity_task_due_repeat_label2);
+                ImageView iconl2 = findViewById(R.id.activity_task_due_repeat_icon_label2);
+                l2.setVisibility(View.INVISIBLE);
+                iconl2.setVisibility(View.INVISIBLE);
+                TextView l3 = findViewById(R.id.activity_task_due_repeat_label3);
+                ImageView iconl3 = findViewById(R.id.activity_task_due_repeat_icon_label3);
+                l3.setVisibility(View.INVISIBLE);
+                iconl3.setVisibility(View.INVISIBLE);
+            }else if(label3 == null){
+                TextView l1 = findViewById(R.id.activity_task_due_repeat_label1);
+                l1.setText(label1);
+                TextView l2 = findViewById(R.id.activity_task_due_repeat_label2);
+                l2.setText(label2);
+                TextView l3 = findViewById(R.id.activity_task_due_repeat_label3);
+                ImageView iconl3 = findViewById(R.id.activity_task_due_repeat_icon_label3);
+                l3.setVisibility(View.INVISIBLE);
+                iconl3.setVisibility(View.INVISIBLE);
+            }else{
+                TextView l1 = findViewById(R.id.activity_task_due_tags);
+                l1.setText(label1);
+                TextView l2 = findViewById(R.id.activity_task_due_repeat_label2);
+                l2.setText(label2);
+                TextView l3 = findViewById(R.id.activity_task_due_repeat_label3);
+                l3.setText(label3);
+            }
+
         }
     }
 

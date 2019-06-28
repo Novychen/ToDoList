@@ -112,7 +112,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         Button set = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
         set.setOnClickListener(this);
         mPicker = d.findViewById(R.id.RepeatTask_Activity_Picker);
-        s = new String[] {"year","month","week"};
+        s = new String[] {"mYear","mMonth","week", "mDay"};
         mPicker.setDisplayedValues(s);
         mPicker.setMaxValue(s.length-1);
         mPicker.setMinValue(0);
@@ -128,9 +128,9 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         Button set = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
         set.setOnClickListener(this);
         mTimesPicker = d.findViewById(R.id.RepeatTask_Activity_Picker);
-        mTimesPicker.setValue(0);
+        mTimesPicker.setValue(1);
         mTimesPicker.setMaxValue(20);
-        mTimesPicker.setMinValue(0);
+        mTimesPicker.setMinValue(1);
         mTimesPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         d.show();
     }
@@ -183,7 +183,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 if(mTimesPicker != null){
                     mRepeatTask.setRepeats(mTimesPicker.getValue());
                 }else{
-                    mRepeatTask.setRepeats(0);
+                    mRepeatTask.setRepeats(1);
                 }
 
                 if(mPicker != null){
@@ -206,6 +206,10 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 if (mLabelCount <= 3) {
                     EditText txt = findViewById(R.id.RepeatTask_Activity_setLabel_field);
                     String getLabel = txt.getText().toString();
+                    if(getLabel.equals("")){
+                        mLabelCount--;
+                        return;
+                    }
                     mLabelList.add(mLabelList.size(), getLabel);
                     mLabelAdapter.notifyDataSetChanged();
                     mRepeatTask.setLabel(mLabelList);
