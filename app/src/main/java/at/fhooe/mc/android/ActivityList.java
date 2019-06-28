@@ -153,18 +153,16 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             i.putExtra("title",tDead.get(deadp));
             i.putExtra("ref",refDead.get(deadp));
             StringBuilder s= new StringBuilder();
-         //   s.append(day.get(deadp)+"."+month.get(deadp)+"."+year.get(deadp));
-            i.putExtra("date",s.toString());
-            s = new StringBuilder();
-          //  s.append(hour.get(deadp)+":"+min.get(deadp));
-            i.putExtra("time",s.toString());
+
+           // i.putExtra("day",day.get(deadp));
+
             i.putExtra("des",desDead.get(deadp));
+           Log.i(TAG,"DaY Size---------->"+ day.get(0));
             Log.i(TAG,"title,ref,time,des---------->"+tDead.get(deadp)+" ,"+refDead.get(deadp)+" ,"+s+" ,"+desDead.get(deadp));
         }else {
             i.putExtra("title",tREp.get(repp));
             i.putExtra("ref",refRep.get(repp));
             StringBuilder s= new StringBuilder();
-           // s.append(repeats.get(repp)+" times per "+circle.get(repp));
             i.putExtra("date",s.toString());
             i.putExtra("des",desRep.get(repp));
             Log.i(TAG,"title,ref,time,des---------->"+tREp.get(repp)+" ,"+refRep.get(repp)+" ,"+s+" ,"+desRep.get(repp));

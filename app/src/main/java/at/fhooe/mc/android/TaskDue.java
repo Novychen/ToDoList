@@ -25,16 +25,18 @@ public class TaskDue extends Activity implements View.OnClickListener {
 
         String title = i.getStringExtra("title");
         String des = i.getStringExtra("des");
-        String date = i.getStringExtra("date");
+
         key = i.getStringExtra("ref");
 
         if(task==0){
             String time =  i.getStringExtra("time");
             TextView tv = findViewById(R.id.activity_task_due_deadline_title);
             tv.setText(title);
+            int date = i.getIntExtra("day",0);
+            StringBuilder s = new StringBuilder(date);
 
             tv = findViewById(R.id.activity_task_due_deadline_date);
-            tv.setText(date);
+            tv.setText(s.toString());
 
             tv = findViewById(R.id.activity_task_due_deadline_time);
             tv.setText(time);
@@ -50,9 +52,9 @@ public class TaskDue extends Activity implements View.OnClickListener {
             TextView tv = findViewById(R.id.activity_task_due_repeat_title);
             tv.setText(title);
 
-            tv = findViewById(R.id.activity_task_due_repeat_date);
-            tv.setText(date);
-
+           /* tv = findViewById(R.id.activity_task_due_repeat_date);
+            tv.setText(day);
+*/
             tv = findViewById(R.id.activity_task_due_repeat_des);
             tv.setText(des);
 
