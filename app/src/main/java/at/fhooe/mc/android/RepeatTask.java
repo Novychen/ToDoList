@@ -19,7 +19,6 @@ public class RepeatTask implements Task {
     private boolean mFunny;
 
 
-
     /**
      * Consturctor for the Class {@link RepeatTask} everything is the default value (null,0,false, ...)
      */
@@ -73,6 +72,10 @@ public class RepeatTask implements Task {
      */
     public void setDescription(String _description) {
         mDescription = _description;
+    }
+
+    public String getDescription() {
+        return mDescription;
     }
 
     /**
@@ -140,8 +143,5 @@ public class RepeatTask implements Task {
     public void setCount(int _count) { mCount = _count; }
 
     public int getCount() { return mCount; }
-
-    public String getDescription() {
-        return mDescription;
-    }
 }
+

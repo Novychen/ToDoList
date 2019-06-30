@@ -8,7 +8,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,13 +21,14 @@ class Repository {
     private static String mUserId;
 
     private List<Integer> mTasks = new LinkedList<>();
-    private List<Integer> mCount = new LinkedList<>();
+    private List<Integer> mCountDead = new LinkedList<>();
+    private List<Integer> mCountRep = new LinkedList<>();
 
-    private List<Integer> mDay = new LinkedList<>();
-    private List<Integer> mMonth = new LinkedList<>();
-    private List<Integer> mYear = new LinkedList<>();
-    private List<Integer> mHour = new LinkedList<>();
-    private List<Integer> mMinute = new LinkedList<>();
+    private List<Integer> mDayDead = new LinkedList<>();
+    private List<Integer> mMonthDead = new LinkedList<>();
+    private List<Integer> mYearDead = new LinkedList<>();
+    private List<Integer> mHourDead = new LinkedList<>();
+    private List<Integer> mMinuteDead = new LinkedList<>();
 
     private List<Integer> mRepeats = new LinkedList<>();
     private List<String> mRepeatRotation = new LinkedList<>();
@@ -53,6 +53,7 @@ class Repository {
     private List<Boolean> mNormalDead = new LinkedList<>();
     private List<Boolean> mNotificationDead = new LinkedList<>();
     private List<Boolean> mNotificationRepeat = new LinkedList<>();
+    static boolean mEnable;
 
     /**
      * Constructor for Repository
@@ -69,44 +70,15 @@ class Repository {
     }
 
 
-    /**
-     * gets long values from the database. Is meant to get the highest Tasknumber (or the Number of Task the user currently has) as it saves the long value into the
-     * {@link MainActivity#mTaskNumber} variable
-     * @param _myRef the reference (path) of the long-value (in the database) that want to be fetched
-     */
-    void getLongData(DatabaseReference _myRef){
-        _myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                try {
-                    MainActivity.setTaskNumber(dataSnapshot.getValue(Long.class));
-                }catch(NullPointerException e){
-                    Log.e(TAG, "getLongData: " + e.getMessage());
-                }catch(ClassCastException e){
-                    Log.e(TAG,"getLongData: " + e.getMessage());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.i(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
-
-
     private void cleanLists(){
 
         mTasks.clear();
 
-        mDay.clear();
-        mMonth.clear();
-        mYear.clear();
-        mHour.clear();
-        mMinute.clear();
+        mDayDead.clear();
+        mMonthDead.clear();
+        mYearDead.clear();
+        mHourDead.clear();
+        mMinuteDead.clear();
         mBrutalDead.clear();
         mCuteDead.clear();
         mSnarkyDead.clear();
@@ -117,7 +89,7 @@ class Repository {
         mDescriptionDead.clear();
         mReferenceDead.clear();
         mNotificationDead.clear();
-        mCount.clear();
+        mCountDead.clear();
 
         mTitleRepeat.clear();
         mRepeatRotation.clear();
@@ -131,7 +103,7 @@ class Repository {
         mDescriptionRepeat.clear();
         mNotificationRepeat.clear();
         mReferenceRepeat.clear();
-
+        mCountRep.clear();
     }
 
     private void getRepeatData(DataSnapshot listSnapshot){
@@ -168,6 +140,9 @@ class Repository {
         Boolean normal = listSnapshot.child("normal").getValue(Boolean.class);
         mNormalRepeat.add(normal);
 
+        Integer count = listSnapshot.child("count").getValue(Integer.class);
+        mCountRep.add(count);
+
         String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
         String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
         String thirdLabel = listSnapshot.child("label").child("2").getValue(String.class);
@@ -184,19 +159,19 @@ class Repository {
         mReferenceDead.add(reference);
 
         Integer day = listSnapshot.child("day").getValue(Integer.class);
-        mDay.add(day);
+        mDayDead.add(day);
 
         Integer month = listSnapshot.child("month").getValue(Integer.class);
-        mMonth.add(month);
+        mMonthDead.add(month);
 
         Integer year = listSnapshot.child("year").getValue(Integer.class);
-        mYear.add(year);
+        mYearDead.add(year);
 
         Integer hour = listSnapshot.child("hour").getValue(Integer.class);
-        mHour.add(hour);
+        mHourDead.add(hour);
 
         Integer minute = listSnapshot.child("minute").getValue(Integer.class);
-        mMinute.add(minute);
+        mMinuteDead.add(minute);
 
         String description = listSnapshot.child("description").getValue(String.class);
         mDescriptionDead.add(description);
@@ -223,7 +198,7 @@ class Repository {
         mNormalDead.add(normal);
 
         Integer count = listSnapshot.child("count").getValue(Integer.class);
-        mCount.add(count);
+        mCountDead.add(count);
 
         String firstLabel = listSnapshot.child("label").child("0").getValue(String.class);
         String secondLabel = listSnapshot.child("label").child("1").getValue(String.class);
@@ -257,13 +232,10 @@ class Repository {
                            getRepeatData(listSnapshot);
                        }
                    }
-               }
-                    if(mTasks.size() != 0) {
-                        mTasks.remove(mTasks.size() - 1);
-                    }
-                   _callback.setTitle(mTitleRepeat,mTitleDead,mTasks,mDay,mMonth,mYear,mRepeats,mRepeatRotation);
-                   _callback.setAll(mTitleRepeat,mTitleDead,mDay,mMonth,mYear,mHour,mMinute,mTasks,mLabelRepeat,mLabelDead,mDescriptionRepeat,mDescriptionDead,mReferenceRepeat,mReferenceDead,mRepeats,mRepeatRotation,mNormalRepeat,mFunnyRepeat,mSnarkyRepeat,mCuteRepeat,mBrutalRepeat,mNotificationRepeat,mNormalDead,mFunnyDead,mSnarkyDead,mCuteDead,mBrutalDead,mNotificationDead);                   _callback.setTitle(mTitleRepeat, mTitleDead, mTasks,mDay, mMonth, mYear, mRepeats, mRepeatRotation);
-                    }
+                }
+               _callback.setTitle(mTitleRepeat,mTitleDead,mTasks, mDayDead, mMonthDead, mYearDead,mRepeats,mRepeatRotation);
+               _callback.setAll(mTitleRepeat,mTitleDead, mDayDead, mMonthDead, mYearDead, mHourDead, mMinuteDead,mTasks,mLabelRepeat,mLabelDead,mDescriptionRepeat,mDescriptionDead,mReferenceRepeat,mReferenceDead,mRepeats,mRepeatRotation,mNormalRepeat,mFunnyRepeat,mSnarkyRepeat,mCuteRepeat,mBrutalRepeat,mNotificationRepeat,mNormalDead,mFunnyDead,mSnarkyDead,mCuteDead,mBrutalDead,mNotificationDead);
+                }
 
            @Override
            public void onCancelled(DatabaseError error) {
@@ -273,36 +245,37 @@ class Repository {
    }
 
     void getNotificationData(DatabaseReference _myRef, final IFirebaseCallback _callback){
-        _myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                cleanLists();
+            _myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (mEnable) {
 
-                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
-                    Integer task = listSnapshot.child("task").getValue(Integer.class);
-                    mTasks.add(task);
+                        cleanLists();
 
-                    if(task != null) {
-                        if(task == 0){
-                            geDeadlineData(listSnapshot);
-                        }else if(task == 1){
-                            getRepeatData(listSnapshot);
+                        for (DataSnapshot listSnapshot : dataSnapshot.getChildren()) {
+                            Integer task = listSnapshot.child("task").getValue(Integer.class);
+                            mTasks.add(task);
+
+                            if (task != null) {
+                                if (task == 0) {
+                                    geDeadlineData(listSnapshot);
+                                } else if (task == 1) {
+                                    getRepeatData(listSnapshot);
+                                }
+                            }
                         }
+
+                        _callback.setNotificationDeadlineData(mTasks, mDayDead, mMonthDead, mYearDead, mHourDead, mMinuteDead, mTitleDead, mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotificationDead, mCountDead, mReferenceDead, mDescriptionDead, mLabelDead);
+                        _callback.setNotificationRepeatData(mTasks, mRepeats, mRepeatRotation, mTitleRepeat, mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat, mNotificationRepeat, mDescriptionRepeat, mLabelRepeat, mReferenceRepeat, mCountRep);
                     }
                 }
-                if(mTasks.size() != 0) {
-                    mTasks.remove(mTasks.size() - 1);
-                }
-               _callback.setNotificationDeadlineData(mTasks,mDay,mMonth,mYear,mHour,mMinute,mTitleDead,mNormalDead,mFunnyDead,mSnarkyDead,mCuteDead,mBrutalDead, mNotificationDead,mCount,mReferenceDead,mDescriptionDead,mLabelDead);
-                _callback.setNotificationRepeatData(mTasks, mRepeats,mRepeatRotation,mTitleRepeat,mNormalRepeat,mFunnyRepeat,mSnarkyRepeat,mCuteRepeat,mBrutalRepeat, mNotificationDead,mDescriptionRepeat,mLabelRepeat);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-    }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    Log.w(TAG, "Failed to read value.", error.toException());
+                }
+            });
+        }
 
     /**
      * saves a Task along with its tasknumber into the database
@@ -318,22 +291,16 @@ class Repository {
         reference.push().setValue(_t);
     }
 
-    /**
-     * saves the current TaskNumber into the database
-     * @param _currTaskNumber the number that represents the current Task
-     */
-    void saveData(long _currTaskNumber){
+    void changeData(Task _t, String _ref){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-         String ref = mUserId + "/CurrentTask";
         if (mUserId == null){
             return;
         }
-        DatabaseReference reference = database.getReference(ref);
-        reference.setValue(_currTaskNumber);
+        DatabaseReference reference = database.getReference(mUserId).child(_ref);
+        reference.setValue(_t);
     }
 
-
-    void saveData(boolean _notification, String _ref){
+    void saveNotificationData(boolean _notification, String _ref){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         if (mUserId == null){
             return;
@@ -370,8 +337,5 @@ class Repository {
     void removeDate(String key) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child(key);
         ref.removeValue();
-        /*long taskNumber = MainActivity.getTaskNumber() -1;
-        Log.i(TAG, "taskNumber Value is: " + taskNumber);
-        Repository.getInstance().saveData(taskNumber);*/
     }
 }

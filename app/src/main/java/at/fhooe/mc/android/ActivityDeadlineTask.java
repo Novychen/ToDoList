@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 
 import android.os.Bundle;
@@ -49,21 +50,22 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     private int mNormalClicked;
     private int mSnarkyClicked;
 
-
-
     protected DeadlineTask mDeadlineTask;
     int mLabelCount = 0;
     GridView mLabelView;
-    List<String> mLabelList;
+    List<String> mLabelList =  new ArrayList<>();
     ArrayAdapter<String> mLabelAdapter;
     private int mNoClicked;
+    Intent intent = new Intent();
+
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_deadline_task);
+        Repository.mEnable = false;
         mDeadlineTask = new DeadlineTask();
-
+        intent = getIntent();
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         TextView timeFiled = findViewById(R.id.DeadlineTask_Activity_time_field);
@@ -99,13 +101,12 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
         b.setOnClickListener(this);
 
-        mLabelView = findViewById(R.id.task_Activity_Label_layout);
-        mLabelList = new ArrayList<>();
-        mLabelAdapter = new ArrayAdapter<>(ActivityDeadlineTask.this,android.R.layout.simple_expandable_list_item_1,mLabelList);
-        mLabelView.setAdapter(mLabelAdapter);
-
         ImageView label = findViewById(R.id.DeadlineTask_Activity_Label_Button);
         label.setOnClickListener(this);
+
+        mLabelView = findViewById(R.id.task_Activity_Label_layout);
+        mLabelAdapter = new ArrayAdapter<>(ActivityDeadlineTask.this,android.R.layout.simple_expandable_list_item_1,mLabelList);
+        mLabelView.setAdapter(mLabelAdapter);
 
         mLabelView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -117,6 +118,47 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             }
         });
 
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(intent.getBooleanExtra("fromTaskDue",false)){
+
+            EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
+            t.setText(intent.getStringExtra("title"));
+            EditText d = findViewById(R.id.DeadlineTask_Activity_description_field);
+            d.setText(intent.getStringExtra("des"));
+            TextView dateFiled = findViewById(R.id.DeadlineTask_Activity_date_field);
+            dateFiled.setText(intent.getStringExtra("date"));
+            TextView timeFiled = findViewById(R.id.DeadlineTask_Activity_time_field);
+            timeFiled.setText(intent.getStringExtra("time"));
+            String label1 = intent.getStringExtra("label1");
+            String label2 = intent.getStringExtra("label2");
+            String label3 = intent.getStringExtra("label3");
+            if(label1 != null) {
+                mLabelList.add(label1);
+            }
+            if (label2 != null) {
+                mLabelList.add(label1);
+            }if (label3 != null) {
+                mLabelList.add(label1);
+            }
+            RadioButton brutal = findViewById(R.id.DeadlineTask_Activity_MotiBrutal_RadioButton);
+            brutal.setChecked(intent.getBooleanExtra("brutal",false));
+            RadioButton snarky = findViewById(R.id.DeadlineTask_Activity_MotiSnarky_RadioButton);
+            snarky.setChecked(intent.getBooleanExtra("snarky",false));
+            RadioButton cute = findViewById(R.id.DeadlineTask_Activity_MotiCute_RadioButton);
+            cute.setChecked(intent.getBooleanExtra("cute",false));
+            RadioButton funny = findViewById(R.id.DeadlineTask_Activity_MotiFunny_RadioButton);
+            funny.setChecked(intent.getBooleanExtra("funny",false));
+            RadioButton normal = findViewById(R.id.DeadlineTask_Activity_MotiNormal_RadioButton);
+            normal.setChecked( intent.getBooleanExtra("normal",false));
+            RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
+            b.setChecked(intent.getBooleanExtra("noNoti",false));
+        }
     }
 
     @Override
@@ -150,7 +192,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 Log.i(TAG, "::onClick check Button was pressed");
 
                 EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
-                EditText d = findViewById(R.id.DeadlineTask_Activity_description_field);
+                EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
 
                 String title = t.getText().toString();
                 String description = d.getText().toString();
@@ -186,11 +228,12 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                  }
                 mDeadlineTask.setLabel(mLabelList);
 
-                long taskNumber = MainActivity.getTaskNumber() +1;
-
-                Log.i(TAG, "taskNumber Value is: " + taskNumber);
-                Repository.getInstance().saveData(mDeadlineTask);
-                //Repository.getInstance().saveData(taskNumber);
+                if(intent.getBooleanExtra("fromTaskDue",false)){
+                    Repository.getInstance().changeData(mDeadlineTask,intent.getStringExtra("ref"));
+                    Toast.makeText(ActivityDeadlineTask.this, R.string.DeadlineTask_Activity_Change_toast, Toast.LENGTH_SHORT).show();
+                }else {
+                    Repository.getInstance().saveData(mDeadlineTask);
+                }
                 finish();
             }
             break;
@@ -323,7 +366,11 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             default:
                 Log.e(TAG, "::onClick unexpected ID encountered");
         }
-
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Repository.mEnable = true;
+    }
 }

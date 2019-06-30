@@ -5,18 +5,44 @@ import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TaskDue extends Activity implements View.OnClickListener {
     private static final String TAG = "at.fhooe.mc.toDoList :: TaskDue";
     public String key = null;
+    private int mNotiCountRep;
+    private int mNotiCountDead;
+
+
+    String title;
+    String des;
+    String date;
+    String label1;
+    String label2;
+    String label3;
+    String time;
+
+    boolean brutal;
+    boolean snarky;
+    boolean funny;
+    boolean cute;
+    boolean normal;
+    boolean noNoti;
+    private String circle;
+    private int repeat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Repository.mEnable = false;
         Intent i = getIntent();
         int task = i.getIntExtra("task",-1);
         if(task ==1) {
@@ -36,23 +62,24 @@ public class TaskDue extends Activity implements View.OnClickListener {
             notificationManager.cancelAll();
         }
 
-        String title = i.getStringExtra("title");
-        String des = i.getStringExtra("des");
-        String date = i.getStringExtra("date");
-        String label1 = i.getStringExtra("label1");
-        String label2 = i.getStringExtra("label2");
-        String label3 = i.getStringExtra("label3");
+        title = i.getStringExtra("title");
+        des = i.getStringExtra("des");
+        label1 = i.getStringExtra("label1");
+        label2 = i.getStringExtra("label2");
+        label3 = i.getStringExtra("label3");
 
-        boolean brutal = i.getBooleanExtra("brutal", false);
-        boolean snarky = i.getBooleanExtra("snarky", false);
-        boolean funny = i.getBooleanExtra("funny", false);
-        boolean cute = i.getBooleanExtra("cute", false);
-        boolean normal = i.getBooleanExtra("normal", false);
-        boolean noNoti = i.getBooleanExtra("noNoti", true);
+        brutal = i.getBooleanExtra("brutal", false);
+        snarky = i.getBooleanExtra("snarky", false);
+        funny = i.getBooleanExtra("funny", false);
+        cute = i.getBooleanExtra("cute", false);
+        normal = i.getBooleanExtra("normal", false);
+        noNoti = i.getBooleanExtra("noNoti", true);
         key = i.getStringExtra("ref");
 
         if(task==0){
-            String time =  i.getStringExtra("time");
+            time =  i.getStringExtra("time");
+            date = i.getStringExtra("date");
+
             TextView tv = findViewById(R.id.activity_task_due_deadline_title);
             tv.setText(title);
 
@@ -68,44 +95,51 @@ public class TaskDue extends Activity implements View.OnClickListener {
             ImageView b = findViewById(R.id.activity_task_due_deadline_remove);
             b.setOnClickListener(this);
 
+            ImageView x = findViewById(R.id.activity_task_due_deadline_change);
+            x.setOnClickListener(this);
+
             b = findViewById(R.id.activity_task_due_deadline_back);
             b.setOnClickListener(this);
 
+            b = findViewById(R.id.activity_task_due_deadline_noNotifi_Button);
+            b.setOnClickListener(this);
+
             if(!brutal){
-                ImageView x = findViewById(R.id.activity_task_due_deadline_brutal);
                 ImageView y = findViewById(R.id.activity_task_due_deadline_boxBrutal);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_green);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(!snarky){
-                ImageView x = findViewById(R.id.activity_task_due_deadline_snarky);
                 ImageView y = findViewById(R.id.activity_task_due_deadline_boxSnarky);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_green);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(!funny){
-                ImageView x = findViewById(R.id.activity_task_due_deadline_funny);
                 ImageView y = findViewById(R.id.activity_task_due_deadline_boxFunny);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_green);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(!cute){
-                ImageView x = findViewById(R.id.activity_task_due_deadline_cute);
                 ImageView y = findViewById(R.id.activity_task_due_deadline_boxCute);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_green);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(!normal){
-                ImageView x = findViewById(R.id.activity_task_due_deadline_normal);
                 ImageView y = findViewById(R.id.activity_task_due_deadline_boxNormal);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_green);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(noNoti){
-                ImageView x = findViewById(R.id.activity_task_due_deadline_not);
                 ImageView y = findViewById(R.id.activity_task_due_deadline_boxNot);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_green);
+                d.setAlpha(50);
+                y.setBackground(d);
+                mNotiCountDead++;
             }
             if(label1.equals("")){
                 TextView l1 = findViewById(R.id.activity_task_due_deadline_label1);
@@ -151,14 +185,23 @@ public class TaskDue extends Activity implements View.OnClickListener {
             }
 
         }else{
+            repeat = i.getIntExtra("repeat",1);
+            circle = i.getStringExtra("circle");
+
             TextView tv = findViewById(R.id.activity_task_due_repeat_title);
             tv.setText(title);
 
-            tv = findViewById(R.id.activity_task_due_repeat_date);
-            tv.setText(date);
+            tv = findViewById(R.id.activity_task_due_repeat_repeat);
+            tv.setText(String.valueOf(repeat));
+
+            tv = findViewById(R.id.activity_task_due_repeat_circle);
+            tv.setText(circle);
 
             tv = findViewById(R.id.activity_task_due_repeat_des);
             tv.setText(des);
+
+            ImageView x = findViewById(R.id.activity_task_due_repeat_change);
+            x.setOnClickListener(this);
 
             ImageView b = findViewById(R.id.activity_task_due_repeat_remove);
             b.setOnClickListener(this);
@@ -166,41 +209,46 @@ public class TaskDue extends Activity implements View.OnClickListener {
             b = findViewById(R.id.activity_task_due_repeat_back);
             b.setOnClickListener(this);
 
+            b = findViewById(R.id.activity_task_due_repeat_noNotifi_Button);
+            b.setOnClickListener(this);
+
+
             if(!brutal){
-                ImageView x = findViewById(R.id.activity_task_due_repeat_brutal);
                 ImageView y = findViewById(R.id.activity_task_due_repeat_boxBrutal);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_blue);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(!snarky){
-                ImageView x = findViewById(R.id.activity_task_due_repeat_snarky);
                 ImageView y = findViewById(R.id.activity_task_due_repeat_boxSnarky);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_blue);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(!funny){
-                ImageView x = findViewById(R.id.activity_task_due_repeat_funny);
                 ImageView y = findViewById(R.id.activity_task_due_repeat_boxFunny);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_blue);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(!cute){
-                ImageView x = findViewById(R.id.activity_task_due_repeat_cute);
                 ImageView y = findViewById(R.id.activity_task_due_repeat_boxCute);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_blue);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(!normal){
-                ImageView x = findViewById(R.id.activity_task_due_repeat_normal);
                 ImageView y = findViewById(R.id.activity_task_due_repeat_boxNormal);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_blue);
+                d.setAlpha(50);
+                y.setBackground(d);
             }
             if(noNoti){
-                ImageView x = findViewById(R.id.activity_task_due_repeat_no);
                 ImageView y = findViewById(R.id.activity_task_due_repeat_boxNo);
-                y.setBackground(getDrawable(R.drawable.ic_button_round_white));
-                x.setVisibility(View.INVISIBLE);
+                Drawable d = getDrawable(R.drawable.ic_button_round_blue);
+                d.setAlpha(50);
+                y.setBackground(d);
+                mNotiCountRep++;
             }
             if(label1.equals("")){
                 TextView l1 = findViewById(R.id.activity_task_due_repeat_label1);
@@ -248,32 +296,117 @@ public class TaskDue extends Activity implements View.OnClickListener {
         }
     }
 
-
     @Override
     public void onClick(View _v) {
         switch (_v.getId()) {
+            case R.id.activity_task_due_deadline_change:{
+
+                    Log.i(TAG, "onClick :: Deadline change was clicked");
+                    Intent i = new Intent(this, ActivityDeadlineTask.class);
+                    i.putExtra("title", title);
+                    i.putExtra("des", des);
+                    i.putExtra("date", date);
+                    i.putExtra("time", time);
+                    i.putExtra("label1", label1);
+                    i.putExtra("label2", label2);
+                    i.putExtra("label3", label3);
+                    i.putExtra("brutal", brutal);
+                    i.putExtra("snarky", snarky);
+                    i.putExtra("funny", funny);
+                    i.putExtra("cute", cute);
+                    i.putExtra("normal", normal);
+                    i.putExtra("noNoti", noNoti);
+                    i.putExtra("ref", key);
+                    i.putExtra("fromTaskDue", true);
+                    startActivity(i);
+                    finish();
+
+            }break;
+            case R.id.activity_task_due_repeat_change:{
+                Log.i(TAG,"conClick :: Repeat change was clicked");
+                Intent i = new Intent(this, ActivityRepeatTask.class);
+                i.putExtra("title", title);
+                i.putExtra("des", des);
+                i.putExtra("repeat",repeat);
+                i.putExtra("circle",circle);
+                i.putExtra("label1", label1);
+                i.putExtra("label2", label2);
+                i.putExtra("label3", label3);
+                i.putExtra("brutal", brutal);
+                i.putExtra("snarky", snarky);
+                i.putExtra("funny", funny);
+                i.putExtra("cute", cute);
+                i.putExtra("normal", normal);
+                i.putExtra("noNoti", noNoti);
+                i.putExtra("ref", key);
+                i.putExtra("fromTaskDue", true);
+                startActivity(i);
+                finish();
+            }break;
             case R.id.activity_task_due_deadline_remove: {
+                Log.i(TAG,"conClick :: Deadline remove was clicked");
                 Repository.getInstance().removeDate(key);
-               /* long taskNumber = MainActivity.getTaskNumber() -1;
-                Log.i(TAG, "taskNumber Value is: " + taskNumber);
-                Repository.getInstance().saveData(taskNumber);*/
+                Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_Notification_Remove_toast, Toast.LENGTH_SHORT).show();
+
                 finish();
             }break;
             case R.id.activity_task_due_repeat_remove: {
+                Log.i(TAG,"conClick :: Repeat remove was clicked");
                 Repository.getInstance().removeDate(key);
-               /* long taskNumber = MainActivity.getTaskNumber() -1;
-                Log.i(TAG, "taskNumber Value is: " + taskNumber);
-                Repository.getInstance().saveData(taskNumber);*/
+                Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_Notification_Remove_toast, Toast.LENGTH_SHORT).show();
+
                 finish();
             }break;
             case R.id.activity_task_due_deadline_back: {
+                Log.i(TAG,"conClick :: Deadline back was clicked");
                 finish();
             }break;
             case R.id.activity_task_due_repeat_back: {
+                Log.i(TAG,"conClick :: Repeat back was clicked");
                 finish();
+            }break;
+            case R.id.activity_task_due_deadline_noNotifi_Button: {
+                Log.i(TAG,"conClick :: Deadline noNoti was clicked");
+                ImageView y = findViewById(R.id.activity_task_due_deadline_boxNot);
+                Drawable d = getDrawable(R.drawable.ic_button_round_green);
+                if(mNotiCountDead % 2 != 0) {
+                    d.setAlpha(255);
+                    y.setBackground(d);
+                    Repository.getInstance().saveNotificationData(false, key);
+                    Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_noNotification_Button, Toast.LENGTH_SHORT).show();
+                }else{
+                    d.setAlpha(50);
+                    y.setBackground(d);
+                    Repository.getInstance().saveNotificationData(true, key);
+                    Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_Notification_Button, Toast.LENGTH_SHORT).show();
+                }
+                mNotiCountDead++;
+            }break;
+            case R.id.activity_task_due_repeat_noNotifi_Button: {
+                Log.i(TAG,"conClick :: Repeat noNoti was clicked");
+                ImageView y = findViewById(R.id.activity_task_due_repeat_boxNo);
+                Drawable d = getDrawable(R.drawable.ic_button_round_blue);
+                if(mNotiCountRep % 2 != 0) {
+                    d.setAlpha(255);
+                    y.setBackground(d);
+                    Repository.getInstance().saveNotificationData(false, key);
+                    Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_noNotification_Button, Toast.LENGTH_SHORT).show();
+                }else{
+                    d.setAlpha(50);
+                    y.setBackground(d);
+                    Repository.getInstance().saveNotificationData(true, key);
+                    Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_Notification_Button, Toast.LENGTH_SHORT).show();
+                }
+                mNotiCountRep++;
             }break;
             default:
                 Log.e(TAG, "::onClick unexpected ID encountered");
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Repository.mEnable = true;
     }
 }

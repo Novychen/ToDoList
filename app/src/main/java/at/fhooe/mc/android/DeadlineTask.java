@@ -96,6 +96,9 @@ public class DeadlineTask implements Task{
         mDescription = _description;
     }
 
+
+    public String getDescription() {return mDescription;}
+
     /**
      * getter for the variable {@link DeadlineTask#mTitle}
      * @return the title of the mTask

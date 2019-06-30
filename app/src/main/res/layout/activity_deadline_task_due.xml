@@ -7,17 +7,7 @@
     android:background="#FFFFFF">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:background="#8BC34A"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/activity_task_due_deadline_box2"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:background="#8BC34A"
@@ -25,6 +15,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/activity_task_due_deadline_box1"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="#8BC34A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/activity_task_due_deadline_title"
@@ -36,7 +36,7 @@
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_task_due_deadline_box1" />
 
     <ImageView
         android:id="@+id/activity_task_due_deadline_icon_label1"
@@ -71,11 +71,12 @@
         android:id="@+id/activity_task_due_deadline_remove"
         android:layout_width="47dp"
         android:layout_height="56dp"
-        android:layout_marginEnd="8dp"
         android:background="@drawable/ic_delete"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="@+id/activity_task_due_deadline_funny"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_box2"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_change"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_box2" />
 
     <ImageView
         android:id="@+id/activity_task_due_deadline_calendar"
@@ -87,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_task_due_deadline_icon_label1" />
 
     <ImageView
-        android:id="@+id/activity_task_due_deadline__clock"
+        android:id="@+id/activity_task_due_deadline_clock"
         android:layout_width="41dp"
         android:layout_height="41dp"
         android:layout_marginEnd="8dp"
@@ -149,6 +150,8 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/ic_button_round_green"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_boxSnarky"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_task_due_deadline_calendar" />
 
@@ -159,9 +162,10 @@
         android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_green"
         app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_boxFunny"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_boxNormal"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_boxFunny"
-        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxFunny"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxFunny" />
 
     <ImageView
         android:id="@+id/activity_task_due_deadline_boxNormal"
@@ -170,9 +174,10 @@
         android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_green"
         app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_boxCute"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_boxNot"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_boxCute"
-        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxCute"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxCute" />
 
     <ImageView
         android:id="@+id/activity_task_due_deadline_boxNot"
@@ -182,8 +187,7 @@
         android:background="@drawable/ic_button_round_green"
         app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_boxNormal"
         app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_boxNormal"
-        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxNormal"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxNormal" />
 
     <ImageView
         android:id="@+id/activity_task_due_deadline_boxFunny"
@@ -192,9 +196,10 @@
         android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_green"
         app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_boxSnarky"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_boxCute"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_boxSnarky"
-        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxSnarky"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxSnarky" />
 
     <ImageView
         android:id="@+id/activity_task_due_deadline_boxSnarky"
@@ -203,9 +208,10 @@
         android:layout_marginStart="10dp"
         android:background="@drawable/ic_button_round_green"
         app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_boxBrutal"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_boxFunny"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_boxBrutal"
-        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxBrutal"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_boxBrutal" />
 
     <ImageView
         android:id="@+id/activity_task_due_deadline_brutal"
@@ -273,7 +279,7 @@
         android:layout_height="164dp"
         android:layout_marginTop="24dp"
         android:text="This is a text to demonstrate the effect of the describe field"
-        android:textColor="#28000000"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="@+id/activity_task_due_deadline_boxNot"
         app:layout_constraintStart_toStartOf="@+id/activity_task_due_deadline_calendar"
         app:layout_constraintTop_toBottomOf="@+id/activity_task_due_deadline_boxFunny" />
@@ -282,11 +288,12 @@
         android:id="@+id/activity_task_due_deadline_back"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:layout_marginStart="4dp"
         android:background="@drawable/ic_cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_remove"
-        app:layout_constraintStart_toStartOf="@+id/activity_task_due_deadline_cute"
-        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_remove" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_noNotifi_Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_noNotifi_Button"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_noNotifi_Button" />
 
     <TextView
         android:id="@+id/activity_task_due_deadline_label3"
@@ -297,5 +304,27 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_icon_label3"
         app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_icon_label3" />
+
+    <ImageView
+        android:id="@+id/activity_task_due_deadline_noNotifi_Button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_notifications_off"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_change"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_back"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_change"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_change" />
+
+    <ImageView
+        android:id="@+id/activity_task_due_deadline_change"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_change"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_task_due_deadline_remove"
+        app:layout_constraintEnd_toStartOf="@+id/activity_task_due_deadline_noNotifi_Button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/activity_task_due_deadline_remove"
+        app:layout_constraintTop_toTopOf="@+id/activity_task_due_deadline_remove" />
 
 </android.support.constraint.ConstraintLayout>

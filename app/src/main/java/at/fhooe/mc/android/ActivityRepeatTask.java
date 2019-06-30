@@ -2,6 +2,7 @@ package at.fhooe.mc.android;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.MissingResourceException;
 
 public class ActivityRepeatTask extends Activity implements Task, View.OnClickListener {
 
@@ -40,14 +40,15 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     private int mNormalClicked;
     private int mSnarkyClicked;
     private int mNoClicked;
-
+    Intent intent = new Intent();
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_repeat_task);
-
+        Repository.mEnable = false;
         mRepeatTask = new RepeatTask();
+        intent = getIntent();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -102,8 +103,6 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         label.setOnClickListener(this);
     }
 
-
-
     public void showRepeatCircleDialog()
     {
         d = new Dialog(ActivityRepeatTask.this);
@@ -135,6 +134,56 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         d.show();
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(intent.getBooleanExtra("fromTaskDue",false)){
+
+            EditText t = findViewById(R.id.RepeatTask_Activity_title_field);
+            t.setText(intent.getStringExtra("title"));
+            EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
+            TextView repeat = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
+            repeat.setText(String.valueOf(intent.getIntExtra("repeat",1)));
+            TextView repeatCircles = findViewById(R.id.RepeatTask_Activity_RepeatCircles);
+            repeatCircles.setText(intent.getStringExtra("circle"));
+            d.setText(intent.getStringExtra("des"));
+            String label1 = intent.getStringExtra("label1");
+            String label2 = intent.getStringExtra("label2");
+            String label3 = intent.getStringExtra("label3");
+            if(label1 != null) {
+                mLabelList.add(label1);
+            }if (label2 != null) {
+                mLabelList.add(label1);
+            }if (label3 != null) {
+                mLabelList.add(label1);
+            }
+            RadioButton brutal = findViewById(R.id.RepeatTask_Activity_MotiBrutal_RadioButton);
+            brutal.setChecked(intent.getBooleanExtra("brutal",false));
+
+            RadioButton snarky = findViewById(R.id.RepeatTask_Activity_MotiSnarky_RadioButton);
+            snarky.setChecked(intent.getBooleanExtra("snarky",false));
+
+            RadioButton cute = findViewById(R.id.RepeatTask_Activity_MotiCute_RadioButton);
+            cute.setChecked(intent.getBooleanExtra("cute",false));
+
+            RadioButton funny = findViewById(R.id.RepeatTask_Activity_MotiFunny_RadioButton);
+            funny.setChecked(intent.getBooleanExtra("funny",false));
+
+            RadioButton normal = findViewById(R.id.RepeatTask_Activity_MotiNormal_RadioButton);
+            normal.setChecked( intent.getBooleanExtra("normal",false));
+
+            RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiNo_RadioButton);
+            boolean notification = intent.getBooleanExtra("noNoti",false);
+            if(notification){
+                b.setChecked(false);
+            }else {
+                b.setChecked(true);
+            }
+        }
+    }
+
     @Override
     public void onClick(View _v) {
         switch (_v.getId()) {
@@ -150,11 +199,12 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                     int choice = mPicker.getValue();
                     circle.setText(s[choice]);
                     mRepeatTask.setRepeatRotation(s[choice]);
-                }
+                   }
                 if(mTimesPicker != null){
                     times.setText(String.valueOf(mTimesPicker.getValue()));
                     mRepeatTask.setRepeats(mTimesPicker.getValue());
                 }
+
                 d.dismiss();
 
             }break;
@@ -162,7 +212,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             case R.id.RepeatTask_Activity_Check_Button: {
 
                 Log.i(TAG, "::onClick check Button was pressed");
-                EditText d = findViewById(R.id.DeadlineTask_Activity_description_field);
+                EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
                 EditText t = findViewById(R.id.RepeatTask_Activity_title_field);
 
                 String description = d.getText().toString();
@@ -193,11 +243,12 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                     mRepeatTask.setRepeatRotation("day");
                 }
 
-                long taskNumber = MainActivity.getTaskNumber() +1;
-
-                Log.i(TAG, "taskNumber Value is: " + taskNumber);
-                Repository.getInstance().saveData(mRepeatTask);
-                //Repository.getInstance().saveData(taskNumber);
+                if(intent.getBooleanExtra("fromTaskDue",false)){
+                    Repository.getInstance().changeData(mRepeatTask,intent.getStringExtra("ref"));
+                    Toast.makeText(ActivityRepeatTask.this, R.string.DeadlineTask_Activity_Change_toast, Toast.LENGTH_SHORT).show();
+                }else {
+                    Repository.getInstance().saveData(mRepeatTask);
+                }
                 finish();
             }
             break;
@@ -295,9 +346,16 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                     b.setChecked(false);
                 }mSnarkyClicked++;
             }break;
+
             default:
                 Log.e(TAG, "task_Activity::onClick unexpected ID encountered");
 
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Repository.mEnable = true;
     }
 }

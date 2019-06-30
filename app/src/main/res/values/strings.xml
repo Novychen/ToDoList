@@ -64,11 +64,26 @@
     <string name="DeadlineTask_Activity_time_display">time:</string>
     <string name="DeadlineTask_Activity_date_display">date:</string>
     <string name="DeadlineTask_Activity_notification_display">Choose your Notification wisely</string>
+    <string name="DeadlineTask_Activity_interval_fail">please choose the period of time of your task first</string>
+    <string name="DeadlineTask_Activity_interval_unit_day">day</string>
+    <string name="DeadlineTask_Activity_interval_unit_hour">hour</string>
+    <string name="DeadlineTask_Activity_interval_unit_week">week</string>
+    <string name="DeadlineTask_Activity_interval_unit_month">month</string>
 
 
     <string name="DeadlineTask_Activity_description">description: </string>
     <string name="DeadlineTask_Activity_description_field">put more information here</string>
     <string name="DeadlineTask_Activity_Check_Button">OK</string>
+
+    <string name="DeadlineTask_Activity_Change_toast">task successfully changed</string>
+
+
+    //task due
+    <string name="TaskDue_Activity_noNotification_Button">no notification-option set</string>
+    <string name="TaskDue_Activity_Notification_Button">receive notification-option set</string>
+    <string name="TaskDue_Activity_Notification_Remove_toast">task successfully removed</string>
+
+
 
     //list functions
     <string name="list_Activity_delete_button">delete</string>
@@ -76,19 +91,6 @@
     <string name="list_Activity_logout_button">log out</string>
     <string name="list_Activity_title_listItem">title</string>
     <string name="list_Activity_date_listItem">date</string>
-
-    //settings
-    <string name="Settings_Activity_Switch_brutalMoti">brutal Motivation</string>
-    <string name="Settings_Activity_Switch_cuteMoti">cute Motivation</string>
-    <string name="Settings_Activity_Switch_normalMoti">just Motivation</string>
-    <string name="Settings_Activity_Switch_snarkyMoti">snarky Motivation</string>
-
-    <string name="Settings_Activity_text_brutalMoti">got the guts?</string>
-    <string name="Settings_Activity_text_cuteMoti">if you need some rainbows in your life</string>
-    <string name="Settings_Activity_text_normalMoti">good old motivation quotes</string>
-    <string name="Settings_Activity_text_snarkyMoti">need a little sass?</string>
-
-
 
 
 </resources>

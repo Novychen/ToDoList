@@ -27,9 +27,20 @@ public class NotificationAlarm extends BroadcastReceiver  {
         i.putExtra("GroupID",groupValue);
         i.putExtra("fromNotification",true);
 
+        String key = _intent.getStringExtra("ref");
+        i.putExtra("ref",key);
+
+        int repeat = _intent.getIntExtra("repeat",1);
+        i.putExtra("repeat",repeat);
+
+        String circle = _intent.getStringExtra("circle");
+        i.putExtra("circle",circle);
 
         int task = _intent.getIntExtra("task",0);
         i.putExtra("task",task);
+
+        int count = _intent.getIntExtra("count",0);
+        i.putExtra("count",count);
 
         String title = _intent.getStringExtra("title");
         i.putExtra("title", title);
@@ -90,6 +101,7 @@ public class NotificationAlarm extends BroadcastReceiver  {
                 .setSmallIcon(R.drawable.ic_notification_active)
                 .setContentText(_intent.getStringExtra("text"))
                 .setContentTitle(_intent.getStringExtra("NotificationTitle"))
+                .setDeleteIntent(getDeleteIntent(_context, _intent))
                 .setGroup(GROUP_KEY)
                 .setContentIntent(pi); //what happens when you press the notification
 
@@ -101,6 +113,20 @@ public class NotificationAlarm extends BroadcastReceiver  {
         NotificationAlarm.mGroupEnabled = false;
         mGroupCount++;
         Log.i(TAG,"notification " + value);
+    }
+
+    private PendingIntent getDeleteIntent(Context _c, Intent _intent) {
+        Intent i = new Intent(_c, NotificationDismissed.class);
+        Random r = new Random();
+
+        String key = _intent.getStringExtra("ref");
+        i.putExtra("ref",key);
+
+        int count = _intent.getIntExtra("count",0);
+        i.putExtra("count",count);
+
+        i.setAction("notificationCancelled");
+        return PendingIntent.getBroadcast(_c,r.nextInt(1000),i,PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
 

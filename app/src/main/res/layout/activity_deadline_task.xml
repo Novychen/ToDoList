@@ -40,12 +40,13 @@
             android:id="@+id/DeadlineTask_Activity_setLabel_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:autofillHints="AUTOFILL_TYPE_TEXT"
             android:ems="10"
             android:hint="@string/DeadlineTask_Activity_setLabel_field"
             android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_description_field"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_title_field" />
 
         <ImageView
@@ -87,7 +88,7 @@
             android:layout_marginTop="32dp"
             android:text="@string/DeadlineTask_Activity_date_display"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_description_field"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_setLabel_field"
             app:layout_constraintTop_toBottomOf="@+id/task_Activity_Label_layout" />
 
         <Button
@@ -132,7 +133,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/DeadlineTask_Activity_time_display"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_description_field"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_date_display"
             app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_date_display" />
 
         <TextView
@@ -146,22 +147,6 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/DeadlineTask_Activity_time_display"
             app:layout_constraintEnd_toEndOf="@+id/deadlineTask_Activity_fakeButton_2"
             app:layout_constraintStart_toStartOf="@+id/deadlineTask_Activity_fakeButton_2" />
-
-
-        <EditText
-            android:id="@+id/DeadlineTask_Activity_description_field"
-            android:layout_width="0dp"
-            android:layout_height="96dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="@string/DeadlineTask_Activity_description_field"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_description"
-            app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_description" />
 
 
         <ImageView
@@ -376,6 +361,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_help_button"
             tools:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/DeadlineTask_Activity_description_field"
+            android:layout_width="0dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="@string/DeadlineTask_Activity_description_field"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_description"
+            app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_description" />
 
 
     </android.support.constraint.ConstraintLayout>

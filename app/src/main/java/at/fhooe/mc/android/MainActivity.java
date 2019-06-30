@@ -33,16 +33,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     String mPass;
     int mClickedHelp;
     String mMail;
-    static long mTaskNumber;
-
-    public static long getTaskNumber(){
-        return mTaskNumber;
-    }
-
-    public static void setTaskNumber(long _number){
-        mTaskNumber = _number;
-    }
-
 
     /**
      * listens to the Buttons and checks if the user is already logged in if so it changes to {@link ActivityList}
@@ -52,8 +42,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
         super.onCreate(_savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-
-       // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         mEmail = findViewById(R.id.main_Activity_Auth_LogIn_Email);
         mPassword = findViewById(R.id.main_Activity_Auth_LogIn_Password);
@@ -86,9 +74,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
         Repository.getInstance().setUserId(mAuthentication.getUid());
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref, this);
-
-        DatabaseReference refTask = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child("CurrentTask");
-        Repository.getInstance().getLongData(refTask);
         startActivity(i);
         finish();
     }
@@ -190,9 +175,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                         if (task.isSuccessful()) {
                             Log.d(TAG, "main_Activity::createUserWithEmail success");
                             Repository.getInstance().setUserId(mAuthentication.getUid());
-                            mTaskNumber = 0;
-                            Repository.getInstance().saveData(mTaskNumber);
-                            Log.i(TAG, "MainActivity :: createAccount mTaskNumber is" + mTaskNumber);
                             Toast.makeText(MainActivity.this, getText(R.string.main_Activity_SignIn_Toast), Toast.LENGTH_SHORT).show();
                             logIn();
                         } else {
@@ -211,10 +193,9 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     }
 
     @Override
-    public void setNotificationRepeatData(List <Integer>_task, List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<String> _des, List<List<String>> _label) {
+    public void setNotificationRepeatData(List<Integer> _task, List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal, List<Boolean> _notification, List<String> _des, List<List<String>> _label, List<String> _ref, List<Integer> _count) {
 
     }
-
 
     @Override
     public void setTitle(List<String> _repeatT, List<String> _deadT, List<Integer> _task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _repeats, List<String> _repeatCircle) {
