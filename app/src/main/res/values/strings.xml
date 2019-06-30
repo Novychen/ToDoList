@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ToDoList</string>
+    <string name="app_name">Remy</string>
     <string name="action_settings">Settings</string>
 
     //authentication
@@ -29,9 +29,12 @@
     <string name="task_Activity_LabelDelete_Toast">label successfully deleted </string>
     <string name="task_Activity_LabelFail_Toast">too many labels</string>
     <string name="task_Activity_Label_layout">layout</string>
+    <string name="task_Activity_help_dialog">Click on the buttons to choose your Notifications. If you click on at least one of them, you will get motivations notifications for this specific task. You can choose between cute \u0020 \u0020 \u0020, normal \u0020 \u0020 \u0020, brutal \u0020 \u0020 \u0020, weird \u0020 \u0020 or funny \u0020 \u0020 \u0020 notifications or just get them all. If you click on the \u0020 \u0020 you won\'t receive any kind of notification (inclusive the notification when your task is due!)</string>
 
     //repeat task
     <string name="RepeatTask_Activity_RepeatTask">New RepeatTask at your service</string>
+    <string name="RepeatTask_Activity_RepeatTask_change">Your RepeatTask at your service</string>
+
 
     <string name="RepeatTask_Activity_title_field">title</string>
     <string name="RepeatTask_Activity_Label_Button">OK</string>
@@ -54,6 +57,7 @@
 
     //deadline task
     <string name="DeadlineTask_Activity_DeadlineTask">New DeadlineTask at your service</string>
+    <string name="DeadlineTask_Activity_DeadlineTask_change">Your DeadlineTask at your service</string>
 
     <string name="DeadlineTask_Activity_title_field">title</string>
     <string name="DeadlineTask_Activity_Label_Button">OK</string>

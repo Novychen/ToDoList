@@ -56,7 +56,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     List<String> mLabelList =  new ArrayList<>();
     ArrayAdapter<String> mLabelAdapter;
     private int mNoClicked;
-    Intent intent = new Intent();
+    Intent mIntent = new Intent();
 
 
     @Override
@@ -65,7 +65,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         setContentView(R.layout.activity_deadline_task);
         Repository.mEnable = false;
         mDeadlineTask = new DeadlineTask();
-        intent = getIntent();
+        mIntent = getIntent();
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         TextView timeFiled = findViewById(R.id.DeadlineTask_Activity_time_field);
@@ -79,6 +79,27 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
         ImageView helpDialog = findViewById(R.id.DeadlineTask_Activity_help_dialog);
         helpDialog.setVisibility(View.INVISIBLE);
+
+        ImageView n = findViewById(R.id.deadlineTask_Activity_Normal);
+        n.setVisibility(View.INVISIBLE);
+
+        TextView helpDialogText = findViewById(R.id.DeadlineTask_Activity_dialog);
+        helpDialogText.setVisibility(View.INVISIBLE);
+
+        ImageView c = findViewById(R.id.deadlineTask_Activity_Cute);
+        c.setVisibility(View.INVISIBLE);
+
+        ImageView b = findViewById(R.id.deadlineTask_Activity_Brutal);
+        b.setVisibility(View.INVISIBLE);
+
+        ImageView no = findViewById(R.id.deadlineTask_Activity_No);
+        no.setVisibility(View.INVISIBLE);
+
+        ImageView f = findViewById(R.id.deadlineTask_Activity_Funny);
+        f.setVisibility(View.INVISIBLE);
+
+        ImageView s = findViewById(R.id.deadlineTask_Activity_Snarky);
+        s.setVisibility(View.INVISIBLE);
 
         ImageView ok = findViewById(R.id.DeadlineTask_Activity_Check_Button);
         ok.setOnClickListener(this);
@@ -98,8 +119,8 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         RadioButton normal = findViewById(R.id.DeadlineTask_Activity_MotiNormal_RadioButton);
         normal.setOnClickListener(this);
 
-        RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
-        b.setOnClickListener(this);
+        RadioButton x = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
+        x.setOnClickListener(this);
 
         ImageView label = findViewById(R.id.DeadlineTask_Activity_Label_Button);
         label.setOnClickListener(this);
@@ -125,19 +146,21 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     protected void onStart() {
         super.onStart();
 
-        if(intent.getBooleanExtra("fromTaskDue",false)){
+        if(mIntent.getBooleanExtra("fromTaskDue",false)){
 
+            TextView change = findViewById(R.id.DeadlineTask_Activity_DeadlineTask);
+            change.setText(R.string.DeadlineTask_Activity_DeadlineTask_change);
             EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
-            t.setText(intent.getStringExtra("title"));
+            t.setText(mIntent.getStringExtra("title"));
             EditText d = findViewById(R.id.DeadlineTask_Activity_description_field);
-            d.setText(intent.getStringExtra("des"));
+            d.setText(mIntent.getStringExtra("des"));
             TextView dateFiled = findViewById(R.id.DeadlineTask_Activity_date_field);
-            dateFiled.setText(intent.getStringExtra("date"));
+            dateFiled.setText(mIntent.getStringExtra("date"));
             TextView timeFiled = findViewById(R.id.DeadlineTask_Activity_time_field);
-            timeFiled.setText(intent.getStringExtra("time"));
-            String label1 = intent.getStringExtra("label1");
-            String label2 = intent.getStringExtra("label2");
-            String label3 = intent.getStringExtra("label3");
+            timeFiled.setText(mIntent.getStringExtra("time"));
+            String label1 = mIntent.getStringExtra("label1");
+            String label2 = mIntent.getStringExtra("label2");
+            String label3 = mIntent.getStringExtra("label3");
             if(label1 != null) {
                 mLabelList.add(label1);
             }
@@ -147,17 +170,17 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mLabelList.add(label1);
             }
             RadioButton brutal = findViewById(R.id.DeadlineTask_Activity_MotiBrutal_RadioButton);
-            brutal.setChecked(intent.getBooleanExtra("brutal",false));
+            brutal.setChecked(mIntent.getBooleanExtra("brutal",false));
             RadioButton snarky = findViewById(R.id.DeadlineTask_Activity_MotiSnarky_RadioButton);
-            snarky.setChecked(intent.getBooleanExtra("snarky",false));
+            snarky.setChecked(mIntent.getBooleanExtra("snarky",false));
             RadioButton cute = findViewById(R.id.DeadlineTask_Activity_MotiCute_RadioButton);
-            cute.setChecked(intent.getBooleanExtra("cute",false));
+            cute.setChecked(mIntent.getBooleanExtra("cute",false));
             RadioButton funny = findViewById(R.id.DeadlineTask_Activity_MotiFunny_RadioButton);
-            funny.setChecked(intent.getBooleanExtra("funny",false));
+            funny.setChecked(mIntent.getBooleanExtra("funny",false));
             RadioButton normal = findViewById(R.id.DeadlineTask_Activity_MotiNormal_RadioButton);
-            normal.setChecked( intent.getBooleanExtra("normal",false));
+            normal.setChecked( mIntent.getBooleanExtra("normal",false));
             RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
-            b.setChecked(intent.getBooleanExtra("noNoti",false));
+            b.setChecked(mIntent.getBooleanExtra("noNoti",false));
         }
     }
 
@@ -193,9 +216,13 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
                 EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
                 EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
-
+                String description;
+                if(d == null){
+                    description = "";
+                }else{
+                    description =  d.getText().toString();
+                }
                 String title = t.getText().toString();
-                String description = d.getText().toString();
 
                 if(title.equals("")){
                     title = "Task";
@@ -228,8 +255,8 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                  }
                 mDeadlineTask.setLabel(mLabelList);
 
-                if(intent.getBooleanExtra("fromTaskDue",false)){
-                    Repository.getInstance().changeData(mDeadlineTask,intent.getStringExtra("ref"));
+                if(mIntent.getBooleanExtra("fromTaskDue",false)){
+                    Repository.getInstance().changeData(mDeadlineTask, mIntent.getStringExtra("ref"));
                     Toast.makeText(ActivityDeadlineTask.this, R.string.DeadlineTask_Activity_Change_toast, Toast.LENGTH_SHORT).show();
                 }else {
                     Repository.getInstance().saveData(mDeadlineTask);
@@ -356,10 +383,31 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             }break;
             case R.id.DeadlineTask_Activity_help_button:{
                 ImageView helpDialog = findViewById(R.id.DeadlineTask_Activity_help_dialog);
+                ImageView n = findViewById(R.id.deadlineTask_Activity_Normal);
+                ImageView c = findViewById(R.id.deadlineTask_Activity_Cute);
+                ImageView b = findViewById(R.id.deadlineTask_Activity_Brutal);
+                ImageView no = findViewById(R.id.deadlineTask_Activity_No);
+                ImageView f = findViewById(R.id.deadlineTask_Activity_Funny);
+                ImageView s = findViewById(R.id.deadlineTask_Activity_Snarky);
+                TextView helpDialogText = findViewById(R.id.DeadlineTask_Activity_dialog);
                 if(mClickedHelp % 2 == 0) {
                     helpDialog.setVisibility(View.VISIBLE);
+                    helpDialogText.setVisibility(View.VISIBLE);
+                    n.setVisibility(View.VISIBLE);
+                    c.setVisibility(View.VISIBLE);
+                    b.setVisibility(View.VISIBLE);
+                    no.setVisibility(View.VISIBLE);
+                    f.setVisibility(View.VISIBLE);
+                    s.setVisibility(View.VISIBLE);
                 } else{
                     helpDialog.setVisibility(View.INVISIBLE);
+                    helpDialogText.setVisibility(View.INVISIBLE);
+                    n.setVisibility(View.INVISIBLE);
+                    c.setVisibility(View.INVISIBLE);
+                    b.setVisibility(View.INVISIBLE);
+                    no.setVisibility(View.INVISIBLE);
+                    f.setVisibility(View.INVISIBLE);
+                    s.setVisibility(View.INVISIBLE);
                 }
                 mClickedHelp++;
             }break;

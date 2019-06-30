@@ -33,25 +33,24 @@ import java.util.Random;
 public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
-    static DataAdapter adapter;
+    static DataAdapter mAdapter;
     List <String> mSnarkyMotivation = new LinkedList<>();
     List <String> mFunnyMotivation = new LinkedList<>();
     List <String> mCuteMotivation = new LinkedList<>();
     List <String> mMotivation = new LinkedList<>();
     List <String> mBrutalMotivation = new LinkedList<>();
-    int mGotIntoData;
-    List<String> tRep;
-    List<String> tDead;
+    List<String> mTRep;
+    List<String> mTDead;
     List<Integer> day;
     List<Integer> month;
     List<Integer> year;
     List<Integer> hour;
     List<Integer> min ;
     List<Integer> task;
-    List<String> desRep;
-    List<String> refRep;
-    List<String> desDead;
-    List<String> refDead;
+    List<String> mDesRep;
+    List<String> mRefRep;
+    List<String> mDesDead;
+    List<String> mRefDead;
     List<Boolean> mBrutalDead;
     List<Boolean> mSnarkyDead;
     List<Boolean> mFunnnyDead;
@@ -84,8 +83,8 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref, this);
 
-        adapter = new DataAdapter(this);
-        setListAdapter(adapter);
+        mAdapter = new DataAdapter(this);
+        setListAdapter(mAdapter);
 
         mFunnyMotivation.add("People often say that motivation doesn’t last. Well, neither does bathing — that’s why we recommend it daily");
         mSnarkyMotivation.add("Anything's possible if you've got enough nerve.");
@@ -120,11 +119,13 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         mCuteMotivation.add("You are doing great! Keep pushing!");
 
         final ActionBar ab = getActionBar();
-        ab.setHomeButtonEnabled(true);
+        if (ab != null) {
+            ab.setHomeButtonEnabled(true);
+        }
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int _position, long id) {
+    protected void onListItemClick(ListView _l, View _v, int _position, long _id) {
         Log.i(TAG,"repeatsSIZE---------------------->"+rep.length);
         Log.i(TAG,"CircleSIZE---------------------->"+circle.size());
         ListAdapter list = getListAdapter();
@@ -146,8 +147,8 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         Log.i(TAG, "dead " + deadp);
         Log.i(TAG, "rep " + repp);
         if(task.get(_position)==0){
-            i.putExtra("title",tDead.get(deadp));
-            i.putExtra("ref",refDead.get(deadp));
+            i.putExtra("title", mTDead.get(deadp));
+            i.putExtra("ref", mRefDead.get(deadp));
             String h = String.valueOf(hour.get(deadp));
             String m = String.valueOf(min.get(deadp));
             i.putExtra("date",day.get(deadp) + "." + month.get(deadp) + "." + year.get(deadp));
@@ -157,8 +158,8 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 m = "0" + m;
             }
             i.putExtra("time",h + ":" + m);
-            i.putExtra("des",desDead.get(deadp));
-            Log.i(TAG,"title,ref,time,des---------->"+ tDead.get(deadp)+" ,"+ refDead.get(deadp)+" ,"+ hour + ":" + min +" ,"+ desDead.get(deadp));
+            i.putExtra("des", mDesDead.get(deadp));
+            Log.i(TAG,"title,ref,time,des---------->"+ mTDead.get(deadp)+" ,"+ mRefDead.get(deadp)+" ,"+ hour + ":" + min +" ,"+ mDesDead.get(deadp));
 
             i.putExtra("brutal", mBrutalDead.get(deadp));
             i.putExtra("snarky", mSnarkyDead.get(deadp));
@@ -174,15 +175,15 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         }else {
 
-            i.putExtra("title", tRep.get(repp));
-            i.putExtra("ref",refRep.get(repp));
+            i.putExtra("title", mTRep.get(repp));
+            i.putExtra("ref", mRefRep.get(repp));
             StringBuilder s= new StringBuilder();
             Log.i(TAG,repeats.size()+" times per "+circle.size());
             s.append("hello");
             i.putExtra("repeat",rep[repp]);
             i.putExtra("circle",cir[repp]);
-            i.putExtra("des",desRep.get(repp));
-            Log.i(TAG,"title,ref,time,des---------->"+ tRep.get(repp)+" ,"+refRep.get(repp)+" ,"+s+" ,"+desRep.get(repp));
+            i.putExtra("des", mDesRep.get(repp));
+            Log.i(TAG,"title,ref,time,des---------->"+ mTRep.get(repp)+" ,"+ mRefRep.get(repp)+" ,"+s+" ,"+ mDesRep.get(repp));
 
             i.putExtra("brutal", mBrutalRepeat.get(repp));
             i.putExtra("snarky", mSnarkyRepeat.get(repp));
@@ -454,23 +455,23 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         try {
             Log.i(TAG, "setTitle :: LIST size --> " + _task.size());
-            adapter.clear();
+            mAdapter.clear();
 
             int deadi= 0;
             int repi = 0;
             for (int i = 0; i < _task.size(); i++) {
                 if(_task.get(i)==0){
-                    adapter.add(new ListData(_deadT.get(deadi),_d.get(deadi),_m.get(deadi),_y.get(deadi)));
-                    Log.i(TAG, "setTitle :: " + adapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _deadT.get(deadi));
+                    mAdapter.add(new ListData(_deadT.get(deadi),_d.get(deadi),_m.get(deadi),_y.get(deadi)));
+                    Log.i(TAG, "setTitle :: " + mAdapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _deadT.get(deadi));
                     deadi++;
                 }
                 if(_task.get(i)==1){
-                    adapter.add(new ListData(_repeatT.get(repi),_repeats.get(repi),_repeatCircle.get(repi)));
-                    Log.i(TAG, "setTitle :: " + adapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _repeatT.get(repi));
+                    mAdapter.add(new ListData(_repeatT.get(repi),_repeats.get(repi),_repeatCircle.get(repi)));
+                    Log.i(TAG, "setTitle :: " + mAdapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _repeatT.get(repi));
                     repi++;
                 }
             }
-            adapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
 
         } catch (ClassCastException e) {
             Log.e(TAG, "setTitle: " + e.getMessage());
@@ -487,18 +488,18 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<List<String>> _labelRep, List<List<String>> _labelDead,List<String> _desrep,List<String> _desdead,List<String> _refrep,List<String> _refdead,List<Integer> _repeats, List<String> _repeatCircle, List<Boolean> _normRep, List<Boolean> _funnyRep, List<Boolean> _snarkyRep, List<Boolean> _cuteRep, List<Boolean> _brutalRep,List<Boolean> _notificationRep, List<Boolean> _normDead, List<Boolean> _funnyDead, List<Boolean> _snarkyDead, List<Boolean> _cuteDead, List<Boolean> _brutalDead,List<Boolean> _notificationDead) {
         repeats = _repeats;
         circle = _repeatCircle;
-        tDead = _deadT;
-        tRep =_repeatT;
+        mTDead = _deadT;
+        mTRep =_repeatT;
         task = _t;
         day =_d;
         month = _mo;
         year=_y;
         hour =_h;
         min = _mi;
-        desDead=_desdead;
-        desRep=_desrep;
-        refDead=_refdead;
-        refRep=_refrep;
+        mDesDead =_desdead;
+        mDesRep =_desrep;
+        mRefDead =_refdead;
+        mRefRep =_refrep;
         mRepeatLabel =_labelRep;
         mDeadLabel = _labelDead;
         mBrutalDead = _brutalDead;

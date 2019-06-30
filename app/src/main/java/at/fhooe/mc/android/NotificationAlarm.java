@@ -9,10 +9,9 @@ import android.util.Log;
 import java.util.Random;
 public class NotificationAlarm extends BroadcastReceiver  {
 
-
     public static final String TAG = "at.fhooe.mc.toDoList :: NotificationAlarm";
     private static final  String GROUP_KEY = "at.fhooe.mc.toDoList.GROUP_KEY";
-    Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
+    Notification.InboxStyle mInboxStyle = new Notification.InboxStyle();
     static boolean mGroupEnabled;
     static int mGroupCount;
 
@@ -81,7 +80,7 @@ public class NotificationAlarm extends BroadcastReceiver  {
         String label3 = _intent.getStringExtra("label3");
         i.putExtra("label3",label3);
 
-        inboxStyle.setBigContentTitle("ToDoList");
+        mInboxStyle.setBigContentTitle("ToDoList");
         final PendingIntent pi = PendingIntent.getActivity(_context, value ,i,PendingIntent.FLAG_UPDATE_CURRENT);
 
         if(mGroupEnabled) {
@@ -101,10 +100,8 @@ public class NotificationAlarm extends BroadcastReceiver  {
                 .setSmallIcon(R.drawable.ic_notification_active)
                 .setContentText(_intent.getStringExtra("text"))
                 .setContentTitle(_intent.getStringExtra("NotificationTitle"))
-                .setDeleteIntent(getDeleteIntent(_context, _intent))
                 .setGroup(GROUP_KEY)
                 .setContentIntent(pi); //what happens when you press the notification
-
 
         Notification n = bob.build();
         NotificationManager nMgr = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -114,20 +111,4 @@ public class NotificationAlarm extends BroadcastReceiver  {
         mGroupCount++;
         Log.i(TAG,"notification " + value);
     }
-
-    private PendingIntent getDeleteIntent(Context _c, Intent _intent) {
-        Intent i = new Intent(_c, NotificationDismissed.class);
-        Random r = new Random();
-
-        String key = _intent.getStringExtra("ref");
-        i.putExtra("ref",key);
-
-        int count = _intent.getIntExtra("count",0);
-        i.putExtra("count",count);
-
-        i.setAction("notificationCancelled");
-        return PendingIntent.getBroadcast(_c,r.nextInt(1000),i,PendingIntent.FLAG_CANCEL_CURRENT);
-    }
-
-
 }

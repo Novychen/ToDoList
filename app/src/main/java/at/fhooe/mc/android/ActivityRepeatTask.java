@@ -27,8 +27,8 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     private RepeatTask mRepeatTask;
     private NumberPicker mPicker;
     private NumberPicker mTimesPicker;
-    private Dialog d;
-    private String[] s;
+    private Dialog mDialog;
+    private String[] mRepeatCircles;
     int mLabelCount = 0;
     List<String> mLabelList;
     ArrayAdapter<String> mLabelAdapter;
@@ -40,7 +40,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     private int mNormalClicked;
     private int mSnarkyClicked;
     private int mNoClicked;
-    Intent intent = new Intent();
+    Intent mIntent = new Intent();
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
@@ -48,12 +48,33 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         setContentView(R.layout.activity_repeat_task);
         Repository.mEnable = false;
         mRepeatTask = new RepeatTask();
-        intent = getIntent();
+        mIntent = getIntent();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         ImageView helpDialog = findViewById(R.id.RepeatTask_Activity_help_dialog);
         helpDialog.setVisibility(View.INVISIBLE);
+
+        ImageView n = findViewById(R.id.RepeatTask_Activity_Normal);
+        n.setVisibility(View.INVISIBLE);
+
+        TextView helpDialogText = findViewById(R.id.RepeatTask_Activity_dialog);
+        helpDialogText.setVisibility(View.INVISIBLE);
+
+        ImageView c = findViewById(R.id.repeatTask_Activity_Cute);
+        c.setVisibility(View.INVISIBLE);
+
+        ImageView b = findViewById(R.id.repeatTask_Activity_Brutal);
+        b.setVisibility(View.INVISIBLE);
+
+        ImageView no = findViewById(R.id.repeatTask_Activity_No);
+        no.setVisibility(View.INVISIBLE);
+
+        ImageView f = findViewById(R.id.repeatTask_Activity_Funny);
+        f.setVisibility(View.INVISIBLE);
+
+        ImageView s = findViewById(R.id.repeatTask_Activity_Snarky);
+        s.setVisibility(View.INVISIBLE);
 
         ImageView help = findViewById(R.id.RepeatTask_Activity_help_button);
         help.setOnClickListener(this);
@@ -73,8 +94,8 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         RadioButton normal = findViewById(R.id.RepeatTask_Activity_MotiNormal_RadioButton);
         normal.setOnClickListener(this);
 
-        RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiNo_RadioButton);
-        b.setOnClickListener(this);
+        RadioButton not = findViewById(R.id.RepeatTask_Activity_MotiNo_RadioButton);
+        not.setOnClickListener(this);
 
         TextView repeat = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
         repeat.setOnClickListener(this);
@@ -105,33 +126,33 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
 
     public void showRepeatCircleDialog()
     {
-        d = new Dialog(ActivityRepeatTask.this);
-        d.setTitle("Repeat per");
-        d.setContentView(R.layout.activity_repeat_picker);
-        Button set = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
+        mDialog = new Dialog(ActivityRepeatTask.this);
+        mDialog.setTitle("Repeat per");
+        mDialog.setContentView(R.layout.activity_repeat_picker);
+        Button set = mDialog.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
         set.setOnClickListener(this);
-        mPicker = d.findViewById(R.id.RepeatTask_Activity_Picker);
-        s = new String[] {"year","month","week", "day"};
-        mPicker.setDisplayedValues(s);
-        mPicker.setMaxValue(s.length-1);
+        mPicker = mDialog.findViewById(R.id.RepeatTask_Activity_Picker);
+        mRepeatCircles = new String[] {"year","month","week", "day"};
+        mPicker.setDisplayedValues(mRepeatCircles);
+        mPicker.setMaxValue(mRepeatCircles.length-1);
         mPicker.setMinValue(0);
         mPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        d.show();
+        mDialog.show();
     }
 
     public void showRepeatDialog(){
 
-        d = new Dialog(ActivityRepeatTask.this);
-        d.setTitle("Repeat");
-        d.setContentView(R.layout.activity_repeat_picker);
-        Button set = d.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
+        mDialog = new Dialog(ActivityRepeatTask.this);
+        mDialog.setTitle("Repeat");
+        mDialog.setContentView(R.layout.activity_repeat_picker);
+        Button set = mDialog.findViewById(R.id.RepeatTask_Activity_RepeatDialog_ok);
         set.setOnClickListener(this);
-        mTimesPicker = d.findViewById(R.id.RepeatTask_Activity_Picker);
+        mTimesPicker = mDialog.findViewById(R.id.RepeatTask_Activity_Picker);
         mTimesPicker.setValue(1);
         mTimesPicker.setMaxValue(20);
         mTimesPicker.setMinValue(1);
         mTimesPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        d.show();
+        mDialog.show();
     }
 
 
@@ -139,19 +160,22 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     protected void onStart() {
         super.onStart();
 
-        if(intent.getBooleanExtra("fromTaskDue",false)){
+        if(mIntent.getBooleanExtra("fromTaskDue",false)){
+
+            TextView change = findViewById(R.id.RepeatTask_Activity_RepeatTask);
+            change.setText(R.string.RepeatTask_Activity_RepeatTask_change);
 
             EditText t = findViewById(R.id.RepeatTask_Activity_title_field);
-            t.setText(intent.getStringExtra("title"));
+            t.setText(mIntent.getStringExtra("title"));
             EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
             TextView repeat = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
-            repeat.setText(String.valueOf(intent.getIntExtra("repeat",1)));
+            repeat.setText(String.valueOf(mIntent.getIntExtra("repeat",1)));
             TextView repeatCircles = findViewById(R.id.RepeatTask_Activity_RepeatCircles);
-            repeatCircles.setText(intent.getStringExtra("circle"));
-            d.setText(intent.getStringExtra("des"));
-            String label1 = intent.getStringExtra("label1");
-            String label2 = intent.getStringExtra("label2");
-            String label3 = intent.getStringExtra("label3");
+            repeatCircles.setText(mIntent.getStringExtra("circle"));
+            d.setText(mIntent.getStringExtra("des"));
+            String label1 = mIntent.getStringExtra("label1");
+            String label2 = mIntent.getStringExtra("label2");
+            String label3 = mIntent.getStringExtra("label3");
             if(label1 != null) {
                 mLabelList.add(label1);
             }if (label2 != null) {
@@ -160,22 +184,22 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 mLabelList.add(label1);
             }
             RadioButton brutal = findViewById(R.id.RepeatTask_Activity_MotiBrutal_RadioButton);
-            brutal.setChecked(intent.getBooleanExtra("brutal",false));
+            brutal.setChecked(mIntent.getBooleanExtra("brutal",false));
 
             RadioButton snarky = findViewById(R.id.RepeatTask_Activity_MotiSnarky_RadioButton);
-            snarky.setChecked(intent.getBooleanExtra("snarky",false));
+            snarky.setChecked(mIntent.getBooleanExtra("snarky",false));
 
             RadioButton cute = findViewById(R.id.RepeatTask_Activity_MotiCute_RadioButton);
-            cute.setChecked(intent.getBooleanExtra("cute",false));
+            cute.setChecked(mIntent.getBooleanExtra("cute",false));
 
             RadioButton funny = findViewById(R.id.RepeatTask_Activity_MotiFunny_RadioButton);
-            funny.setChecked(intent.getBooleanExtra("funny",false));
+            funny.setChecked(mIntent.getBooleanExtra("funny",false));
 
             RadioButton normal = findViewById(R.id.RepeatTask_Activity_MotiNormal_RadioButton);
-            normal.setChecked( intent.getBooleanExtra("normal",false));
+            normal.setChecked( mIntent.getBooleanExtra("normal",false));
 
             RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiNo_RadioButton);
-            boolean notification = intent.getBooleanExtra("noNoti",false);
+            boolean notification = mIntent.getBooleanExtra("noNoti",false);
             if(notification){
                 b.setChecked(false);
             }else {
@@ -197,15 +221,15 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 TextView times = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
                 if(mPicker != null){
                     int choice = mPicker.getValue();
-                    circle.setText(s[choice]);
-                    mRepeatTask.setRepeatRotation(s[choice]);
+                    circle.setText(mRepeatCircles[choice]);
+                    mRepeatTask.setRepeatRotation(mRepeatCircles[choice]);
                    }
                 if(mTimesPicker != null){
                     times.setText(String.valueOf(mTimesPicker.getValue()));
                     mRepeatTask.setRepeats(mTimesPicker.getValue());
                 }
 
-                d.dismiss();
+                mDialog.dismiss();
 
             }break;
 
@@ -238,13 +262,13 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
 
                 if(mPicker != null){
                     int choice = mPicker.getValue();
-                    mRepeatTask.setRepeatRotation(s[choice]);
+                    mRepeatTask.setRepeatRotation(mRepeatCircles[choice]);
                 }else{
                     mRepeatTask.setRepeatRotation("day");
                 }
 
-                if(intent.getBooleanExtra("fromTaskDue",false)){
-                    Repository.getInstance().changeData(mRepeatTask,intent.getStringExtra("ref"));
+                if(mIntent.getBooleanExtra("fromTaskDue",false)){
+                    Repository.getInstance().changeData(mRepeatTask, mIntent.getStringExtra("ref"));
                     Toast.makeText(ActivityRepeatTask.this, R.string.DeadlineTask_Activity_Change_toast, Toast.LENGTH_SHORT).show();
                 }else {
                     Repository.getInstance().saveData(mRepeatTask);
@@ -276,10 +300,31 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }break; 
             case R.id.RepeatTask_Activity_help_button:{
                 ImageView helpDialog = findViewById(R.id.RepeatTask_Activity_help_dialog);
+                ImageView n = findViewById(R.id.RepeatTask_Activity_Normal);
+                ImageView c = findViewById(R.id.repeatTask_Activity_Cute);
+                ImageView b = findViewById(R.id.repeatTask_Activity_Brutal);
+                ImageView no = findViewById(R.id.repeatTask_Activity_No);
+                ImageView f = findViewById(R.id.repeatTask_Activity_Funny);
+                ImageView s = findViewById(R.id.repeatTask_Activity_Snarky);
+                TextView helpDialogText = findViewById(R.id.RepeatTask_Activity_dialog);
                 if(mClickedHelp % 2 == 0) {
                     helpDialog.setVisibility(View.VISIBLE);
+                    helpDialogText.setVisibility(View.VISIBLE);
+                    n.setVisibility(View.VISIBLE);
+                    c.setVisibility(View.VISIBLE);
+                    b.setVisibility(View.VISIBLE);
+                    no.setVisibility(View.VISIBLE);
+                    f.setVisibility(View.VISIBLE);
+                    s.setVisibility(View.VISIBLE);
                 } else{
                     helpDialog.setVisibility(View.INVISIBLE);
+                    helpDialogText.setVisibility(View.INVISIBLE);
+                    n.setVisibility(View.INVISIBLE);
+                    c.setVisibility(View.INVISIBLE);
+                    b.setVisibility(View.INVISIBLE);
+                    no.setVisibility(View.INVISIBLE);
+                    f.setVisibility(View.INVISIBLE);
+                    s.setVisibility(View.INVISIBLE);
                 }
                 mClickedHelp++;
             }break;

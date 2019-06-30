@@ -338,30 +338,6 @@
             app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_MotiFunny"
             app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activity_MotiNo_RadioButton" />
 
-        <TextView
-            android:id="@+id/DeadlineTask_Activity_notification_display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/DeadlineTask_Activity_notification_display"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_time_display"
-            app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activiy_Rectangle_notification_light_green" />
-
-        <ImageButton
-            android:id="@+id/DeadlineTask_Activity_help_dialog"
-            android:layout_width="246dp"
-            android:layout_height="152dp"
-            android:layout_marginStart="90dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/ic_help_dialog_light_green"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_help_button"
-            tools:visibility="invisible" />
-
         <EditText
             android:id="@+id/DeadlineTask_Activity_description_field"
             android:layout_width="0dp"
@@ -375,6 +351,113 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_description"
             app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_description" />
+
+        <TextView
+            android:id="@+id/DeadlineTask_Activity_notification_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/DeadlineTask_Activity_notification_display"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_time_display"
+            app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activiy_Rectangle_notification_light_green" />
+
+        <ImageButton
+            android:id="@+id/DeadlineTask_Activity_help_dialog"
+            android:layout_width="255dp"
+            android:layout_height="185dp"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/ic_help_dialog_light_green"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_notification_display"
+            app:layout_constraintTop_toBottomOf="@+id/DeadlineTask_Activity_help_button"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/DeadlineTask_Activity_dialog"
+            android:layout_width="226dp"
+            android:layout_height="158dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/task_Activity_help_dialog"
+            android:textColor="#FDFDFE"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/DeadlineTask_Activity_help_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/DeadlineTask_Activity_help_dialog"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_help_dialog"
+            app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activity_help_dialog" />
+
+        <ImageView
+            android:id="@+id/deadlineTask_Activity_No"
+            android:layout_width="13dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/ic_notifications_off"
+            app:layout_constraintBottom_toBottomOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activity_dialog" />
+
+        <ImageButton
+            android:id="@+id/deadlineTask_Activity_Funny"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_marginStart="219dp"
+            android:background="@drawable/ic_funnymotivation"
+            app:layout_constraintBottom_toBottomOf="@+id/deadlineTask_Activity_Snarky"
+            app:layout_constraintEnd_toEndOf="@+id/DeadlineTask_Activity_help_dialog"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintTop_toTopOf="@+id/deadlineTask_Activity_Snarky" />
+
+        <ImageButton
+            android:id="@+id/deadlineTask_Activity_Snarky"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/ic_snarkymotivation"
+            app:layout_constraintBottom_toBottomOf="@+id/deadlineTask_Activity_Brutal"
+            app:layout_constraintEnd_toEndOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintStart_toEndOf="@+id/deadlineTask_Activity_Brutal"
+            app:layout_constraintTop_toTopOf="@+id/deadlineTask_Activity_Brutal" />
+
+        <ImageButton
+            android:id="@+id/deadlineTask_Activity_Normal"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/ic_notification_active"
+            app:layout_constraintBottom_toBottomOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activity_dialog" />
+
+        <ImageButton
+            android:id="@+id/deadlineTask_Activity_Brutal"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="103dp"
+            android:background="@drawable/ic_brutalmotivation"
+            app:layout_constraintBottom_toBottomOf="@+id/deadlineTask_Activity_Normal"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintTop_toTopOf="@+id/deadlineTask_Activity_Normal" />
+
+        <ImageButton
+            android:id="@+id/deadlineTask_Activity_Cute"
+            android:layout_width="11dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="138dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/ic_cutemotivation"
+            app:layout_constraintBottom_toBottomOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintStart_toStartOf="@+id/DeadlineTask_Activity_dialog"
+            app:layout_constraintTop_toTopOf="@+id/DeadlineTask_Activity_dialog" />
 
 
     </android.support.constraint.ConstraintLayout>
