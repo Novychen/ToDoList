@@ -54,6 +54,7 @@ class Repository {
     private List<Boolean> mNotificationDead = new LinkedList<>();
     private List<Boolean> mNotificationRepeat = new LinkedList<>();
     static boolean mEnable;
+    static boolean mEnableRep;
 
     /**
      * Constructor for Repository
@@ -69,11 +70,11 @@ class Repository {
     private Repository(){
     }
 
-
+    /**
+     * clears all lists so that there is no double data no matter how often save methods like {@link Repository#saveData(Task)} called
+     */
     private void cleanLists(){
-
         mTasks.clear();
-
         mDayDead.clear();
         mMonthDead.clear();
         mYearDead.clear();
@@ -106,6 +107,10 @@ class Repository {
         mCountRep.clear();
     }
 
+    /**
+     * fills all lists from the RepeatTask with data from the databse
+     * @param listSnapshot Snapshot of the data fetched from the firebase
+     */
     private void getRepeatData(DataSnapshot listSnapshot){
         String reference = listSnapshot.getKey();
         mReferenceRepeat.add(reference);
@@ -154,6 +159,10 @@ class Repository {
 
     }
 
+    /**
+     * fills all lists from the DeadlineTask with data from the databse
+     * @param listSnapshot Snapshot of the data fetched from the firebase
+     */
     private void geDeadlineData(DataSnapshot listSnapshot){
         String reference = listSnapshot.getKey();
         mReferenceDead.add(reference);
@@ -212,15 +221,16 @@ class Repository {
     }
 
     /**
-     * gets data from the database
-     * @param _myRef the reference (path) of the object (in the database) that want to be fetched
+     * gets data from the database and calls the methods {@link ActivityList#setTitle(List, List, List, List, List, List, List, List)} and {@link ActivityList#setAll(List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List)}
+     * @param _myRef the reference (path) of the object (and all its children) in the database that want to be fetched
+     * @param _callback interface that enables the program to cope with async database
      */
     void getData(DatabaseReference _myRef, final IFirebaseCallback _callback){
        _myRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
                cleanLists();
-
+               Log.i(TAG, ":: getData Data was fetched and will be processed");
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
                    Integer task = listSnapshot.child("task").getValue(Integer.class);
                    mTasks.add(task);
@@ -244,14 +254,53 @@ class Repository {
        });
    }
 
-    void getNotificationData(DatabaseReference _myRef, final IFirebaseCallback _callback){
+    /**
+     * gets data from the data base and calls the method {@link ActivityList#setNotificationRepeatData(List, List, List, List, List, List, List, List, List, List, List, List, List, List)}
+     * @param _myRef  the reference (path) of the object (and all its children) in the database that want to be fetched
+     * @param _callback interface that enables the program to cope with async database
+     */
+    void getNotificationRepeat(DatabaseReference _myRef, final IFirebaseCallback _callback){
+        _myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (mEnableRep) {
+                    Log.i(TAG, ":: getNotificationRepeat NotificationData was fetched and will be processed");
+                    cleanLists();
+                    for (DataSnapshot listSnapshot : dataSnapshot.getChildren()) {
+                        Integer task = listSnapshot.child("task").getValue(Integer.class);
+                        mTasks.add(task);
+
+                        if (task != null) {
+                            if (task == 0) {
+                                geDeadlineData(listSnapshot);
+                            } else if (task == 1) {
+                                getRepeatData(listSnapshot);
+                            }
+                        }
+                    }
+                    _callback.setNotificationRepeatData(mTasks, mRepeats, mRepeatRotation, mTitleRepeat, mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat, mNotificationRepeat, mDescriptionRepeat, mLabelRepeat, mReferenceRepeat, mCountRep);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    /**
+     * gets data from the data base and calls the method {@link ActivityList#setNotificationDeadlineData(List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List, List)}
+     * @param _myRef  the reference (path) of the object (and all its children) in the database that want to be fetched
+     * @param _callback interface that enables the program to cope with async database
+     */
+    void getNotificationDeadline(DatabaseReference _myRef, final IFirebaseCallback _callback){
             _myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (mEnable) {
-
+                        Log.i(TAG, ":: getNotificationDeadline NotificationData was fetched and will be processed");
                         cleanLists();
-
                         for (DataSnapshot listSnapshot : dataSnapshot.getChildren()) {
                             Integer task = listSnapshot.child("task").getValue(Integer.class);
                             mTasks.add(task);
@@ -266,7 +315,6 @@ class Repository {
                         }
 
                         _callback.setNotificationDeadlineData(mTasks, mDayDead, mMonthDead, mYearDead, mHourDead, mMinuteDead, mTitleDead, mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotificationDead, mCountDead, mReferenceDead, mDescriptionDead, mLabelDead);
-                        _callback.setNotificationRepeatData(mTasks, mRepeats, mRepeatRotation, mTitleRepeat, mNormalRepeat, mFunnyRepeat, mSnarkyRepeat, mCuteRepeat, mBrutalRepeat, mNotificationRepeat, mDescriptionRepeat, mLabelRepeat, mReferenceRepeat, mCountRep);
                     }
                 }
 
@@ -278,10 +326,11 @@ class Repository {
         }
 
     /**
-     * saves a Task along with its tasknumber into the database
-     * @param _t the mTask, that is saved
+     * saves a Task into the database
+     * @param _t the task, that is saved
      */
     void saveData(Task _t){
+        Log.i(TAG, ":: saveData data was saved");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         String ref = mUserId;
         if (mUserId == null){
@@ -291,7 +340,13 @@ class Repository {
         reference.push().setValue(_t);
     }
 
+    /**
+     * saves a task at a specific reference into the database and thus edit it
+     * @param _t the task, that is overwritten (changed)
+     * @param _ref the reference to that specific task
+     */
     void changeData(Task _t, String _ref){
+        Log.i(TAG, ":: changeData data was changed");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         if (mUserId == null){
             return;
@@ -300,7 +355,13 @@ class Repository {
         reference.setValue(_t);
     }
 
+    /**
+     * saves the notification option of a specific task into the database and thus edit it
+     * @param _notification the notification option (if false no notifications, if true send notifications)
+     * @param _ref the reference to that specific tasks notification option
+     */
     void saveNotificationData(boolean _notification, String _ref){
+        Log.i(TAG, ":: saveNotificationData Notification option was saved");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         if (mUserId == null){
             return;
@@ -309,14 +370,6 @@ class Repository {
         reference.setValue(_notification);
     }
 
-    void saveData(int _count, String _ref){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        if (mUserId == null){
-            return;
-        }
-        DatabaseReference reference = database.getReference(mUserId).child(_ref).child("count");
-        reference.setValue(_count);
-    }
 
     /**
      * setter for the {@link Repository#mUserId}, which saves who is logged in
@@ -334,7 +387,12 @@ class Repository {
         return mUserId;
     }
 
+    /**
+     * removes a specific task from the database
+     * @param key Reference String to the task that will be removed
+     */
     void removeDate(String key) {
+        Log.i(TAG, ":: removeData Task was deleted");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child(key);
         ref.removeValue();
     }

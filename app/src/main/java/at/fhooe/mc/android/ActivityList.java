@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,8 +76,10 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Repository.mEnable = true;
-        Log.i(TAG, " :: onCreate I was here");
-        Log.i(TAG, "OnCreate");
+        Log.i(TAG, " :: onCreate");
+
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getNotificationRepeat(ref2, this);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref, this);
@@ -126,14 +127,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     protected void onListItemClick(ListView _l, View _v, int _position, long _id) {
-        Log.i(TAG,"repeatsSIZE---------------------->"+rep.length);
-        Log.i(TAG,"CircleSIZE---------------------->"+circle.size());
-        ListAdapter list = getListAdapter();
-        ListData       item = (ListData) list.getItem(_position);
-        Log.i(TAG, "Position ------> " + _position );
-        Log.i(TAG, "clicked item " + item);
+        Log.i(TAG,":: onListItemClick one Listitem was clicked");
+
         Intent i = new Intent(this, TaskDue.class);
-        Log.i(TAG,"TASK SIZE after SetALL-------->"+task.size());
         i.putExtra("task", task.get(_position));
         int deadp =0;
         int repp =0;
@@ -144,8 +140,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                 repp++;
             }
         }
-        Log.i(TAG, "dead " + deadp);
-        Log.i(TAG, "rep " + repp);
         if(task.get(_position)==0){
             i.putExtra("title", mTDead.get(deadp));
             i.putExtra("ref", mRefDead.get(deadp));
@@ -159,15 +153,12 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
             }
             i.putExtra("time",h + ":" + m);
             i.putExtra("des", mDesDead.get(deadp));
-            Log.i(TAG,"title,ref,time,des---------->"+ mTDead.get(deadp)+" ,"+ mRefDead.get(deadp)+" ,"+ hour + ":" + min +" ,"+ mDesDead.get(deadp));
-
             i.putExtra("brutal", mBrutalDead.get(deadp));
             i.putExtra("snarky", mSnarkyDead.get(deadp));
             i.putExtra("funny", mFunnnyDead.get(deadp));
             i.putExtra("cute", mCuteDead.get(deadp));
             i.putExtra("normal", mNormalDead.get(deadp));
             i.putExtra("noNoti", mNoNotiDead.get(deadp));
-
             i.putExtra("label1", mDeadLabel.get(deadp).get(0));
             i.putExtra("label2", mDeadLabel.get(deadp).get(1));
             i.putExtra("label3", mDeadLabel.get(deadp).get(2));
@@ -177,21 +168,15 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
             i.putExtra("title", mTRep.get(repp));
             i.putExtra("ref", mRefRep.get(repp));
-            StringBuilder s= new StringBuilder();
-            Log.i(TAG,repeats.size()+" times per "+circle.size());
-            s.append("hello");
             i.putExtra("repeat",rep[repp]);
             i.putExtra("circle",cir[repp]);
             i.putExtra("des", mDesRep.get(repp));
-            Log.i(TAG,"title,ref,time,des---------->"+ mTRep.get(repp)+" ,"+ mRefRep.get(repp)+" ,"+s+" ,"+ mDesRep.get(repp));
-
             i.putExtra("brutal", mBrutalRepeat.get(repp));
             i.putExtra("snarky", mSnarkyRepeat.get(repp));
             i.putExtra("funny", mFunnnyRepeat.get(repp));
             i.putExtra("cute", mCuteRepeat.get(repp));
             i.putExtra("normal", mNormalRepeat.get(repp));
             i.putExtra("noNoti", mNoNotiRepeat.get(repp));
-
             i.putExtra("label1", mRepeatLabel.get(repp).get(0));
             i.putExtra("label2", mRepeatLabel.get(repp).get(1));
             i.putExtra("label3", mRepeatLabel.get(repp).get(2));
@@ -232,7 +217,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
 
     /**
-     * logs the User out
+     * logs the User out and returns to the logIn Screen {@link MainActivity}
      */
     private void logOut() {
         FirebaseAuth.getInstance().signOut();
@@ -240,11 +225,31 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         startActivity(i);
     }
 
+    /**
+     * this methods sets the notifications for all DeadlineTasks
+     * @param _task Tasknumber which defines if it is a Deadline or RepeatTask
+     * @param _d Deadline-Day of the DeadlineTasks
+     * @param _m Deadline-Month of the DeadlineTasks
+     * @param _y Deadline-Year of the DeadlineTasks
+     * @param _h Deadline-Hour of the DeadlineTasks
+     * @param _min Deadline-Minute of the DeadlineTasks
+     * @param _t titles of the DeadlineTasks
+     * @param _norm  true if the user wants "normal" Motivation Notifications, false if not (DeadlineTasks)
+     * @param _funny true if the user wants "funny" Motivation Notifications, false if not (DeadlineTasks)
+     * @param _snarky true if the user wants "snarky" Motivation Notifications, false if not (DeadlineTasks)
+     * @param _cute true if the user wants "cute" Motivation Notifications, false if not (DeadlineTasks)
+     * @param _brutal true if the user wants "brutal" Motivation Notifications, false if not (DeadlineTasks)
+     * @param _notification true if the user wants no Notifications, false if not (DeadlineTasks)
+     * @param _count how many times a notification was sent
+     * @param _ref Reference of the DeadlineTasks (Reference-Path from Firebase)
+     * @param _des description of the DeadlineTasks
+     * @param _label labels of the DeadlineTasks
+     */
     @Override
     public void setNotificationDeadlineData(List <Integer>_task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<Integer> _count, List<String> _ref,List<String> _des, List<List<String>> _label) {
         {
-            Log.i(TAG, "setNotificationDeadlineData :: I was here");
             List<String> motivation = new LinkedList<>();
+            Log.i(TAG, ":: setNotificationDeadlineData Deadline Notifications are set");
 
             for (int i = 0; i < _d.size(); i++) {
                 if (_notification.get(i)) {
@@ -337,16 +342,32 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         }
     }
 
+    /**
+     * this method sets the notifications for all RepeatTasks
+     * @param _task Tasknumber which defines if it is a Deadline or RepeatTask
+     * @param _r how often the Task should be repeated (RepeatTask)
+     * @param _c in what timespan should the task be done (RepeatTask)
+     * @param _t titles of the RepeatTasks
+     * @param _norm  true if the user wants "normal" Motivation Notifications, false if not (RepeatTask)
+     * @param _funny true if the user wants "funny" Motivation Notifications, false if not (RepeatTask)
+     * @param _snarky true if the user wants "snarky" Motivation Notifications, false if not (RepeatTask)
+     * @param _cute true if the user wants "cute" Motivation Notifications, false if not (RepeatTask)
+     * @param _brutal true if the user wants "brutal" Motivation Notifications, false if not (RepeatTask)
+     * @param _notification true if the user wants no Notifications, false if not (RepeatTask)
+     * @param _des description of the RepeatTasks
+     * @param _label labels of the RepeatTasks
+     * @param _ref Reference of the RepeatTask (Reference-Path from Firebase)
+     * @param _count how many times a notification was sent
+     */
     @Override
     public void setNotificationRepeatData(List <Integer>_task,List<Integer> _r, List<String> _c, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal ,List<Boolean> _notification, List<String> _des, List<List<String>> _label,  List<String> _ref,  List<Integer> _count) {
 
         try {
-
             NotificationAlarm.mGroupEnabled = true;
             List<String> motivation = new LinkedList<>();
+            Log.i(TAG,":: onNotificationRepeat RepeatTask Notifications are set");
 
-            for (int i = 0; i < _r.size(); i++) {
-
+            for (int i = 1; i < _r.size(); i++) {
                 if(_notification.get(i)) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(new Date());
@@ -450,24 +471,33 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         }
     }
 
+    /**
+     * this method fills the list (that is displayed) with the Firebase data
+     * @param _repeatT titles of the RepeatTasks
+     * @param _deadT titles of the DeadlineTasks
+     * @param _task  Tasknumber which defines if it is a Deadline or RepeatTask
+     * @param _d Deadline-Day of the DeadlineTasks
+     * @param _m Deadline-Month of the DeadlineTasks
+     * @param _y Deadline-Year of the DeadlineTasks
+     * @param _repeats how often the Task should be repeated (RepeatTask)
+     * @param _repeatCircle in what timespan should the task be done (RepeatTask)
+     */
     @Override
     public void setTitle(List<String> _repeatT, List<String> _deadT, List<Integer> _task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _repeats, List<String> _repeatCircle) {
 
         try {
-            Log.i(TAG, "setTitle :: LIST size --> " + _task.size());
             mAdapter.clear();
 
             int deadi= 0;
             int repi = 0;
+            Log.i(TAG, ":: setTitle List is filled");
             for (int i = 0; i < _task.size(); i++) {
                 if(_task.get(i)==0){
                     mAdapter.add(new ListData(_deadT.get(deadi),_d.get(deadi),_m.get(deadi),_y.get(deadi)));
-                    Log.i(TAG, "setTitle :: " + mAdapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _deadT.get(deadi));
                     deadi++;
                 }
                 if(_task.get(i)==1){
                     mAdapter.add(new ListData(_repeatT.get(repi),_repeats.get(repi),_repeatCircle.get(repi)));
-                    Log.i(TAG, "setTitle :: " + mAdapter.getCount() + " deadLine tile,ref,des"+i+" --> " + _repeatT.get(repi));
                     repi++;
                 }
             }
@@ -484,6 +514,38 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         }
     }
 
+    /**
+     *this method takes the given parameters filled with the data from the database and saves them into local variables so that these can be used in other methods
+     *
+     * @param _repeatT titles of the RepeatTasks
+     * @param _deadT titles of the DeadlineTasks
+     * @param _d Deadline-Day of the DeadlineTasks
+     * @param _mo Deadline-Month of the DeadlineTasks
+     * @param _y Deadline-Year of the DeadlineTasks
+     * @param _h Deadline-Hour of the DeadlineTasks
+     * @param _mi Deadline-Minute of the DeadlineTasks
+     * @param _t Tasknumber which defines if it is a Deadline or RepeatTask
+     * @param _labelRep Labels of the RepeatTasks
+     * @param _labelDead Labes of the DeadlineTasks
+     * @param _desrep Description of the RepeatTasks
+     * @param _desdead Description of the DeadlineTasks
+     * @param _refrep Reference of the RepeatTask (Reference-Path from Firebase)
+     * @param _refdead Reference of the DeadlineTask (Reference-Path from Firebase)
+     * @param _repeats how often the Task should be repeated (RepeatTask)
+     * @param _repeatCircle in what timespan should the task be done (RepeatTask)
+     * @param _normRep true if the user wants "normal" Motivation Notifications, false if not (RepeatTask)
+     * @param _funnyRep true if the user wants "funny" Motivation Notifications, false if not (RepeatTask)
+     * @param _snarkyRep true if the user wants "snarky" Motivation Notifications, false if not (RepeatTask)
+     * @param _cuteRep true if the user wants "cute" Motivation Notifications, false if not (RepeatTask)
+     * @param _brutalRep true if the user wants "brutal" Motivation Notifications, false if not (RepeatTask)
+     * @param _notificationRep true if the user wants no Notifications, false if not (RepeatTask)
+     * @param _normDead true if the user wants "normal" Motivation Notifications, false if not (DeadlineTask)
+     * @param _funnyDead true if the user wants "funny" Motivation Notifications, false if not (DeadlineTask)
+     * @param _snarkyDead true if the user wants "snarky" Motivation Notifications, false if not (DeadlineTask)
+     * @param _cuteDead true if the user wants "cute" Motivation Notifications, false if not (DeadlineTask)
+     * @param _brutalDead true if the user wants "brutal" Motivation Notifications, false if not (DeadlineTask)
+     * @param _notificationDead true if the user wants no  Notifications, false if not (DeadlineTask)
+     */
     @Override
     public void setAll(List<String> _repeatT, List<String> _deadT, List<Integer> _d, List<Integer> _mo, List<Integer> _y, List<Integer> _h, List<Integer> _mi, List<Integer> _t, List<List<String>> _labelRep, List<List<String>> _labelDead,List<String> _desrep,List<String> _desdead,List<String> _refrep,List<String> _refdead,List<Integer> _repeats, List<String> _repeatCircle, List<Boolean> _normRep, List<Boolean> _funnyRep, List<Boolean> _snarkyRep, List<Boolean> _cuteRep, List<Boolean> _brutalRep,List<Boolean> _notificationRep, List<Boolean> _normDead, List<Boolean> _funnyDead, List<Boolean> _snarkyDead, List<Boolean> _cuteDead, List<Boolean> _brutalDead,List<Boolean> _notificationDead) {
         repeats = _repeats;
@@ -526,6 +588,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     protected void onResume() {
         super.onResume();
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
-        Repository.getInstance().getNotificationData(ref, this);
+        Repository.getInstance().getNotificationDeadline(ref, this);
     }
 }

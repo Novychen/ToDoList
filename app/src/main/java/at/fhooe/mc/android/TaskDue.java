@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This class shows the detailed view for each task
+ */
 public class TaskDue extends Activity implements View.OnClickListener {
     private static final String TAG = "at.fhooe.mc.toDoList :: TaskDue";
     public String mKey = null;
@@ -37,6 +40,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
     private String mCircle;
     private int mRepeat;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +54,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
             setContentView(R.layout.activity_deadline_task_due);
         }
 
-
+        // checks if user clicked on notification or if he clicked on an listitem (if the user comes from the notification, the notification is deleted)
         if( i.getBooleanExtra("fromNotification",false)) {
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(i.getIntExtra("NotificationID", 0));

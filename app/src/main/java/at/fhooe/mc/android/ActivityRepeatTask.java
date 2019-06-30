@@ -160,7 +160,9 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     protected void onStart() {
         super.onStart();
 
+        // check if the user makes a new Task or if he wants to change a existing one. If he wants to change it -> all fields are filled with the fields of the task that the user wants to change
         if(mIntent.getBooleanExtra("fromTaskDue",false)){
+            Log.i(TAG, ":: onStart was opend from TaskDue -> a change will be made");
 
             TextView change = findViewById(R.id.RepeatTask_Activity_RepeatTask);
             change.setText(R.string.RepeatTask_Activity_RepeatTask_change);
@@ -213,10 +215,12 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         switch (_v.getId()) {
 
             case R.id.RepeatTask_Activity_HowOftRepeat:{
-               showRepeatDialog();
+                Log.i(TAG, "::onClick HowOfRepeat was pressed");
+                showRepeatDialog();
 
             }break;
             case R.id.RepeatTask_Activity_RepeatDialog_ok:{
+                Log.i(TAG, "::onClick ok Button (from Dialog) was pressed");
                 TextView circle = findViewById(R.id.RepeatTask_Activity_RepeatCircles);
                 TextView times = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
                 if(mPicker != null){
@@ -234,7 +238,6 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }break;
 
             case R.id.RepeatTask_Activity_Check_Button: {
-
                 Log.i(TAG, "::onClick check Button was pressed");
                 EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
                 EditText t = findViewById(R.id.RepeatTask_Activity_title_field);
@@ -277,6 +280,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }
             break;
             case R.id.RepeatTask_Activity_Label_Button: {
+                Log.i(TAG, "::onClick Label add button was pressed");
                 mLabelCount++;
                 if (mLabelCount <= 3) {
                     EditText txt = findViewById(R.id.RepeatTask_Activity_setLabel_field);
@@ -296,9 +300,12 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }
             break;
             case R.id.RepeatTask_Activity_RepeatCircles:{
+                Log.i(TAG, "::onClick RepeatCircles was pressed");
                 showRepeatCircleDialog();
             }break; 
             case R.id.RepeatTask_Activity_help_button:{
+                Log.i(TAG, "::onClick help Button was pressed");
+
                 ImageView helpDialog = findViewById(R.id.RepeatTask_Activity_help_dialog);
                 ImageView n = findViewById(R.id.RepeatTask_Activity_Normal);
                 ImageView c = findViewById(R.id.repeatTask_Activity_Cute);
@@ -394,7 +401,6 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
 
             default:
                 Log.e(TAG, "task_Activity::onClick unexpected ID encountered");
-
         }
     }
 

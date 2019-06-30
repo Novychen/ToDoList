@@ -109,6 +109,6 @@ public class NotificationAlarm extends BroadcastReceiver  {
 
         NotificationAlarm.mGroupEnabled = false;
         mGroupCount++;
-        Log.i(TAG,"notification " + value);
+        Log.i(TAG,"notification send for task " + title);
     }
 }

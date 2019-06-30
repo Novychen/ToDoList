@@ -34,14 +34,14 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
     int mClickedHelp;
     String mMail;
 
-    /**
-     * listens to the Buttons and checks if the user is already logged in if so it changes to {@link ActivityList}
-     */
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+
+        Repository.mEnableRep = true;
 
         mEmail = findViewById(R.id.main_Activity_Auth_LogIn_Email);
         mPassword = findViewById(R.id.main_Activity_Auth_LogIn_Password);
@@ -103,6 +103,10 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
 
     }
 
+    /**
+     * checks the user input
+     * @return true if user input is valid and false if not
+     */
     private boolean check(){
 
         mMail = mEmail.getText().toString();
@@ -145,7 +149,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                     b.setVisibility(View.INVISIBLE);
                 }
                 mClickedHelp++;
-
             }break;
 
             case R.id.main_Activity_LogIn_Button: {

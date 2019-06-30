@@ -146,8 +146,9 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     protected void onStart() {
         super.onStart();
 
+        // check if the user makes a new Task or if he wants to change a existing one. If he wants to change it -> all fields are filled with the fields of the task that the user wants to change
         if(mIntent.getBooleanExtra("fromTaskDue",false)){
-
+            Log.i(TAG, ":: onStart was opend from TaskDue -> a change will be made");
             TextView change = findViewById(R.id.DeadlineTask_Activity_DeadlineTask);
             change.setText(R.string.DeadlineTask_Activity_DeadlineTask_change);
             EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
@@ -192,6 +193,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         switch (_v.getId()) {
 
             case R.id.DeadlineTask_Activity_Label_Button: {
+                Log.i(TAG, "::onClick Label add button was pressed");
                 mLabelCount++;
                 if (mLabelCount <= 3) {
                     EditText txt = findViewById(R.id.DeadlineTask_Activity_setLabel_field);
@@ -382,6 +384,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 }mNoClicked++;
             }break;
             case R.id.DeadlineTask_Activity_help_button:{
+                Log.i(TAG, "::onClick help button was pressed");
                 ImageView helpDialog = findViewById(R.id.DeadlineTask_Activity_help_dialog);
                 ImageView n = findViewById(R.id.deadlineTask_Activity_Normal);
                 ImageView c = findViewById(R.id.deadlineTask_Activity_Cute);
