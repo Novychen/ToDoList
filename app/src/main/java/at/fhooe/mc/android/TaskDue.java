@@ -373,11 +373,13 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 if(mNotiCountDead % 2 != 0) {
                     d.setAlpha(255);
                     y.setBackground(d);
+                    mNoNoti = false;
                     Repository.getInstance().saveNotificationData(false, mKey);
                     Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_noNotification_Button, Toast.LENGTH_SHORT).show();
                 }else{
                     d.setAlpha(50);
                     y.setBackground(d);
+                    mNoNoti = true;
                     Repository.getInstance().saveNotificationData(true, mKey);
                     Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_Notification_Button, Toast.LENGTH_SHORT).show();
                 }

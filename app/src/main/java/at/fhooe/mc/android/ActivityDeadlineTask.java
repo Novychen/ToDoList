@@ -166,11 +166,10 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             String label3 = mIntent.getStringExtra("label3");
             if(label1 != null) {
                 mLabelList.add(label1);
-            }
-            if (label2 != null) {
-                mLabelList.add(label1);
+            }if (label2 != null) {
+                mLabelList.add(label2);
             }if (label3 != null) {
-                mLabelList.add(label1);
+                mLabelList.add(label3);
             }
             RadioButton brutal = findViewById(R.id.DeadlineTask_Activity_MotiBrutal_RadioButton);
             brutal.setChecked(mIntent.getBooleanExtra("brutal",false));
@@ -183,7 +182,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             RadioButton normal = findViewById(R.id.DeadlineTask_Activity_MotiNormal_RadioButton);
             normal.setChecked( mIntent.getBooleanExtra("normal",false));
             RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
-            b.setChecked(mIntent.getBooleanExtra("noNoti",false));
+            b.setChecked(!mIntent.getBooleanExtra("noNoti",false));
         }
     }
 
@@ -219,7 +218,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 Log.i(TAG, ":: ActivityDeadlineTask ::onClick check Button was pressed");
 
                 EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
-                EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
+                EditText d = findViewById(R.id.DeadlineTask_Activity_description_field);
                 String description;
                 if(d == null){
                     description = "";
@@ -244,6 +243,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 if(!mCheckTime){
                     mMinute = calendar.get(Calendar.MINUTE);
                     mHour = calendar.get(Calendar.HOUR_OF_DAY);
+
                 }
 
                 mDeadlineTask.setDay(mDay);
@@ -252,6 +252,56 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
                 mDeadlineTask.setHour(mHour);
                 mDeadlineTask.setMinute(mMinute);
+
+                if(mIntent.getBooleanExtra("fromTaskDue",false) && !mCheckTime){
+                    TextView date = findViewById(R.id.DeadlineTask_Activity_date_field);
+                    String changeDate = date.getText().toString();
+                    int start = changeDate.indexOf('.');
+                    int end = changeDate.lastIndexOf('.');
+
+                    String changeDay = changeDate.substring(0,start);
+                    String changeMonth = changeDate.substring(start+1,end);
+                    String changeYear = changeDate.substring(end+1);
+                    mDeadlineTask.setDay(Integer.parseInt(changeDay));
+                    mDeadlineTask.setMonth(Integer.parseInt(changeMonth));
+                    mDeadlineTask.setYear(Integer.parseInt(changeYear));
+
+                    TextView time = findViewById(R.id.DeadlineTask_Activity_time_field);
+                    String changeTime = time.getText().toString();
+                    int startTime = changeTime.indexOf(':');
+                    String changeHour = changeTime.substring(0,startTime);
+                    String changeMinute = changeTime.substring(startTime+1);
+                    mDeadlineTask.setHour(Integer.parseInt(changeHour));
+                    mDeadlineTask.setMinute(Integer.parseInt(changeMinute));
+                }
+
+                if(mIntent.getBooleanExtra("fromTaskDue",false)){
+
+                    RadioButton b = findViewById(R.id.DeadlineTask_Activity_MotiBrutal_RadioButton);
+                    boolean brutal = b.isChecked();
+                    mDeadlineTask.setBrutal(brutal);
+
+                    RadioButton c = findViewById(R.id.DeadlineTask_Activity_MotiCute_RadioButton);
+                    boolean cute = c.isChecked();
+                    mDeadlineTask.setCute(cute);
+
+                    RadioButton n = findViewById(R.id.DeadlineTask_Activity_MotiNormal_RadioButton);
+                    boolean normal = n.isChecked();
+                    mDeadlineTask.setNormal(normal);
+
+                    RadioButton s = findViewById(R.id.DeadlineTask_Activity_MotiSnarky_RadioButton);
+                    boolean snarky = s.isChecked();
+                    mDeadlineTask.setSnarky(snarky);
+
+                    RadioButton no = findViewById(R.id.DeadlineTask_Activity_MotiNo_RadioButton);
+                    boolean noNot = no.isChecked();
+                    mDeadlineTask.setNotification(!noNot);
+
+                    RadioButton f = findViewById(R.id.DeadlineTask_Activity_MotiFunny_RadioButton);
+                    boolean funny = f.isChecked();
+                    mDeadlineTask.setFunny(funny);
+                }
+
                 mDeadlineTask.setTask(0);
 
                  if(mLabelList.size() == 0){
@@ -286,14 +336,12 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                         } else {
                             dateField.setText(hourOfDay + ":" + minute);
                         }
-                        if(hourOfDay+minute <= Calendar.getInstance().get(Calendar.HOUR_OF_DAY) +  Calendar.getInstance().get(Calendar.MINUTE)){
-                            mMinute = 0;
-                            mHour = 0;
-                        }else{
+
                             mMinute = minute;
                             mHour = hourOfDay;
-                            mCheckTime = true;
-                        }
+
+                        mCheckTime = true;
+
                     }
                 }, hourOfDay, minute, true);
 

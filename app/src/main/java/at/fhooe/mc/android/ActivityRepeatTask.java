@@ -49,7 +49,6 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         Repository.mEnable = false;
         Repository.mEnableRep = false;
 
-
         mRepeatTask = new RepeatTask();
         mIntent = getIntent();
 
@@ -184,9 +183,9 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             if(label1 != null) {
                 mLabelList.add(label1);
             }if (label2 != null) {
-                mLabelList.add(label1);
+                mLabelList.add(label2);
             }if (label3 != null) {
-                mLabelList.add(label1);
+                mLabelList.add(label3);
             }
             RadioButton brutal = findViewById(R.id.RepeatTask_Activity_MotiBrutal_RadioButton);
             brutal.setChecked(mIntent.getBooleanExtra("brutal",false));
@@ -204,7 +203,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             normal.setChecked( mIntent.getBooleanExtra("normal",false));
 
             RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiNo_RadioButton);
-            boolean notification = mIntent.getBooleanExtra("noNoti",false);
+            boolean notification = !mIntent.getBooleanExtra("noNoti",false);
             if(notification){
                 b.setChecked(false);
             }else {
@@ -274,6 +273,41 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 }
 
                 if(mIntent.getBooleanExtra("fromTaskDue",false)){
+
+                    if(mPicker == null){
+                        TextView tv = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
+                        String repeat = tv.getText().toString();
+                        mRepeatTask.setRepeats(Integer.parseInt(repeat));
+                    }
+                    if(mTimesPicker == null){
+                        TextView tv = findViewById(R.id.RepeatTask_Activity_RepeatCircles);
+                        String repeatCircle = tv.getText().toString();
+                        mRepeatTask.setRepeatRotation(repeatCircle);
+                    }
+                    RadioButton b = findViewById(R.id.RepeatTask_Activity_MotiBrutal_RadioButton);
+                    boolean brutal = b.isChecked();
+                    mRepeatTask.setBrutal(brutal);
+
+                    RadioButton c = findViewById(R.id.RepeatTask_Activity_MotiCute_RadioButton);
+                    boolean cute = c.isChecked();
+                    mRepeatTask.setCute(cute);
+
+                    RadioButton n = findViewById(R.id.RepeatTask_Activity_MotiNormal_RadioButton);
+                    boolean normal = n.isChecked();
+                    mRepeatTask.setNormal(normal);
+
+                    RadioButton s = findViewById(R.id.RepeatTask_Activity_MotiSnarky_RadioButton);
+                    boolean snarky = s.isChecked();
+                    mRepeatTask.setSnarky(snarky);
+
+                    RadioButton no = findViewById(R.id.RepeatTask_Activity_MotiNo_RadioButton);
+                    boolean noNot = no.isChecked();
+                    mRepeatTask.setNotification(!noNot);
+
+                    RadioButton f = findViewById(R.id.RepeatTask_Activity_MotiFunny_RadioButton);
+                    boolean funny = f.isChecked();
+                    mRepeatTask.setFunny(funny);
+
                     Repository.getInstance().changeData(mRepeatTask, mIntent.getStringExtra("ref"));
                     Toast.makeText(ActivityRepeatTask.this, R.string.DeadlineTask_Activity_Change_toast, Toast.LENGTH_SHORT).show();
                 }else {
