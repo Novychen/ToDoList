@@ -31,7 +31,7 @@ import java.util.Random;
  */
 public class ActivityList extends ListActivity implements IFirebaseCallback{
 
-    private final static String TAG = "at.fhooe.mc.toDoList :: ActivityList";
+    private final static String TAG = "at.fhooe.mc.toDoList";
     static DataAdapter mAdapter;
     List <String> mSnarkyMotivation = new LinkedList<>();
     List <String> mFunnyMotivation = new LinkedList<>();
@@ -76,13 +76,14 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Repository.mEnable = true;
-        Log.i(TAG, " :: onCreate");
-
-        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
-        Repository.getInstance().getNotificationRepeat(ref2, this);
+        Repository.mEnableRep = true;
+        Log.i(TAG, ":: ActivityList :: onCreate");
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
         Repository.getInstance().getData(ref, this);
+
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId());
+        Repository.getInstance().getNotificationRepeat(ref2, this);
 
         mAdapter = new DataAdapter(this);
         setListAdapter(mAdapter);
@@ -127,7 +128,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
     @Override
     protected void onListItemClick(ListView _l, View _v, int _position, long _id) {
-        Log.i(TAG,":: onListItemClick one Listitem was clicked");
+        Log.i(TAG,":: ActivityList :: onListItemClick one Listitem was clicked");
 
         Intent i = new Intent(this, TaskDue.class);
         i.putExtra("task", task.get(_position));
@@ -195,23 +196,23 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     public boolean onOptionsItemSelected(MenuItem _item) {
         switch (_item.getItemId()){
             case R.id.menu_arlog_logout:{
-                Log.i(TAG, "::onClick logOut Button was pressed");
+                Log.i(TAG, ":: ActivityList ::onClick logOut Button was pressed");
                 logOut();
                 finish();}break;
             case R.id.menu_arlog_add_dead: {
-                Log.i(TAG, "::onClick add Button was pressed");
+                Log.i(TAG, ":: ActivityList ::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityDeadlineTask.class);
                 startActivity(i);
             }break;
 
             case R.id.menu_arlog_add_rep: {
-                Log.i(TAG, "::onClick add Button was pressed");
+                Log.i(TAG, ":: ActivityList ::onClick add Button was pressed");
                 Intent i = new Intent(this, ActivityRepeatTask.class);
                 startActivity(i);
             }break;
 
             default:
-                Log.e(TAG, "::onClick unexpected ID encountered");
+                Log.e(TAG, ":: ActivityList ::onClick unexpected ID encountered");
         }return true;
     }
 
@@ -249,7 +250,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
     public void setNotificationDeadlineData(List <Integer>_task, List<Integer> _d, List<Integer> _m, List<Integer> _y, List<Integer> _h, List<Integer> _min, List<String> _t, List<Boolean> _norm, List<Boolean> _funny, List<Boolean> _snarky, List<Boolean> _cute, List<Boolean> _brutal,List<Boolean> _notification, List<Integer> _count, List<String> _ref,List<String> _des, List<List<String>> _label) {
         {
             List<String> motivation = new LinkedList<>();
-            Log.i(TAG, ":: setNotificationDeadlineData Deadline Notifications are set");
+            Log.i(TAG, ":: ActivityList :: setNotificationDeadlineData Deadline Notifications are set");
 
             for (int i = 0; i < _d.size(); i++) {
                 if (_notification.get(i)) {
@@ -309,7 +310,6 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                     intent.putExtra("cute", _cute.get(i));
                     intent.putExtra("normal", _norm.get(i));
                     intent.putExtra("noNoti", _notification.get(i));
-                    //Repository.getInstance().saveData(_count.get(i) +1,_ref.get(i));
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                     PendingIntent pi = PendingIntent.getBroadcast(this, r.nextInt(1000), intent, 0);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
@@ -365,9 +365,9 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
         try {
             NotificationAlarm.mGroupEnabled = true;
             List<String> motivation = new LinkedList<>();
-            Log.i(TAG,":: onNotificationRepeat RepeatTask Notifications are set");
+            Log.i(TAG," :: ActivityList :: onNotificationRepeat RepeatTask Notifications are set");
 
-            for (int i = 1; i < _r.size(); i++) {
+            for (int i = 0; i < _r.size(); i++) {
                 if(_notification.get(i)) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(new Date());
@@ -377,7 +377,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
                     }
                     Random r = new Random();
                     Intent intent = new Intent(this, NotificationAlarm.class);
-                    for (int j = 1; j <= (_r.get(i) +1); j++) {
+                    for (int j = 1; j <= _r.get(i) ; j++) {
                         if (_c.get(i).equals("day")) {
                             time = Math.abs((24 / _r.get(i)) * j);
                             if(time == 24){
@@ -490,7 +490,7 @@ public class ActivityList extends ListActivity implements IFirebaseCallback{
 
             int deadi= 0;
             int repi = 0;
-            Log.i(TAG, ":: setTitle List is filled");
+            Log.i(TAG, ":: ActivityList :: setTitle List is filled");
             for (int i = 0; i < _task.size(); i++) {
                 if(_task.get(i)==0){
                     mAdapter.add(new ListData(_deadT.get(deadi),_d.get(deadi),_m.get(deadi),_y.get(deadi)));

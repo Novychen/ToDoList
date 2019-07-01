@@ -27,7 +27,7 @@ import java.util.List;
 public class MainActivity extends Activity implements View.OnClickListener, IFirebaseCallback {
 
     private FirebaseAuth mAuthentication;
-    public final static String TAG = "at.fhooe.mc.toDoList :: MainActivity";
+    public final static String TAG = "at.fhooe.mc.toDoList";
     private EditText mEmail = null;
     private EditText mPassword = null;
     String mPass;
@@ -40,8 +40,6 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
         super.onCreate(_savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-
-        Repository.mEnableRep = true;
 
         mEmail = findViewById(R.id.main_Activity_Auth_LogIn_Email);
         mPassword = findViewById(R.id.main_Activity_Auth_LogIn_Password);
@@ -89,12 +87,12 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "main_Activity::signInWithEmail:success");
+                                Log.d(TAG, ":: MainActivity ::signInWithEmail:success");
                                 logIn();
 
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.w(TAG, "main_Activity::signInWithEmail:failure", task.getException());
+                                Log.w(TAG, ":: MainActivity ::signInWithEmail:failure", task.getException());
                                 Toast.makeText(MainActivity.this, getText(R.string.main_Activity_LogInFail_Toast), Toast.LENGTH_SHORT).show();
                             }
 
@@ -162,7 +160,7 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                 }
             }break;
             default:
-                Log.e(TAG, "main_Activity::onClick unexpected ID encountered");
+                Log.e(TAG, ":: MainActivity ::onClick unexpected ID encountered");
         }
     }
 
@@ -176,13 +174,13 @@ public class MainActivity extends Activity implements View.OnClickListener, IFir
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "main_Activity::createUserWithEmail success");
+                            Log.d(TAG, ":: MainActivity ::createUserWithEmail success");
                             Repository.getInstance().setUserId(mAuthentication.getUid());
                             Toast.makeText(MainActivity.this, getText(R.string.main_Activity_SignIn_Toast), Toast.LENGTH_SHORT).show();
                             logIn();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "main_Activity::createUserWithEmail failure - could not create account", task.getException());
+                            Log.w(TAG, ":: MainActivity ::createUserWithEmail failure - could not create account", task.getException());
                             Toast.makeText(MainActivity.this, getText(R.string.main_Activity_SignInFail_Toast), Toast.LENGTH_SHORT).show();
                         }
                     }

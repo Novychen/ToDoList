@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class ActivityDeadlineTask extends Activity implements View.OnClickListener, Task {
 
-    private final static String TAG = "at.fhooe.mc.toDoList :: ActivityDeadlineTask";
+    private final static String TAG = "at.fhooe.mc.toDoList";
 
     private int mDay;
     private int mMonth;
@@ -64,6 +64,8 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_deadline_task);
         Repository.mEnable = false;
+        Repository.mEnableRep = false;
+
         mDeadlineTask = new DeadlineTask();
         mIntent = getIntent();
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -148,7 +150,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
         // check if the user makes a new Task or if he wants to change a existing one. If he wants to change it -> all fields are filled with the fields of the task that the user wants to change
         if(mIntent.getBooleanExtra("fromTaskDue",false)){
-            Log.i(TAG, ":: onStart was opend from TaskDue -> a change will be made");
+            Log.i(TAG, ":: ActivityDeadlineTask :: onStart was opend from TaskDue -> a change will be made");
             TextView change = findViewById(R.id.DeadlineTask_Activity_DeadlineTask);
             change.setText(R.string.DeadlineTask_Activity_DeadlineTask_change);
             EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
@@ -193,7 +195,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
         switch (_v.getId()) {
 
             case R.id.DeadlineTask_Activity_Label_Button: {
-                Log.i(TAG, "::onClick Label add button was pressed");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick Label add button was pressed");
                 mLabelCount++;
                 if (mLabelCount <= 3) {
                     EditText txt = findViewById(R.id.DeadlineTask_Activity_setLabel_field);
@@ -214,7 +216,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             break;
 
             case R.id.DeadlineTask_Activity_Check_Button: {
-                Log.i(TAG, "::onClick check Button was pressed");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick check Button was pressed");
 
                 EditText t = findViewById(R.id.DeadlineTask_Activity_title_field);
                 EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
@@ -267,7 +269,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             }
             break;
             case R.id.DeadlineTask_Activity_time_field: {
-                Log.i(TAG, "task_Activity::onClick SelectTime Field was clicked");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick SelectTime Field was clicked");
                 final Calendar calendar = Calendar.getInstance();
                 int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
                 int minute = calendar.get(Calendar.MINUTE);
@@ -300,7 +302,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             }
             break;
             case R.id.DeadlineTask_Activity_date_field: {
-                Log.i(TAG, "::onClick SelectDate Field was clicked");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick SelectDate Field was clicked");
                 Calendar calendar = Calendar.getInstance();
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
@@ -322,7 +324,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
             break;
 
             case R.id.DeadlineTask_Activity_MotiBrutal_RadioButton:{
-                Log.i(TAG, "::onClick MotivationBrutal RadioButton was clicked");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick MotivationBrutal RadioButton was clicked");
                 if(mBrutalClicked % 2 == 0) {
                     mDeadlineTask.setBrutal(true);
                 }else{
@@ -333,7 +335,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
             }break;
             case R.id.DeadlineTask_Activity_MotiCute_RadioButton:{
-                Log.i(TAG, "::onClick MotivationCute RadioButton was clicked");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick MotivationCute RadioButton was clicked");
                 if(mCuteClicked % 2 == 0) {
                     mDeadlineTask.setCute(true);
                 }else{
@@ -344,7 +346,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
 
             }break;
             case R.id.DeadlineTask_Activity_MotiFunny_RadioButton:{
-                Log.i(TAG, "::onClick MotivationFunny RadioButton was clicked");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick MotivationFunny RadioButton was clicked");
                 if(mFunnyClicked % 2 == 0) {
                     mDeadlineTask.setFunny(true);
                 }else{
@@ -354,7 +356,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 }mFunnyClicked++;
             }break;
             case R.id.DeadlineTask_Activity_MotiNormal_RadioButton:{
-                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick MotivationNormal RadioButton was clicked");
                 if(mNormalClicked % 2 == 0) {
                     mDeadlineTask.setNormal(true);
                 }else{
@@ -364,7 +366,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 }mNormalClicked++;
             }break;
             case R.id.DeadlineTask_Activity_MotiSnarky_RadioButton:{
-                Log.i(TAG, "::onClick MotivationSnarky RadioButton was clicked");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick MotivationSnarky RadioButton was clicked");
                 if(mSnarkyClicked % 2 == 0) {
                     mDeadlineTask.setSnarky(true);
                 }else{
@@ -374,7 +376,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 }mSnarkyClicked++;
             }break;
             case R.id.DeadlineTask_Activity_MotiNo_RadioButton:{
-                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick MotivationNormal RadioButton was clicked");
                 if(mNoClicked % 2 == 0) {
                     mDeadlineTask.setNotification(false);
                 }else{
@@ -384,7 +386,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 }mNoClicked++;
             }break;
             case R.id.DeadlineTask_Activity_help_button:{
-                Log.i(TAG, "::onClick help button was pressed");
+                Log.i(TAG, ":: ActivityDeadlineTask ::onClick help button was pressed");
                 ImageView helpDialog = findViewById(R.id.DeadlineTask_Activity_help_dialog);
                 ImageView n = findViewById(R.id.deadlineTask_Activity_Normal);
                 ImageView c = findViewById(R.id.deadlineTask_Activity_Cute);
@@ -415,7 +417,7 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
                 mClickedHelp++;
             }break;
             default:
-                Log.e(TAG, "::onClick unexpected ID encountered");
+                Log.e(TAG, ":: ActivityDeadlineTask ::onClick unexpected ID encountered");
         }
     }
 
@@ -423,5 +425,6 @@ public class ActivityDeadlineTask extends Activity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         Repository.mEnable = true;
+        Repository.mEnableRep = true;
     }
 }

@@ -18,7 +18,7 @@ import android.widget.Toast;
  * This class shows the detailed view for each task
  */
 public class TaskDue extends Activity implements View.OnClickListener {
-    private static final String TAG = "at.fhooe.mc.toDoList :: TaskDue";
+    private static final String TAG = "at.fhooe.mc.toDoList";
     public String mKey = null;
     private int mNotiCountRep;
     private int mNotiCountDead;
@@ -46,6 +46,8 @@ public class TaskDue extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Repository.mEnable = false;
+        Repository.mEnableRep = false;
+
         Intent i = getIntent();
         int task = i.getIntExtra("task",-1);
         if(task ==1) {
@@ -298,7 +300,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
         switch (_v.getId()) {
             case R.id.activity_task_due_deadline_change:{
 
-                    Log.i(TAG, "onClick :: Deadline change was clicked");
+                    Log.i(TAG, " :: TaskDue onClick :: Deadline change was clicked");
                     Intent i = new Intent(this, ActivityDeadlineTask.class);
                     i.putExtra("title", mTitle);
                     i.putExtra("des", mDes);
@@ -320,7 +322,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
 
             }break;
             case R.id.activity_task_due_repeat_change:{
-                Log.i(TAG,"conClick :: Repeat change was clicked");
+                Log.i(TAG,":: TaskDue onClick :: Repeat change was clicked");
                 Intent i = new Intent(this, ActivityRepeatTask.class);
                 i.putExtra("title", mTitle);
                 i.putExtra("des", mDes);
@@ -341,29 +343,29 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 finish();
             }break;
             case R.id.activity_task_due_deadline_remove: {
-                Log.i(TAG,"conClick :: Deadline remove was clicked");
+                Log.i(TAG,":: TaskDue onClick :: Deadline remove was clicked");
                 Repository.getInstance().removeDate(mKey);
                 Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_Notification_Remove_toast, Toast.LENGTH_SHORT).show();
 
                 finish();
             }break;
             case R.id.activity_task_due_repeat_remove: {
-                Log.i(TAG,"conClick :: Repeat remove was clicked");
+                Log.i(TAG,":: TaskDue onClick :: Repeat remove was clicked");
                 Repository.getInstance().removeDate(mKey);
                 Toast.makeText(TaskDue.this, R.string.TaskDue_Activity_Notification_Remove_toast, Toast.LENGTH_SHORT).show();
 
                 finish();
             }break;
             case R.id.activity_task_due_deadline_back: {
-                Log.i(TAG,"conClick :: Deadline back was clicked");
+                Log.i(TAG,":: TaskDue onClick :: Deadline back was clicked");
                 finish();
             }break;
             case R.id.activity_task_due_repeat_back: {
-                Log.i(TAG,"conClick :: Repeat back was clicked");
+                Log.i(TAG,":: TaskDue onClick :: Repeat back was clicked");
                 finish();
             }break;
             case R.id.activity_task_due_deadline_noNotifi_Button: {
-                Log.i(TAG,"conClick :: Deadline noNoti was clicked");
+                Log.i(TAG,":: TaskDue onClick :: Deadline noNoti was clicked");
                 ImageView y = findViewById(R.id.activity_task_due_deadline_boxNot);
                 Drawable d = getDrawable(R.drawable.ic_button_round_green);
                 assert d != null;
@@ -382,7 +384,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 mNotiCountDead++;
             }break;
             case R.id.activity_task_due_repeat_noNotifi_Button: {
-                Log.i(TAG,"conClick :: Repeat noNoti was clicked");
+                Log.i(TAG,":: TaskDue onClick :: Repeat noNoti was clicked");
                 ImageView y = findViewById(R.id.activity_task_due_repeat_boxNo);
                 Drawable d = getDrawable(R.drawable.ic_button_round_blue);
                 if(mNotiCountRep % 2 != 0) {
@@ -401,7 +403,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
                 mNotiCountRep++;
             }break;
             default:
-                Log.e(TAG, "::onClick unexpected ID encountered");
+                Log.e(TAG, ":: TaskDue ::onClick unexpected ID encountered");
         }
     }
 
@@ -409,5 +411,7 @@ public class TaskDue extends Activity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
         Repository.mEnable = true;
+        Repository.mEnableRep = true;
+
     }
 }

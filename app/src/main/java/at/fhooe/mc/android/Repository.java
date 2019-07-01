@@ -16,7 +16,7 @@ import java.util.List;
  */
 class Repository {
 
-    private static final String TAG = "at.fhooe.mc.toDoList :: Repository";
+    private static final String TAG = "at.fhooe.mc.toDoList";
     private static Repository mInstance;
     private static String mUserId;
 
@@ -230,7 +230,7 @@ class Repository {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
                cleanLists();
-               Log.i(TAG, ":: getData Data was fetched and will be processed");
+               Log.i(TAG, ":: Repository :: getData Data was fetched and will be processed");
                for (DataSnapshot listSnapshot: dataSnapshot.getChildren()) {
                    Integer task = listSnapshot.child("task").getValue(Integer.class);
                    mTasks.add(task);
@@ -264,7 +264,7 @@ class Repository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (mEnableRep) {
-                    Log.i(TAG, ":: getNotificationRepeat NotificationData was fetched and will be processed");
+                    Log.i(TAG, ":: Repository :: getNotificationRepeat NotificationData was fetched and will be processed");
                     cleanLists();
                     for (DataSnapshot listSnapshot : dataSnapshot.getChildren()) {
                         Integer task = listSnapshot.child("task").getValue(Integer.class);
@@ -299,7 +299,7 @@ class Repository {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (mEnable) {
-                        Log.i(TAG, ":: getNotificationDeadline NotificationData was fetched and will be processed");
+                        Log.i(TAG, ":: Repository :: getNotificationDeadline NotificationData was fetched and will be processed");
                         cleanLists();
                         for (DataSnapshot listSnapshot : dataSnapshot.getChildren()) {
                             Integer task = listSnapshot.child("task").getValue(Integer.class);
@@ -313,7 +313,6 @@ class Repository {
                                 }
                             }
                         }
-
                         _callback.setNotificationDeadlineData(mTasks, mDayDead, mMonthDead, mYearDead, mHourDead, mMinuteDead, mTitleDead, mNormalDead, mFunnyDead, mSnarkyDead, mCuteDead, mBrutalDead, mNotificationDead, mCountDead, mReferenceDead, mDescriptionDead, mLabelDead);
                     }
                 }
@@ -330,7 +329,7 @@ class Repository {
      * @param _t the task, that is saved
      */
     void saveData(Task _t){
-        Log.i(TAG, ":: saveData data was saved");
+        Log.i(TAG, ":: Repository :: saveData data was saved");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         String ref = mUserId;
         if (mUserId == null){
@@ -346,7 +345,7 @@ class Repository {
      * @param _ref the reference to that specific task
      */
     void changeData(Task _t, String _ref){
-        Log.i(TAG, ":: changeData data was changed");
+        Log.i(TAG, ":: Repository :: changeData data was changed");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         if (mUserId == null){
             return;
@@ -361,7 +360,7 @@ class Repository {
      * @param _ref the reference to that specific tasks notification option
      */
     void saveNotificationData(boolean _notification, String _ref){
-        Log.i(TAG, ":: saveNotificationData Notification option was saved");
+        Log.i(TAG, ":: Repository :: saveNotificationData Notification option was saved");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         if (mUserId == null){
             return;
@@ -392,7 +391,7 @@ class Repository {
      * @param key Reference String to the task that will be removed
      */
     void removeDate(String key) {
-        Log.i(TAG, ":: removeData Task was deleted");
+        Log.i(TAG, ":: Repository :: removeData Task was deleted");
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(Repository.getInstance().getUserId()).child(key);
         ref.removeValue();
     }

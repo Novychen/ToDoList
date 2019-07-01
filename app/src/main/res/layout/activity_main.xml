@@ -10,7 +10,7 @@
 
     <ImageButton
         android:id="@+id/repeatTask_Activiy_Rectangle_light_blue"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="200dp"
         android:background="#E91E63"
         android:backgroundTint="#E91E63"

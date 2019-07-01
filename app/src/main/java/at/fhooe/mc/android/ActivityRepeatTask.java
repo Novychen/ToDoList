@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ActivityRepeatTask extends Activity implements Task, View.OnClickListener {
 
-    private final static String TAG = "at.fhooe.mc.toDoList :: ActivityRepeatTask";
+    private final static String TAG = "at.fhooe.mc.toDoList";
     private RepeatTask mRepeatTask;
     private NumberPicker mPicker;
     private NumberPicker mTimesPicker;
@@ -47,6 +47,9 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_repeat_task);
         Repository.mEnable = false;
+        Repository.mEnableRep = false;
+
+
         mRepeatTask = new RepeatTask();
         mIntent = getIntent();
 
@@ -162,7 +165,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
 
         // check if the user makes a new Task or if he wants to change a existing one. If he wants to change it -> all fields are filled with the fields of the task that the user wants to change
         if(mIntent.getBooleanExtra("fromTaskDue",false)){
-            Log.i(TAG, ":: onStart was opend from TaskDue -> a change will be made");
+            Log.i(TAG, " :: ActivityRepeatTask :: onStart was opend from TaskDue -> a change will be made");
 
             TextView change = findViewById(R.id.RepeatTask_Activity_RepeatTask);
             change.setText(R.string.RepeatTask_Activity_RepeatTask_change);
@@ -215,12 +218,12 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
         switch (_v.getId()) {
 
             case R.id.RepeatTask_Activity_HowOftRepeat:{
-                Log.i(TAG, "::onClick HowOfRepeat was pressed");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick HowOfRepeat was pressed");
                 showRepeatDialog();
 
             }break;
             case R.id.RepeatTask_Activity_RepeatDialog_ok:{
-                Log.i(TAG, "::onClick ok Button (from Dialog) was pressed");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick ok Button (from Dialog) was pressed");
                 TextView circle = findViewById(R.id.RepeatTask_Activity_RepeatCircles);
                 TextView times = findViewById(R.id.RepeatTask_Activity_HowOftRepeat);
                 if(mPicker != null){
@@ -238,7 +241,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }break;
 
             case R.id.RepeatTask_Activity_Check_Button: {
-                Log.i(TAG, "::onClick check Button was pressed");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick check Button was pressed");
                 EditText d = findViewById(R.id.RepeatTask_Activity_description_field);
                 EditText t = findViewById(R.id.RepeatTask_Activity_title_field);
 
@@ -280,7 +283,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }
             break;
             case R.id.RepeatTask_Activity_Label_Button: {
-                Log.i(TAG, "::onClick Label add button was pressed");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick Label add button was pressed");
                 mLabelCount++;
                 if (mLabelCount <= 3) {
                     EditText txt = findViewById(R.id.RepeatTask_Activity_setLabel_field);
@@ -300,11 +303,11 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }
             break;
             case R.id.RepeatTask_Activity_RepeatCircles:{
-                Log.i(TAG, "::onClick RepeatCircles was pressed");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick RepeatCircles was pressed");
                 showRepeatCircleDialog();
             }break; 
             case R.id.RepeatTask_Activity_help_button:{
-                Log.i(TAG, "::onClick help Button was pressed");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick help Button was pressed");
 
                 ImageView helpDialog = findViewById(R.id.RepeatTask_Activity_help_dialog);
                 ImageView n = findViewById(R.id.RepeatTask_Activity_Normal);
@@ -337,7 +340,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }break;
 
             case R.id.RepeatTask_Activity_MotiBrutal_RadioButton:{
-                Log.i(TAG, "::onClick MotivationBrutal RadioButton was clicked");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick MotivationBrutal RadioButton was clicked");
                 if(mBrutalClicked % 2 == 0) {
                     mRepeatTask.setBrutal(true);
                 }else{
@@ -348,7 +351,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
 
             }break;
             case R.id.RepeatTask_Activity_MotiCute_RadioButton:{
-                Log.i(TAG, "::onClick MotivationCute RadioButton was clicked");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick MotivationCute RadioButton was clicked");
                 if(mCuteClicked % 2 == 0) {
                     mRepeatTask.setCute(true);
                 }else{
@@ -359,7 +362,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
 
             }break;
             case R.id.RepeatTask_Activity_MotiFunny_RadioButton:{
-                Log.i(TAG, "::onClick MotivationFunny RadioButton was clicked");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick MotivationFunny RadioButton was clicked");
                 if(mFunnyClicked % 2 == 0) {
                     mRepeatTask.setFunny(true);
                 }else{
@@ -369,7 +372,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 }mFunnyClicked++;
             }break;
             case R.id.RepeatTask_Activity_MotiNormal_RadioButton:{
-                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick MotivationNormal RadioButton was clicked");
                 if(mNormalClicked % 2 == 0) {
                     mRepeatTask.setNormal(true);
                 }else{
@@ -379,7 +382,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 }mNormalClicked++;
             }break;
             case R.id.RepeatTask_Activity_MotiNo_RadioButton:{
-                Log.i(TAG, "::onClick MotivationNormal RadioButton was clicked");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick MotivationNormal RadioButton was clicked");
                 if(mNoClicked % 2 == 0) {
                     mRepeatTask.setNotification(false);
                 }else{
@@ -389,7 +392,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
                 }mNoClicked++;
             }break;
             case R.id.RepeatTask_Activity_MotiSnarky_RadioButton:{
-                Log.i(TAG, "::onClick MotivationSnarky RadioButton was clicked");
+                Log.i(TAG, " :: ActivityRepeatTask ::onClick MotivationSnarky RadioButton was clicked");
                 if(mSnarkyClicked % 2 == 0) {
                     mRepeatTask.setSnarky(true);
                 }else{
@@ -400,7 +403,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
             }break;
 
             default:
-                Log.e(TAG, "task_Activity::onClick unexpected ID encountered");
+                Log.e(TAG, " :: ActivityRepeatTask ::onClick unexpected ID encountered");
         }
     }
 
@@ -408,5 +411,7 @@ public class ActivityRepeatTask extends Activity implements Task, View.OnClickLi
     protected void onPause() {
         super.onPause();
         Repository.mEnable = true;
+        Repository.mEnableRep = true;
+
     }
 }
