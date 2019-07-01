@@ -9,7 +9,7 @@ import android.util.Log;
 import java.util.Random;
 public class NotificationAlarm extends BroadcastReceiver  {
 
-    public static final String TAG = "at.fhooe.mc.toDoList :: NotificationAlarm";
+    public static final String TAG = "at.fhooe.mc.toDoList";
     private static final  String GROUP_KEY = "at.fhooe.mc.toDoList.GROUP_KEY";
     Notification.InboxStyle mInboxStyle = new Notification.InboxStyle();
     static boolean mGroupEnabled;
@@ -85,7 +85,7 @@ public class NotificationAlarm extends BroadcastReceiver  {
 
         if(mGroupEnabled) {
             Notification.Builder groupBuilder = new Notification.Builder(_context)
-                    .setContentTitle("ToDoList at your service")
+                    .setContentTitle("Remy at your service")
                     .setSmallIcon(R.drawable.ic_notification_active)
                     .setGroup(NotificationAlarm.GROUP_KEY)
                     .setContentText("I hope you had a great day :)")
@@ -109,6 +109,6 @@ public class NotificationAlarm extends BroadcastReceiver  {
 
         NotificationAlarm.mGroupEnabled = false;
         mGroupCount++;
-        Log.i(TAG,"notification send for task " + title);
+        Log.i(TAG,":: NotificationAlarm notification send for task " + title);
     }
 }
